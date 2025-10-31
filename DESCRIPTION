@@ -19,3 +19,6 @@ Imports:
     rgl
 URL: https://github.com/GroupMODES/controlDim
 BugReports: https://github.com/GroupMODES/controlDim/issues
+Depends: 
+    R (>= 3.5)
+LazyData: false
