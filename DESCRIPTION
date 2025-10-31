@@ -17,5 +17,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
     rgl
-URL: https://github.com/natalylodeiro/controlDim
-BugReports: https://github.com/natalylodeiro/controlDim/issues
+URL: https://github.com/GroupMODES/controlDim
+BugReports: https://github.com/GroupMODES/controlDim/issues
