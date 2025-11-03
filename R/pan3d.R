@@ -2,8 +2,7 @@
 #'
 #' Permite desplazar la vista de un gráfico 3D interactivo en una ventana RGL al arrastrar
 #' el ratón con un botón específico. Esta función usa callbacks del ratón (`rgl.setMouseCallbacks`)
-#' para modificar la proyección de la escena mientras el usuario mueve el ratón2
-#' .
+#' para modificar la proyección de la escena mientras el usuario mueve el ratón2.
 #'
 #' @param button Entero que indica el botón del ratón a usar:
 #'   \itemize{

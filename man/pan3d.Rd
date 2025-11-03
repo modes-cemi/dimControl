@@ -25,8 +25,7 @@ para desplazar la vista de la escena 3D.
 \description{
 Permite desplazar la vista de un gráfico 3D interactivo en una ventana RGL al arrastrar
 el ratón con un botón específico. Esta función usa callbacks del ratón (\code{rgl.setMouseCallbacks})
-para modificar la proyección de la escena mientras el usuario mueve el ratón2
-.
+para modificar la proyección de la escena mientras el usuario mueve el ratón2.
 }
 \details{
 Cuando se presiona el botón indicado, la función registra la posición inicial del
