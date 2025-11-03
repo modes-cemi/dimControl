@@ -24,7 +24,7 @@ dirección de referencia en una dimensión específica. Permite obtener el resul
 en grados o radianes y considerar la dirección negativa si es necesario.
 }
 \examples{
-# Ejemplo con tres vectores normalizados
+# Tres vectores normalizados en las direcciones X, Y y Z
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)

@@ -12,7 +12,7 @@
 #' @returns Vector numérico con los ángulos correspondientes a cada vector de entrada.
 #'
 #' @examples
-#' # Ejemplo con tres vectores normalizados
+#' # Tres vectores normalizados en las direcciones X, Y y Z
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0,
 #'               0, 0, 1), nrow = 3)
