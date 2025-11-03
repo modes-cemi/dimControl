@@ -9,7 +9,7 @@ angled2(v, dim, negdir = FALSE, deg = TRUE)
 \arguments{
 \item{v}{Matriz numérica de dimensión \eqn{d \times n}. Cada columna representa un vector normalizado.}
 
-\item{dim}{Índice de la dimensión a considerar (1 <= dim <= d).}
+\item{dim}{Índice de la dimensión de referencia, con \eqn{1 \leq \text{dim} \leq d}.}
 
 \item{negdir}{Valor lógico. Si es \code{TRUE}, considera la dirección negativa en el cálculo del ángulo.}
 

@@ -5,7 +5,7 @@
 #' en grados o radianes y considerar la dirección negativa si es necesario.
 #'
 #' @param v Matriz numérica de dimensión \eqn{d \times n}. Cada columna representa un vector normalizado.
-#' @param dim Índice de la dimensión a considerar (1 <= dim <= d).
+#' @param dim Índice de la dimensión de referencia, con \eqn{1 \leq \text{dim} \leq d}.
 #' @param negdir Valor lógico. Si es `TRUE`, considera la dirección negativa en el cálculo del ángulo.
 #' @param deg Valor lógico. Si es `TRUE`, devuelve los ángulos en grados; si es `FALSE`, en radianes.
 #'
