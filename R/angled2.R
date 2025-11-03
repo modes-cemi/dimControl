@@ -1,18 +1,18 @@
 #' Cálculo de ángulos direccionales de vectores normalizados
 #'
 #' Calcula el ángulo direccional entre un conjunto de vectores normalizados y una
-#' dirección de referencia en una dimensión específica. Permite obtener los resultados
-#' en grados o radianes, y considerar la dirección negativa si se requiere.
+#' dirección de referencia en una dimensión específica. Permite obtener el resultado
+#' en grados o radianes y considerar la dirección negativa si es necesario.
 #'
-#' @param v Matriz numérica de dimensión \eqn{d \times n}, donde cada columna representa un vector normalizado.
-#' @param dim Entero que indica el índice de la dimensión (entre 1 y \eqn{d}) con respecto a la cual se calcula el ángulo.
-#' @param negdir Lógico. Si es `TRUE`, se considera la dirección negativa en el cálculo del ángulo.
-#' @param deg Lógico. Si es `TRUE`, los ángulos se devuelven en grados; si es `FALSE`, en radianes.
+#' @param v Matriz numérica de dimensión \eqn{d \times n}. Cada columna representa un vector normalizado.
+#' @param dim Índice de la dimensión a considerar (1 <= dim <= d).
+#' @param negdir Valor lógico. Si es `TRUE`, considera la dirección negativa en el cálculo del ángulo.
+#' @param deg Valor lógico. Si es `TRUE`, devuelve los ángulos en grados; si es `FALSE`, en radianes.
 #'
-#' @returns Un vector numérico con los ángulos correspondientes de cada vector.
+#' @returns Vector numérico con los ángulos correspondientes a cada vector de entrada.
 #'
 #' @examples
-#' # Ejemplo con tres vectores normalizados en 3D
+#' # Ejemplo con tres vectores normalizados
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0,
 #'               0, 0, 1), nrow = 3)
