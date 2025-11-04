@@ -2,6 +2,7 @@
 
 export(angled2)
 export(cleanMesh3d_rgl)
+export(fshade3d)
 export(getBoundarySegments3)
 export(pan3d)
 export(sshade3d)
