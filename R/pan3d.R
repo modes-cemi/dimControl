@@ -1,16 +1,16 @@
-#' Desplazamiento lateral interactivo de la vista 3D
+#' Desplazamiento interactivo de la vista 3D
 #'
-#' Activa el desplazamiento lateral (paneo) de la vista en una escena 3D de RGL. Permite
-#' mover la proyección de la cámara al arrastrar el ratón con un botón determinado,
-#' facilitando el ajuste de la posición de la vista sin modificar la orientación del modelo.
+#' Activa el desplazamiento de la cámara en una escena 3D de **rgl**, permitiendo mover
+#' la vista libremente dentro de la ventana gráfica al arrastrar el ratón con el botón
+#' indicado.
 #'
-#' Internamente, esta función utiliza los *callbacks* del ratón mediante [`rgl.setMouseCallbacks()`],
-#' lo que permite actualizar la proyección de la escena en tiempo real a medida que se
-#' mueve el ratón.
+#' De forma predeterminada, **rgl** solo permite rotar y hacer zoom sobre los objetos
+#' 3D, pero no desplazar la cámara. Esta función amplía dicha interacción al permitir
+#' trasladar toda la escena en cualquier dirección sin modificar la orientación del modelo.
 #'
-#' Esta funcionalidad no está disponible de forma predeterminada en las representaciones
-#' 3D de **rgl**, pero puede activarse con esta función para lograr un desplazamiento
-#' fluido (por ejemplo, con `pan3d(2)` para el botón derecho).
+#' Internamente, la función utiliza *callbacks* del ratón mediante [`rgl.setMouseCallbacks()`],
+#' de modo que, al presionar y arrastrar el ratón, se actualiza dinámicamente la matriz
+#' de proyección (`userProjection`) para simular un desplazamiento fluido dentro de la escena.
 #'
 #' @param button Entero que indica el botón del ratón usado para el desplazamiento:
 #'   \itemize{
@@ -21,20 +21,21 @@
 #' @param dev Identificador del dispositivo RGL (por defecto `cur3d()`).
 #' @param subscene Subescena a la que se aplicará el movimiento (por defecto la subescena activa).
 #'
-#' @returns No devuelve ningún valor; el efecto es establecer los callbacks del ratón
-#'          para desplazar la vista de la escena 3D.
+#' @returns No devuelve ningún valor; su efecto es establecer los *callbacks* del ratón
+#'          para desplazar la vista en la escena 3D.
 #'
 #' @details
-#' Cuando se presiona el botón indicado, la función registra la posición inicial del
-#' cursor (*evento* `begin`). A medida que el ratón se mueve (*evento* `update`),
-#' calcula el desplazamiento relativo y actualiza el parámetro `userProjection` para
-#' simular una traslación de la cámara dentro de la escena.
+#' Al presionar el botón indicado, la función registra la posición inicial del cursor
+#' (*evento* `begin`). Durante el movimiento del ratón (*evento* `update`), calcula el
+#' desplazamiento relativo y aplica una transformación de traslación sobre `userProjection`,
+#' consiguiendo que la cámara se desplace en la dirección del arrastre, permitiendo mover
+#' la escena libremente dentro de la ventana.
 #'
 #' @note El código original fue desarrollado por **Duncan Murdoch** y forma parte del
-#' paquete **rgl**, donde no se encuentra exportado públicamente. Se incluye aquí sin
-#' modificaciones para facilitar su uso dentro de este paquete.
+#' paquete **rgl**, donde no se exporta públicamente. Se incluye aquí sin modificaciones
+#' para facilitar su uso dentro de este paquete.
 #'
-#' @author Duncan Murdoch.
+#' @author Duncan Murdoch
 #'
 #' @seealso [rgl::rgl.setMouseCallbacks()], [rgl::par3d()], [rgl::translationMatrix()]
 #'

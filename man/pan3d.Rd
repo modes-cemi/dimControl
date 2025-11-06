@@ -2,7 +2,7 @@
 % Please edit documentation in R/pan3d.R
 \name{pan3d}
 \alias{pan3d}
-\title{Desplazamiento lateral interactivo de la vista 3D}
+\title{Desplazamiento interactivo de la vista 3D}
 \usage{
 pan3d(button, dev = cur3d(), subscene = currentSubscene3d(dev))
 }
@@ -19,32 +19,33 @@ pan3d(button, dev = cur3d(), subscene = currentSubscene3d(dev))
 \item{subscene}{Subescena a la que se aplicará el movimiento (por defecto la subescena activa).}
 }
 \value{
-No devuelve ningún valor; el efecto es establecer los callbacks del ratón
-para desplazar la vista de la escena 3D.
+No devuelve ningún valor; su efecto es establecer los \emph{callbacks} del ratón
+para desplazar la vista en la escena 3D.
 }
 \description{
-Activa el desplazamiento lateral (paneo) de la vista en una escena 3D de RGL. Permite
-mover la proyección de la cámara al arrastrar el ratón con un botón determinado,
-facilitando el ajuste de la posición de la vista sin modificar la orientación del modelo.
+Activa el desplazamiento de la cámara en una escena 3D de \strong{rgl}, permitiendo mover
+la vista libremente dentro de la ventana gráfica al arrastrar el ratón con el botón
+indicado.
 }
 \details{
-Internamente, esta función utiliza los \emph{callbacks} del ratón mediante \code{\link[=rgl.setMouseCallbacks]{rgl.setMouseCallbacks()}},
-lo que permite actualizar la proyección de la escena en tiempo real a medida que se
-mueve el ratón.
+De forma predeterminada, \strong{rgl} solo permite rotar y hacer zoom sobre los objetos
+3D, pero no desplazar la cámara. Esta función amplía dicha interacción al permitir
+trasladar toda la escena en cualquier dirección sin modificar la orientación del modelo.
 
-Esta funcionalidad no está disponible de forma predeterminada en las representaciones
-3D de \strong{rgl}, pero puede activarse con esta función para lograr un desplazamiento
-fluido (por ejemplo, con \code{pan3d(2)} para el botón derecho).
+Internamente, la función utiliza \emph{callbacks} del ratón mediante \code{\link[=rgl.setMouseCallbacks]{rgl.setMouseCallbacks()}},
+de modo que, al presionar y arrastrar el ratón, se actualiza dinámicamente la matriz
+de proyección (\code{userProjection}) para simular un desplazamiento fluido dentro de la escena.
 
-Cuando se presiona el botón indicado, la función registra la posición inicial del
-cursor (\emph{evento} \code{begin}). A medida que el ratón se mueve (\emph{evento} \code{update}),
-calcula el desplazamiento relativo y actualiza el parámetro \code{userProjection} para
-simular una traslación de la cámara dentro de la escena.
+Al presionar el botón indicado, la función registra la posición inicial del cursor
+(\emph{evento} \code{begin}). Durante el movimiento del ratón (\emph{evento} \code{update}), calcula el
+desplazamiento relativo y aplica una transformación de traslación sobre \code{userProjection},
+consiguiendo que la cámara se desplace en la dirección del arrastre, permitiendo mover
+la escena libremente dentro de la ventana.
 }
 \note{
 El código original fue desarrollado por \strong{Duncan Murdoch} y forma parte del
-paquete \strong{rgl}, donde no se encuentra exportado públicamente. Se incluye aquí sin
-modificaciones para facilitar su uso dentro de este paquete.
+paquete \strong{rgl}, donde no se exporta públicamente. Se incluye aquí sin modificaciones
+para facilitar su uso dentro de este paquete.
 }
 \examples{
 require(rgl)
@@ -58,5 +59,5 @@ pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
 \code{\link[rgl:callbacks]{rgl::rgl.setMouseCallbacks()}}, \code{\link[rgl:par3d]{rgl::par3d()}}, \code{\link[rgl:matrices]{rgl::translationMatrix()}}
 }
 \author{
-Duncan Murdoch.
+Duncan Murdoch
 }
