@@ -1,10 +1,18 @@
-#' Desplazamiento interactivo de la vista 3D con el ratón
+#' Desplazamiento lateral interactivo de la vista 3D
 #'
-#' Permite desplazar la vista de un gráfico 3D interactivo en una ventana RGL al arrastrar
-#' el ratón con un botón específico. Esta función usa callbacks del ratón (`rgl.setMouseCallbacks`)
-#' para modificar la proyección de la escena mientras el usuario mueve el ratón2.
+#' Activa el desplazamiento lateral (paneo) de la vista en una escena 3D de RGL. Permite
+#' mover la proyección de la cámara al arrastrar el ratón con un botón determinado,
+#' facilitando el ajuste de la posición de la vista sin modificar la orientación del modelo.
 #'
-#' @param button Entero que indica el botón del ratón a usar:
+#' Internamente, esta función utiliza los *callbacks* del ratón mediante [`rgl.setMouseCallbacks()`],
+#' lo que permite actualizar la proyección de la escena en tiempo real a medida que se
+#' mueve el ratón.
+#'
+#' Esta funcionalidad no está disponible de forma predeterminada en las representaciones
+#' 3D de **rgl**, pero puede activarse con esta función para lograr un desplazamiento
+#' fluido (por ejemplo, con `pan3d(2)` para el botón derecho).
+#'
+#' @param button Entero que indica el botón del ratón usado para el desplazamiento:
 #'   \itemize{
 #'     \item `1`: botón izquierdo
 #'     \item `2`: botón derecho
@@ -18,23 +26,24 @@
 #'
 #' @details
 #' Cuando se presiona el botón indicado, la función registra la posición inicial del
-#' cursor (`begin`). Luego, mientras se mueve el ratón (`update`), calcula la traslación
-#' necesaria y actualiza `userProjection` para simular el desplazamiento de la cámara en la escena.
+#' cursor (*evento* `begin`). A medida que el ratón se mueve (*evento* `update`),
+#' calcula el desplazamiento relativo y actualiza el parámetro `userProjection` para
+#' simular una traslación de la cámara dentro de la escena.
 #'
-#' @examples
-#' library(rgl)
-#' open3d()
-#' shade3d(icosahedron3d(), col = "lightblue")
+#' @note El código original fue desarrollado por **Duncan Murdoch** y forma parte del
+#' paquete **rgl**, donde no se encuentra exportado públicamente. Se incluye aquí sin
+#' modificaciones para facilitar su uso dentro de este paquete.
 #'
-#' # Desplazar la vista con el botón izquierdo
-#' pan3d(1)
-#'
-#' # Desplazar la vista con el botón derecho
-#' pan3d(2)
+#' @author Duncan Murdoch.
 #'
 #' @seealso [rgl::rgl.setMouseCallbacks()], [rgl::par3d()], [rgl::translationMatrix()]
 #'
-#' @author Duncan Murdoch
+#' @examples
+#' require(rgl)
+#'
+#' open3d()
+#' shade3d(icosahedron3d(), col = "lightblue")
+#' pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
 #'
 #' @importFrom rgl cur3d currentSubscene3d par3d rgl.setMouseCallbacks translationMatrix
 #'
