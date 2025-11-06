@@ -1,30 +1,47 @@
-#' Dibujar una barra de colores continua en 3D
+#' Barra de colores continua en 3D
 #'
-#' Genera una leyenda de colores continua en 3D que puede acompañar a mallas coloreadas
-#' según valores numéricos (por ejemplo, con \code{\link{sshade3d}}). Cada cubito de
-#' la barra representa un valor dentro del rango definido por \code{slim} y se colorea
-#' según la paleta \code{col}.
+#' Dibuja una barra de colores continua en una subescena 3D que acompaña a una malla
+#' coloreada según valores numéricos, como las generadas con `sshade3d`. Cada cubo
+#' de la barra representa un intervalo del rango definido por `slim` y se colorea
+#' según la paleta `col`.
 #'
-#' @param slim Vector numérico de longitud 2. Valores mínimo y máximo de la escala de colores.
-#' @param col Vector de colores que define la paleta de la leyenda.
-#' @param legend.zoom Número. Zoom de la leyenda.
-#' @param legend.width Número. Anchura relativa de la leyenda.
-#' @param legend.mar Número. Margen entre la malla y la leyenda.
-#' @param legend.lab Vector de caracteres. Etiquetas para los ticks de la leyenda. Si \code{NULL},
+#' @param slim Vector numérico de longitud 2 que indica los valores mínimo y máximo
+#' de la escala de colores.
+#' @param col Vector de colores que define la paleta utilizada en la leyenda.
+#' @param legend.zoom Número que controla el nivel de zoom aplicado a la leyenda.
+#' @param legend.width Número que define la anchura relativa de la barra de la leyenda.
+#' @param legend.mar Número que establece la separación entre la malla principal y la leyenda.
+#' @param legend.lab Vector de caracteres con las etiquetas de los ticks. Si es `NULL`,
 #' se generan automáticamente.
-#' @param box Lógico. Si \code{TRUE}, dibuja un marco alrededor de la leyenda.
-#' @param lab.breaks Vector numérico o lógico. Define las posiciones de los ticks de la leyenda.
-#' @param lab.ticksize Número. Tamaño de las marcas de los ticks.
-#' @param lab.dist Distancia de las etiquetas respecto a la barra de la leyenda.
-#' @param ... Argumentos adicionales pasados a funciones de \pkg{rgl}.
+#' @param box Lógico. Si es `TRUE`, se dibuja un marco que delimita la barra de la leyenda.
+#' @param lab.breaks Lógico o vector. Si es `TRUE`, las etiquetas de la escala se
+#' generan automáticamente. Si es un vector, se utiliza como etiquetas personalizadas
+#' para los ticks de la leyenda.
+#' @param lab.ticksize Número que especifica la longitud de las marcas de los ticks.
+#' @param lab.dist Número que determina la distancia de las etiquetas respecto a la barra.
+#' @param ... Argumentos adicionales pasados a funciones de `rgl`.
 #'
-#' @returns Devuelve invisiblemente el ID de la subescena creada para la leyenda, permitiendo
-#' manipularla de forma independiente.
+#' @returns Devuelve de forma invisible el identificador de la subescena creada para
+#' la leyenda, permitiendo manipularla o eliminarla independientemente de la escena principal.
 #'
 #' @details
-#' La función utiliza una subescena de \code{rgl} para colocar la leyenda junto a la
-#' malla sin afectar la escena principal. Suspendiendo temporalmente el renderizado,
-#' se optimiza la creación de la barra de colores y luego se reactiva.
+#' Esta función utiliza una subescena de `rgl` para representar una leyenda continua
+#' sin interferir con la malla principal. Para optimizar el renderizado, se suspende
+#' temporalmente la actualización gráfica mientras se genera la barra y luego se reactiva.
+#'
+#' La barra se compone de una secuencia de cubos (`rgl::cube3d()`) coloreados con la
+#' paleta especificada y dispuestos a lo largo del eje Z.
+#'
+#' Se emplea una versión modificada de `rgl::axis3d()` (`axis3()`) que permite controlar
+#' la distancia de las etiquetas y la longitud de las marcas mediante los parámetros
+#' `lab.dist` y `lab.ticksize`.
+#'
+#' Algunas partes del comportamiento original de `rgl` relacionadas con la actualización
+#' automática de la vista y la disposición de etiquetas se han eliminado, con el fin
+#' de simplificar la representación y mantener una apariencia limpia y controlada
+#' dentro del paquete `controlDim`.
+#'
+#' @seealso `sshade3d`, `axis3`
 #'
 splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
                     legend.width = 0.1, legend.mar = 0.2, legend.lab = NULL,

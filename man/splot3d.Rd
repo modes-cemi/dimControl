@@ -2,7 +2,7 @@
 % Please edit documentation in R/splot3d.R
 \name{splot3d}
 \alias{splot3d}
-\title{Dibujar una barra de colores continua en 3D}
+\title{Barra de colores continua en 3D}
 \usage{
 splot3d(
   slim = c(0, 1),
@@ -19,41 +19,59 @@ splot3d(
 )
 }
 \arguments{
-\item{slim}{Vector numérico de longitud 2. Valores mínimo y máximo de la escala de colores.}
+\item{slim}{Vector numérico de longitud 2 que indica los valores mínimo y máximo
+de la escala de colores.}
 
-\item{col}{Vector de colores que define la paleta de la leyenda.}
+\item{col}{Vector de colores que define la paleta utilizada en la leyenda.}
 
-\item{legend.zoom}{Número. Zoom de la leyenda.}
+\item{legend.zoom}{Número que controla el nivel de zoom aplicado a la leyenda.}
 
-\item{legend.width}{Número. Anchura relativa de la leyenda.}
+\item{legend.width}{Número que define la anchura relativa de la barra de la leyenda.}
 
-\item{legend.mar}{Número. Margen entre la malla y la leyenda.}
+\item{legend.mar}{Número que establece la separación entre la malla principal y la leyenda.}
 
-\item{legend.lab}{Vector de caracteres. Etiquetas para los ticks de la leyenda. Si \code{NULL},
+\item{legend.lab}{Vector de caracteres con las etiquetas de los ticks. Si es \code{NULL},
 se generan automáticamente.}
 
-\item{box}{Lógico. Si \code{TRUE}, dibuja un marco alrededor de la leyenda.}
+\item{box}{Lógico. Si es \code{TRUE}, se dibuja un marco que delimita la barra de la leyenda.}
 
-\item{lab.breaks}{Vector numérico o lógico. Define las posiciones de los ticks de la leyenda.}
+\item{lab.breaks}{Lógico o vector. Si es \code{TRUE}, las etiquetas de la escala se
+generan automáticamente. Si es un vector, se utiliza como etiquetas personalizadas
+para los ticks de la leyenda.}
 
-\item{lab.ticksize}{Número. Tamaño de las marcas de los ticks.}
+\item{lab.ticksize}{Número que especifica la longitud de las marcas de los ticks.}
 
-\item{lab.dist}{Distancia de las etiquetas respecto a la barra de la leyenda.}
+\item{lab.dist}{Número que determina la distancia de las etiquetas respecto a la barra.}
 
-\item{...}{Argumentos adicionales pasados a funciones de \pkg{rgl}.}
+\item{...}{Argumentos adicionales pasados a funciones de \code{rgl}.}
 }
 \value{
-Devuelve invisiblemente el ID de la subescena creada para la leyenda, permitiendo
-manipularla de forma independiente.
+Devuelve de forma invisible el identificador de la subescena creada para
+la leyenda, permitiendo manipularla o eliminarla independientemente de la escena principal.
 }
 \description{
-Genera una leyenda de colores continua en 3D que puede acompañar a mallas coloreadas
-según valores numéricos (por ejemplo, con \code{\link{sshade3d}}). Cada cubito de
-la barra representa un valor dentro del rango definido por \code{slim} y se colorea
+Dibuja una barra de colores continua en una subescena 3D que acompaña a una malla
+coloreada según valores numéricos, como las generadas con \code{sshade3d}. Cada cubo
+de la barra representa un intervalo del rango definido por \code{slim} y se colorea
 según la paleta \code{col}.
 }
 \details{
-La función utiliza una subescena de \code{rgl} para colocar la leyenda junto a la
-malla sin afectar la escena principal. Suspendiendo temporalmente el renderizado,
-se optimiza la creación de la barra de colores y luego se reactiva.
+Esta función utiliza una subescena de \code{rgl} para representar una leyenda continua
+sin interferir con la malla principal. Para optimizar el renderizado, se suspende
+temporalmente la actualización gráfica mientras se genera la barra y luego se reactiva.
+
+La barra se compone de una secuencia de cubos (\code{rgl::cube3d()}) coloreados con la
+paleta especificada y dispuestos a lo largo del eje Z.
+
+Se emplea una versión modificada de \code{rgl::axis3d()} (\code{axis3()}) que permite controlar
+la distancia de las etiquetas y la longitud de las marcas mediante los parámetros
+\code{lab.dist} y \code{lab.ticksize}.
+
+Algunas partes del comportamiento original de \code{rgl} relacionadas con la actualización
+automática de la vista y la disposición de etiquetas se han eliminado, con el fin
+de simplificar la representación y mantener una apariencia limpia y controlada
+dentro del paquete \code{controlDim}.
+}
+\seealso{
+\code{sshade3d}, \code{axis3}
 }
