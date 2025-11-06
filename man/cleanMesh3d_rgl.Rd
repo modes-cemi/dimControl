@@ -2,30 +2,44 @@
 % Please edit documentation in R/cleanMesh3d_rgl.R
 \name{cleanMesh3d_rgl}
 \alias{cleanMesh3d_rgl}
-\title{Limpia una malla 3D eliminando vértices no usados y triángulos degenerados}
+\title{Limpieza de una malla 3D}
 \usage{
 cleanMesh3d_rgl(mesh, onlyFinite = TRUE, allUsed = TRUE)
 }
 \arguments{
-\item{mesh}{Objeto de clase \code{mesh3d} que representa la malla a limpiar.}
+\item{mesh}{Objeto \code{mesh3d} que representa la malla a limpiar.}
 
-\item{onlyFinite}{Lógico; si TRUE elimina vértices con coordenadas no finitas.}
+\item{onlyFinite}{Lógico. Si es \code{TRUE} (por defecto), elimina vértices con coordenadas
+no finitas.}
 
-\item{allUsed}{Lógico; si TRUE elimina vértices que no están referenciados por ninguna cara.}
+\item{allUsed}{Lógico. Si es \code{TRUE} (por defecto), elimina vértices que no están
+referenciados por ninguna cara.}
 }
 \value{
-Un objeto \code{mesh3d} limpio y con índices actualizados.
+Objeto \code{mesh3d} limpio, con los vértices e índices de las caras actualizados.
 }
 \description{
-Esta función elimina vértices duplicados, triángulos degenerados y vértices que no
-están referenciados por ninguna cara en un objeto \code{mesh3d}.
+Elimina vértices no usados o no finitos y actualiza los índices de las caras en
+un objeto de clase \code{mesh3d}.
 }
 \details{
-Reproduce la función \code{cleanMesh3d()} del paquete \strong{rgl}, desarrollada por Duncan
-Murdoch, para limpiar mallas internamente sin depender de funciones no exportadas.
+Esta función es una versión simplificada de \code{rgl::cleanMesh3d()}, adaptada para
+tareas básicas de depuración de mallas.
+
+Esta función está basada en \code{rgl::cleanMesh3d()} (D. Murdoch, 2024), pero se han
+eliminado elementos no necesarios para las operaciones de limpieza estructural,
+como la gestión de etiquetas (\code{tags}), texturas, normales o colores de vértices,
+así como el parámetro \code{rejoin}.
+
+El objetivo es conservar únicamente la funcionalidad esencial:
+\itemize{
+\item Eliminación de vértices con valores no finitos (\code{NA}, \code{NaN}, \code{Inf}) cuando \code{onlyFinite = TRUE}.
+\item Eliminación de vértices no usados en ninguna cara cuando \code{allUsed = TRUE}.
+\item Reindexación automática de las matrices de caras (\code{ip}, \code{is}, \code{it}, \code{ib}) tras la limpieza.
+}
 }
 \examples{
-library(rgl)
+require(rgl)
 
 # Crear un cubo
 cubo <- cube3d()
@@ -36,7 +50,7 @@ cubo$vb <- cbind(cubo$vb, c(10,10,10,1))
 # Limpiar el cubo
 cubo_clean <- cleanMesh3d_rgl(cubo)
 
-# Comparar dimensiones
+# Comparar número de vértices
 dim(cubo$vb)
 dim(cubo_clean$vb)
 
@@ -47,5 +61,5 @@ R package version correspondiente.
 URL: \url{https://CRAN.R-project.org/package=rgl}
 }
 \author{
-Duncan Murdoch (implementación original en rgl).
+Duncan Murdoch
 }

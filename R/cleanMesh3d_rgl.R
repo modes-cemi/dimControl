@@ -1,27 +1,41 @@
-#' Limpia una malla 3D eliminando vértices no usados y triángulos degenerados
+#' Limpieza de una malla 3D
 #'
-#' Esta función elimina vértices duplicados, triángulos degenerados y vértices que no
-#' están referenciados por ninguna cara en un objeto `mesh3d`.
+#' Elimina vértices no usados o no finitos y actualiza los índices de las caras en
+#' un objeto de clase `mesh3d`.
 #'
-#' @param mesh Objeto de clase `mesh3d` que representa la malla a limpiar.
-#' @param onlyFinite Lógico; si TRUE elimina vértices con coordenadas no finitas.
-#' @param allUsed Lógico; si TRUE elimina vértices que no están referenciados por ninguna cara.
+#' Esta función es una versión simplificada de `rgl::cleanMesh3d()`, adaptada para
+#' tareas básicas de depuración de mallas.
 #'
-#' @returns Un objeto `mesh3d` limpio y con índices actualizados.
+#' @param mesh Objeto `mesh3d` que representa la malla a limpiar.
+#' @param onlyFinite Lógico. Si es `TRUE` (por defecto), elimina vértices con coordenadas
+#' no finitas.
+#' @param allUsed Lógico. Si es `TRUE` (por defecto), elimina vértices que no están
+#' referenciados por ninguna cara.
+#'
+#' @returns Objeto `mesh3d` limpio, con los vértices e índices de las caras actualizados.
 #'
 #' @details
-#' Reproduce la función `cleanMesh3d()` del paquete **rgl**, desarrollada por Duncan
-#' Murdoch, para limpiar mallas internamente sin depender de funciones no exportadas.
+#' Esta función está basada en `rgl::cleanMesh3d()` (D. Murdoch, 2024), pero se han
+#' eliminado elementos no necesarios para las operaciones de limpieza estructural,
+#' como la gestión de etiquetas (`tags`), texturas, normales o colores de vértices,
+#' así como el parámetro `rejoin`.
+#'
+#' El objetivo es conservar únicamente la funcionalidad esencial:
+#' \itemize{
+#'   \item Eliminación de vértices con valores no finitos (`NA`, `NaN`, `Inf`) cuando `onlyFinite = TRUE`.
+#'   \item Eliminación de vértices no usados en ninguna cara cuando `allUsed = TRUE`.
+#'   \item Reindexación automática de las matrices de caras (`ip`, `is`, `it`, `ib`) tras la limpieza.
+#' }
 #'
 #' @references
 #' Murdoch, D. (2024). *rgl: 3D Visualization Using OpenGL*.
 #' R package version correspondiente.
 #' URL: <https://CRAN.R-project.org/package=rgl>
 #'
-#' @author Duncan Murdoch (implementación original en rgl).
+#' @author Duncan Murdoch
 #'
 #' @examples
-#' library(rgl)
+#' require(rgl)
 #'
 #' # Crear un cubo
 #' cubo <- cube3d()
@@ -32,7 +46,7 @@
 #' # Limpiar el cubo
 #' cubo_clean <- cleanMesh3d_rgl(cubo)
 #'
-#' # Comparar dimensiones
+#' # Comparar número de vértices
 #' dim(cubo$vb)
 #' dim(cubo_clean$vb)
 #'
@@ -48,21 +62,21 @@ cleanMesh3d_rgl <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
   if (onlyFinite)
     keep <- keep & apply(mesh$vb, 2, function(col) all(is.finite(col)))
 
-  # Eliminar vértices que no están referenciados por ninguna cara si allUsed = TRUE
+  # Eliminar vértices no referenciados por ninguna cara si allUsed = TRUE
   if (allUsed)
     keep <- keep & (seq_len(nold) %in% c(mesh$ip, mesh$is, mesh$it, mesh$ib))
 
-  # Reindexar la malla si hay vértices que eliminar
+  # Reindexar si se eliminan vértices
   if (!all(keep)) {
     oldnums <- which(keep)
     newnums <- rep(NA, nold)
     nnew <- sum(keep)
     newnums[oldnums] <- seq_len(nnew)
 
-    # Actualizar la matriz de vértices
+    # Actualizar matriz de vértices
     mesh$vb <- mesh$vb[, oldnums, drop = FALSE]
 
-    # Función para actualizar las matrices de caras tras eliminar vértices
+    # Actualizar las matrices de caras tras eliminar vértices
     reindex <- function(m) {
       if (!is.null(m)) {
         newcols <- newnums[m]
