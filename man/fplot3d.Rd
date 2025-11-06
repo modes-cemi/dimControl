@@ -2,7 +2,7 @@
 % Please edit documentation in R/fplot3d.R
 \name{fplot3d}
 \alias{fplot3d}
-\title{Representa una leyenda categórica en una escena 3D}
+\title{Leyenda categórica en 3D}
 \usage{
 fplot3d(
   labels,
@@ -16,39 +16,40 @@ fplot3d(
 )
 }
 \arguments{
-\item{labels}{Etiquetas que se mostrarán junto a los colores.}
+\item{labels}{Vector de texto con las etiquetas de las categorías.}
 
-\item{col}{Vector de colores que define el color de cada nivel de la leyenda.}
+\item{col}{Vector de colores correspondiente a cada categoría.}
 
-\item{legend.zoom}{Factor de zoom para ajustar el tamaño de la leyenda.}
+\item{legend.zoom}{Número. Controla el nivel de zoom de la leyenda.}
 
-\item{legend.width}{Ancho relativo de los símbolos de color (esferas).}
+\item{legend.width}{Número. Ancho relativo de las esferas de color.}
 
-\item{legend.mar}{Proporción del espacio horizontal reservado para la leyenda respecto
-al total de la escena.}
+\item{legend.mar}{Número. Proporción del espacio horizontal reservado para la leyenda.}
 
-\item{lab.dist}{Distancia entre las etiquetas y los símbolos de color.}
+\item{lab.dist}{Número. Distancia entre las etiquetas y las esferas.}
 
-\item{lab.rev}{Si es \code{TRUE}, invierte el orden de las etiquetas en el eje Z.}
+\item{lab.rev}{Lógico. Si es \code{TRUE}, invierte el orden vertical de las etiquetas.}
 
-\item{...}{parámetros adicionales que se pasan a \code{\link[=axis3]{axis3()}}.}
+\item{...}{Argumentos adicionales que se pasan a \code{axis3()}.}
 }
 \value{
-Devuelve (invisiblemente) el identificador del subescenario creado, que
-puede usarse para modificar o actualizar la leyenda.
+Devuelve invisiblemente el identificador de la subescena creada, que puede
+utilizarse para modificar o actualizar la leyenda.
 }
 \description{
-Crea una subescena lateral en una ventana 3D activa de \code{rgl}, que muestra una leyenda
-compuesta por esferas de colores y sus etiquetas asociadas. Está pensada para acompañar
-representaciones realizadas con \code{\link[=fshade3d]{fshade3d()}}.
+Representa una leyenda de categorías en una subescena lateral de una ventana 3D
+de \code{rgl}. Cada categoría se muestra como una esfera coloreada acompañada de su etiqueta.
+Resulta útil para acompañar representaciones creadas con \code{fshade3d()}.
 }
 \details{
-La función crea una disposición de subescenas mediante \code{\link[=layout3d]{layout3d()}}, reservando
-una franja lateral para la leyenda. Los símbolos se dibujan con \code{\link[=spheres3d]{spheres3d()}} y
-las etiquetas mediante \code{\link[=axis3]{axis3()}}.
+La función crea una disposición de subescenas mediante \code{rgl::layout3d()}, reservando
+una franja lateral para la leyenda. Los símbolos se dibujan con \code{rgl::spheres3d()}
+y las etiquetas con \code{axis3()}, una versión modificada que permite ajustar la distancia
+y el formato de las etiquetas.
 
-Por defecto, la leyenda se orienta verticalmente, con las etiquetas alineadas en el eje Z.
+La leyenda se orienta verticalmente a lo largo del eje Z y se representa en una
+subescena independiente, lo que permite modificarla sin afectar la vista principal.
 }
 \seealso{
-\code{\link[=fshade3d]{fshade3d()}}, \code{\link[rgl:mfrow3d]{rgl::layout3d()}}, \code{\link[rgl:spheres]{rgl::spheres3d()}}, \code{\link[=axis3]{axis3()}}
+\code{fshade3d()}, \code{splot3d()}, \code{rgl::layout3d()}, \code{rgl::spheres3d()}, \code{axis3()}
 }
