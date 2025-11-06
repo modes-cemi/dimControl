@@ -9,19 +9,19 @@ angled2(v, dim, negdir = FALSE, deg = TRUE)
 \arguments{
 \item{v}{Matriz numérica de dimensión \eqn{d \times n}. Cada columna representa un vector normalizado.}
 
-\item{dim}{Índice de la dimensión de referencia, con \eqn{1 \leq \text{dim} \leq d}.}
+\item{dim}{Entero que indica la dimensión de referencia, con \eqn{1 \leq \text{dim} \leq d}.}
 
-\item{negdir}{Valor lógico. Si es \code{TRUE}, considera la dirección negativa en el cálculo del ángulo.}
+\item{negdir}{Lógico. Si es \code{TRUE}, considera la dirección negativa (ángulo complementario).}
 
-\item{deg}{Valor lógico. Si es \code{TRUE}, devuelve los ángulos en grados; si es \code{FALSE}, en radianes.}
+\item{deg}{Lógico. Si es \code{TRUE}, devuelve los ángulos en grados; si es \code{FALSE}, en radianes.}
 }
 \value{
-Vector numérico con los ángulos correspondientes a cada vector de entrada.
+Un vector numérico con los ángulos correspondientes a cada vector de entrada.
 }
 \description{
 Calcula el ángulo direccional entre un conjunto de vectores normalizados y una
 dirección de referencia en una dimensión específica. Permite obtener el resultado
-en grados o radianes y considerar la dirección negativa si es necesario.
+en grados o radianes, y considerar la dirección opuesta si se desea.
 }
 \examples{
 # Tres vectores normalizados en las direcciones X, Y y Z
