@@ -1,27 +1,39 @@
-#' Dibujar ejes y ticks en 3D
+#' Ejes 3D con control de la distancia de etiquetas y longitud de marcas
 #'
-#' Añade un eje tridimensional con ticks y etiquetas a la escena 3D actual. Se puede
-#' usar para complementar visualizaciones con mallas coloreadas o superficies.
+#' Dibuja ejes 3D con opciones adicionales para ajustar la distancia de las etiquetas
+#' respecto al eje y la longitud de las marcas (*ticks*). Esta función extiende la
+#' funcionalidad de `rgl::axis3d()`, ofreciendo un control más preciso sobre la apariencia
+#' de los ejes en gráficos tridimensionales.
 #'
 #' @param edge Carácter de longitud 3. Indica la orientación y signo del eje a dibujar.
-#' @param at Vector numérico. Posiciones donde colocar los ticks del eje. Si es \code{NULL}, se generan automáticamente.
-#' @param labels Lógico o vector de caracteres. Si es \code{TRUE}, se usan valores de \code{at} como etiquetas; si es \code{FALSE}, no se dibujan; si es un vector, se usan directamente.
-#' @param tick Lógico. Si \code{TRUE}, dibuja las marcas de los ticks.
-#' @param line Lógico. Si \code{TRUE}, dibuja la línea del eje.
-#' @param pos Vector numérico de longitud 3. Posición fija de los ticks y etiquetas; si \code{NULL}, se calcula según \code{edge}.
-#' @param nticks Número de ticks sugeridos si \code{at = NULL}.
-#' @param ticksize Número. Tamaño relativo de las marcas de los ticks.
-#' @param labeldist Número. Distancia de las etiquetas respecto a los ticks.
-#' @param ... Argumentos adicionales pasados a \code{\link[rgl]{segments3d}} o \code{\link[rgl]{text3d}}.
+#' @param at Vector numérico. Posiciones donde colocar las marcas del eje. Si es `NULL`,
+#' se calculan automáticamente.
+#' @param labels Etiquetas de texto de las marcas. Si es `TRUE`, se generan a partir de `at`.
+#' @param tick Lógico. Si es `TRUE` (por defecto), se dibujan las marcas del eje.
+#' @param line Lógico. Si es `TRUE`, dibuja la línea del eje.
+#' @param pos Posición donde se dibuja el eje o las etiquetas.
+#' @param nticks Número sugerido de marcas si `at` es `NULL`.
+#' @param ticksize Longitud de las marcas (*ticks*). Parámetro adicional respecto a `rgl::axis3d()`.
+#' @param labeldist Distancia entre las etiquetas y el eje. Parámetro adicional respecto a `rgl::axis3d()`.
+#' @param ... Argumentos adicionales pasados a `rgl::text3d()` o `rgl::segments3d()`.
 #'
-#' @returns Devuelve invisiblemente el ID de la subescena creada para la leyenda,
-#' permitiendo manipularla de forma independiente.
+#' @returns Devuelve los identificadores de los objetos añadidos a la escena (`object IDs`),
+#' de forma coherente con las funciones gráficas de `rgl`.
 #'
 #' @details
-#' La función calcula la posición de los ticks y etiquetas según la orientación del eje
-#' y la escena actual de \code{rgl}. Permite dibujar ejes en cualquier borde de la caja 3D
-#' y ajustar su tamaño y distancia de etiquetas. Es útil para añadir referencias visuales
-#' a mallas coloreadas o superficies.
+#' Modificación de `rgl::axis3d()` que permite controlar la posición de las etiquetas
+#' y la longitud de las marcas mediante los nuevos parámetros `ticksize` y `labeldist`.
+#'
+#' - `ticksize`: ajusta la longitud de las marcas del eje.
+#' - `labeldist`: controla la distancia entre las etiquetas y el eje.
+#'
+#' Estos parámetros son útiles cuando las etiquetas se solapan con la geometría del
+#' modelo o se desea mejorar la legibilidad de la representación.
+#'
+#' @note
+#' La función se basa parcialmente en la implementación original de `rgl::axis3d()`
+#' desarrollada por Duncan Murdoch y el equipo de **rgl**. Esta versión ha sido modificada
+#' en el paquete `controlDim` para proporcionar un mayor control sobre el diseño gráfico.
 #'
 axis3 <- function (edge, at = NULL, labels = TRUE, tick = TRUE, line = TRUE,
                    pos = NULL, nticks = 5, ticksize = 0.05, labeldist = 3, ...) {

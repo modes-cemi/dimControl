@@ -2,7 +2,7 @@
 % Please edit documentation in R/axis3.R
 \name{axis3}
 \alias{axis3}
-\title{Dibujar ejes y ticks en 3D}
+\title{Ejes 3D con control de la distancia de etiquetas y longitud de marcas}
 \usage{
 axis3(
   edge,
@@ -20,35 +20,48 @@ axis3(
 \arguments{
 \item{edge}{Carácter de longitud 3. Indica la orientación y signo del eje a dibujar.}
 
-\item{at}{Vector numérico. Posiciones donde colocar los ticks del eje. Si es \code{NULL}, se generan automáticamente.}
+\item{at}{Vector numérico. Posiciones donde colocar las marcas del eje. Si es \code{NULL},
+se calculan automáticamente.}
 
-\item{labels}{Lógico o vector de caracteres. Si es \code{TRUE}, se usan valores de \code{at} como etiquetas; si es \code{FALSE}, no se dibujan; si es un vector, se usan directamente.}
+\item{labels}{Etiquetas de texto de las marcas. Si es \code{TRUE}, se generan a partir de \code{at}.}
 
-\item{tick}{Lógico. Si \code{TRUE}, dibuja las marcas de los ticks.}
+\item{tick}{Lógico. Si es \code{TRUE} (por defecto), se dibujan las marcas del eje.}
 
-\item{line}{Lógico. Si \code{TRUE}, dibuja la línea del eje.}
+\item{line}{Lógico. Si es \code{TRUE}, dibuja la línea del eje.}
 
-\item{pos}{Vector numérico de longitud 3. Posición fija de los ticks y etiquetas; si \code{NULL}, se calcula según \code{edge}.}
+\item{pos}{Posición donde se dibuja el eje o las etiquetas.}
 
-\item{nticks}{Número de ticks sugeridos si \code{at = NULL}.}
+\item{nticks}{Número sugerido de marcas si \code{at} es \code{NULL}.}
 
-\item{ticksize}{Número. Tamaño relativo de las marcas de los ticks.}
+\item{ticksize}{Longitud de las marcas (\emph{ticks}). Parámetro adicional respecto a \code{rgl::axis3d()}.}
 
-\item{labeldist}{Número. Distancia de las etiquetas respecto a los ticks.}
+\item{labeldist}{Distancia entre las etiquetas y el eje. Parámetro adicional respecto a \code{rgl::axis3d()}.}
 
-\item{...}{Argumentos adicionales pasados a \code{\link[rgl]{segments3d}} o \code{\link[rgl]{text3d}}.}
+\item{...}{Argumentos adicionales pasados a \code{rgl::text3d()} o \code{rgl::segments3d()}.}
 }
 \value{
-Devuelve invisiblemente el ID de la subescena creada para la leyenda,
-permitiendo manipularla de forma independiente.
+Devuelve los identificadores de los objetos añadidos a la escena (\verb{object IDs}),
+de forma coherente con las funciones gráficas de \code{rgl}.
 }
 \description{
-Añade un eje tridimensional con ticks y etiquetas a la escena 3D actual. Se puede
-usar para complementar visualizaciones con mallas coloreadas o superficies.
+Dibuja ejes 3D con opciones adicionales para ajustar la distancia de las etiquetas
+respecto al eje y la longitud de las marcas (\emph{ticks}). Esta función extiende la
+funcionalidad de \code{rgl::axis3d()}, ofreciendo un control más preciso sobre la apariencia
+de los ejes en gráficos tridimensionales.
 }
 \details{
-La función calcula la posición de los ticks y etiquetas según la orientación del eje
-y la escena actual de \code{rgl}. Permite dibujar ejes en cualquier borde de la caja 3D
-y ajustar su tamaño y distancia de etiquetas. Es útil para añadir referencias visuales
-a mallas coloreadas o superficies.
+Modificación de \code{rgl::axis3d()} que permite controlar la posición de las etiquetas
+y la longitud de las marcas mediante los nuevos parámetros \code{ticksize} y \code{labeldist}.
+\itemize{
+\item \code{ticksize}: ajusta la longitud de las marcas del eje.
+\item \code{labeldist}: controla la distancia entre las etiquetas y el eje.
+}
+
+Estos parámetros son útiles cuando las etiquetas se solapan con la geometría del
+modelo o se desea mejorar la legibilidad de la representación.
+}
+\note{
+La función se basa parcialmente en la implementación original de \code{rgl::axis3d()}
+desarrollada por Duncan Murdoch y el equipo de \strong{rgl}. Esta versión ha sido modificada
+en el paquete \code{controlDim} para proporcionar un mayor control sobre el diseño gráfico.
 }
