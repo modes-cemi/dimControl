@@ -51,7 +51,7 @@ la leyenda, permitiendo manipularla o eliminarla independientemente de la escena
 }
 \description{
 Dibuja una barra de colores continua en una subescena 3D que acompaña a una malla
-coloreada según valores numéricos, como las generadas con \code{sshade3d}. Cada cubo
+coloreada según valores numéricos, como las generadas con \verb{sshade3d()I}. Cada cubo
 de la barra representa un intervalo del rango definido por \code{slim} y se colorea
 según la paleta \code{col}.
 }

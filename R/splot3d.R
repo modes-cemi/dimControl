@@ -1,7 +1,7 @@
 #' Barra de colores continua en 3D
 #'
 #' Dibuja una barra de colores continua en una subescena 3D que acompaña a una malla
-#' coloreada según valores numéricos, como las generadas con `sshade3d`. Cada cubo
+#' coloreada según valores numéricos, como las generadas con `sshade3d()I`. Cada cubo
 #' de la barra representa un intervalo del rango definido por `slim` y se colorea
 #' según la paleta `col`.
 #'
