@@ -41,7 +41,7 @@
 #' de simplificar la representación y mantener una apariencia limpia y controlada
 #' dentro del paquete `controlDim`.
 #'
-#' @seealso `sshade3d`, `axis3`
+#' @seealso `sshade3d()`, `axis3()`
 #'
 splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
                     legend.width = 0.1, legend.mar = 0.2, legend.lab = NULL,

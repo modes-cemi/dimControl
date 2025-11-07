@@ -73,5 +73,5 @@ de simplificar la representación y mantener una apariencia limpia y controlada
 dentro del paquete \code{controlDim}.
 }
 \seealso{
-\code{sshade3d}, \code{axis3}
+\code{sshade3d()}, \code{axis3()}
 }

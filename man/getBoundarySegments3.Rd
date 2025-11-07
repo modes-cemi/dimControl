@@ -2,48 +2,57 @@
 % Please edit documentation in R/getBoundarySegments3.R
 \name{getBoundarySegments3}
 \alias{getBoundarySegments3}
-\title{Extrae el contorno de una malla 3D}
+\title{Extrae el borde de una malla tridimensional}
 \usage{
 getBoundarySegments3(mesh, malla = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{mesh}{Objeto de clase \code{mesh3d} que representa la malla 3D.}
 
-\item{malla}{Valor lógico que indica si se debe devolver un objeto \code{mesh3d}
-con los segmentos frontera (\code{TRUE}) o solo los índices de los vértices frontera
-(\code{FALSE}). Por defecto es \code{FALSE}.}
+\item{malla}{Lógico. Si es \code{TRUE}, devuelve un objeto \code{mesh3d} que contiene los
+segmentos frontera; si es \code{FALSE}, devuelve únicamente los índices de los vértices
+que forman los bordes frontera. Por defecto es \code{FALSE}.}
 
-\item{simplify}{Valor lógico que indica si se debe simplificar la malla resultante
-cuando \code{malla = TRUE}. Por defecto es \code{TRUE}.}
+\item{simplify}{Lógico. Si es \code{TRUE} y \code{malla = TRUE}, simplifica la malla resultante
+mediante \code{cleanMesh3d_rgl()}. Por defecto es \code{TRUE}.}
 }
 \value{
-Si \code{malla = FALSE}, devuelve una matriz con los índices de los vértices que
-forman los bordes frontera. Si \code{malla = TRUE}, devuelve un objeto de clase
-\code{mesh3d} que contiene los segmentos frontera.
+Si \code{malla = FALSE}, devuelve una matriz con los índices de los vértices
+que forman los bordes frontera. Si \code{malla = TRUE}, devuelve una malla de tipo \code{mesh3d}
+formada por dichos bordes.
 }
 \description{
-Construye una malla de segmentos de línea correspondientes a los bordes no compartidos
-(es decir, los bordes frontera) de los triángulos o cuadriláteros que componen la
-malla original.
+Identifica los bordes no compartidos de una malla 3D, es decir, aquellos que pertenecen
+a una sola cara. Estos bordes pueden devolverse como índices de los vértices frontera
+o como una malla \code{mesh3d} formada por los segmentos correspondientes.
 }
 \details{
-La función puede devolver los índices de los bordes frontera o, de forma alternativa,
-generar un objeto de clase \code{mesh3d} que los contenga.
+Esta función es una adaptación de \code{getBoundary3d()} del paquete \code{rgl}. A diferencia
+de la versión original, que identifica los bordes frontera mediante la detección
+de duplicados en las aristas, esta implementación utiliza una tabla de frecuencias
+(\code{data.table}) para contabilizar cuántas veces aparece cada borde en las caras de
+la malla. Los bordes que aparecen una sola vez se consideran frontera. Además, se
+añade la opción de devolver los índices de los vértices frontera o una malla \code{mesh3d}
+con los segmentos correspondientes, con la posibilidad de aplicar una simplificación
+adicional.
 }
 \examples{
 # Obtener el borde de un cubo y representarlo
-library(rgl)
-library(data.table)
+require(rgl); require(data.table)
 
 # Crear un cubo y eliminar dos caras
 x <- cube3d(col = "lightblue")
 x$ib <- x$ib[, -(1:2)]
 
-# Calcular el borde
+# Generar el borde
 b <- getBoundarySegments3(x, malla = TRUE)
 
 # Representar la malla y su borde
 open3d()
 shade3d(x, alpha = 0.2)
+shade3d(b, col = "red", lwd = 2)
 
+}
+\seealso{
+\code{rgl::getBoundary3d()}, \code{cleanMesh3d_rgl()}
 }
