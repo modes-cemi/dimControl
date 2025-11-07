@@ -14,9 +14,10 @@ pan3d(button, dev = cur3d(), subscene = currentSubscene3d(dev))
 \item \code{3}: botón central (rueda)
 }}
 
-\item{dev}{Identificador del dispositivo RGL (por defecto \code{cur3d()}).}
+\item{dev}{Identificador del dispositivo RGL (por defecto \code{rgl::cur3d()}).}
 
-\item{subscene}{Subescena a la que se aplicará el movimiento (por defecto la subescena activa).}
+\item{subscene}{Subescena a la que se aplicará el movimiento (por defecto la subescena activa
+obtenida con \code{rgl::currentSubscene3d()}).}
 }
 \value{
 No devuelve ningún valor; su efecto es establecer los \emph{callbacks} del ratón
@@ -32,15 +33,15 @@ De forma predeterminada, \strong{rgl} solo permite rotar y hacer zoom sobre los 
 3D, pero no desplazar la cámara. Esta función amplía dicha interacción al permitir
 trasladar toda la escena en cualquier dirección sin modificar la orientación del modelo.
 
-Internamente, la función utiliza \emph{callbacks} del ratón mediante \code{\link[=rgl.setMouseCallbacks]{rgl.setMouseCallbacks()}},
+Internamente, la función utiliza \emph{callbacks} del ratón mediante \code{rgl::rgl.setMouseCallbacks()},
 de modo que, al presionar y arrastrar el ratón, se actualiza dinámicamente la matriz
 de proyección (\code{userProjection}) para simular un desplazamiento fluido dentro de la escena.
 
 Al presionar el botón indicado, la función registra la posición inicial del cursor
 (\emph{evento} \code{begin}). Durante el movimiento del ratón (\emph{evento} \code{update}), calcula el
-desplazamiento relativo y aplica una transformación de traslación sobre \code{userProjection},
-consiguiendo que la cámara se desplace en la dirección del arrastre, permitiendo mover
-la escena libremente dentro de la ventana.
+desplazamiento relativo y aplica una transformación de traslación sobre \code{userProjection}
+mediante \code{rgl::translationMatrix()}, consiguiendo que la cámara se desplace en la
+dirección del arrastre y permitiendo mover la escena libremente dentro de la ventana.
 }
 \note{
 El código original fue desarrollado por \strong{Duncan Murdoch} y forma parte del
@@ -56,7 +57,7 @@ pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
 
 }
 \seealso{
-\code{\link[rgl:callbacks]{rgl::rgl.setMouseCallbacks()}}, \code{\link[rgl:par3d]{rgl::par3d()}}, \code{\link[rgl:matrices]{rgl::translationMatrix()}}
+\code{rgl::rgl.setMouseCallbacks()}, \code{rgl::par3d()}, \code{rgl::translationMatrix()}
 }
 \author{
 Duncan Murdoch

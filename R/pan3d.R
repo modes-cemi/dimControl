@@ -8,7 +8,7 @@
 #' 3D, pero no desplazar la cámara. Esta función amplía dicha interacción al permitir
 #' trasladar toda la escena en cualquier dirección sin modificar la orientación del modelo.
 #'
-#' Internamente, la función utiliza *callbacks* del ratón mediante [`rgl.setMouseCallbacks()`],
+#' Internamente, la función utiliza *callbacks* del ratón mediante `rgl::rgl.setMouseCallbacks()`,
 #' de modo que, al presionar y arrastrar el ratón, se actualiza dinámicamente la matriz
 #' de proyección (`userProjection`) para simular un desplazamiento fluido dentro de la escena.
 #'
@@ -18,8 +18,9 @@
 #'     \item `2`: botón derecho
 #'     \item `3`: botón central (rueda)
 #'   }
-#' @param dev Identificador del dispositivo RGL (por defecto `cur3d()`).
-#' @param subscene Subescena a la que se aplicará el movimiento (por defecto la subescena activa).
+#' @param dev Identificador del dispositivo RGL (por defecto `rgl::cur3d()`).
+#' @param subscene Subescena a la que se aplicará el movimiento (por defecto la subescena activa
+#'   obtenida con `rgl::currentSubscene3d()`).
 #'
 #' @returns No devuelve ningún valor; su efecto es establecer los *callbacks* del ratón
 #'          para desplazar la vista en la escena 3D.
@@ -27,9 +28,9 @@
 #' @details
 #' Al presionar el botón indicado, la función registra la posición inicial del cursor
 #' (*evento* `begin`). Durante el movimiento del ratón (*evento* `update`), calcula el
-#' desplazamiento relativo y aplica una transformación de traslación sobre `userProjection`,
-#' consiguiendo que la cámara se desplace en la dirección del arrastre, permitiendo mover
-#' la escena libremente dentro de la ventana.
+#' desplazamiento relativo y aplica una transformación de traslación sobre `userProjection`
+#' mediante `rgl::translationMatrix()`, consiguiendo que la cámara se desplace en la
+#' dirección del arrastre y permitiendo mover la escena libremente dentro de la ventana.
 #'
 #' @note El código original fue desarrollado por **Duncan Murdoch** y forma parte del
 #' paquete **rgl**, donde no se exporta públicamente. Se incluye aquí sin modificaciones
@@ -37,7 +38,7 @@
 #'
 #' @author Duncan Murdoch
 #'
-#' @seealso [rgl::rgl.setMouseCallbacks()], [rgl::par3d()], [rgl::translationMatrix()]
+#' @seealso `rgl::rgl.setMouseCallbacks()`, `rgl::par3d()`, `rgl::translationMatrix()`
 #'
 #' @examples
 #' require(rgl)
