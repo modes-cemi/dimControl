@@ -3,6 +3,7 @@
 export(angled2)
 export(bbox)
 export(cleanMesh3d_rgl)
+export(deuclid)
 export(fshade3d)
 export(getBoundarySegments3)
 export(lado_bulbo)
