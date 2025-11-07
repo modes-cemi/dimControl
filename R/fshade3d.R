@@ -1,47 +1,48 @@
 #' Representación 3D con colores categóricos
 #'
-#' Aplica una escala de color categórica a una malla 3D según un factor y, opcionalmente,
-#' muestra una leyenda de categorías. Es una extensión de \code{\link[rgl]{shade3d}}
-#' que permite visualizar grupos o clases discretas en una superficie tridimensional.
+#' Aplica una escala de color categórica a una malla tridimensional según un factor
+#' y, opcionalmente, muestra una leyenda asociada a las categorías. Es una extensión
+#' de `rgl::shade3d()` que permite representar grupos o clases discretas sobre una
+#' superficie 3D.
 #'
-#' @param x Objeto de tipo \code{mesh3d}. Malla tridimensional que se desea colorear.
+#' @param x Objeto de tipo `mesh3d`. Malla tridimensional que se desea colorear.
 #' @param f Factor o vector que indica la categoría asignada a cada cara o vértice
-#'   de la malla, dependiendo de \code{meshColor}.
-#' @param meshColor Cadena de texto. Define cómo se aplica el color:
+#'   de la malla, dependiendo del modo definido en `meshColor`.
+#' @param meshColor Cadena de texto. Especifica cómo se aplica el color:
 #'   \itemize{
-#'     \item \code{"faces"}: el color se asigna por cara (valor por defecto).
-#'     \item \code{"vertices"}: el color se asigna por vértice.
-#'   }
-#' @param legend.lab Vector de caracteres. Etiquetas de las categorías mostradas en
-#' la leyenda. Por defecto, \code{levels(f)}.
-#' @param col Vector de colores. Paleta utilizada para colorear las categorías. Si
-#' se omite, se genera automáticamente a partir de \code{col.pal}.
-#' @param col.pal Función generadora de paletas de colores categóricos. Por defecto, \code{cat.colors}.
+#'     \item `"faces"`: el color se asigna por cara (valor por defecto).
+#'     \item `"vertices"`: el color se asigna por vértice.
+#'     }
+#' @param legend.lab Vector de caracteres. Etiquetas mostradas en la leyenda.
+#'   Por defecto, `levels(f)`.
+#' @param col Vector de colores. Paleta utilizada para colorear las categorías. Si se omite,
+#'   se genera automáticamente mediante `col.pal`.
+#' @param col.pal Función generadora de paletas de colores categóricos. Por defecto, `cat.colors`.
 #' @param legend.zoom Número. Nivel de zoom aplicado a la leyenda.
 #' @param legend.width Número. Anchura relativa de la leyenda respecto a la malla.
 #' @param legend.mar Número. Margen horizontal entre la malla y la leyenda.
 #' @param lab.dist Número. Distancia de las etiquetas respecto a la barra de la leyenda.
-#' @param lab.rev Lógico. Si \code{TRUE}, invierte el orden de las etiquetas en la leyenda.
-#' @param add Lógico. Si \code{TRUE}, añade la malla a una escena 3D ya existente sin
+#' @param lab.rev Lógico. Si es `TRUE`, invierte el orden de las etiquetas en la leyenda.
+#' @param add Lógico. Si es `TRUE`, añade la malla a una escena 3D ya existente sin
 #'   generar una nueva leyenda.
-#' @param ... Argumentos adicionales pasados a \code{\link[rgl]{shade3d}}.
+#' @param ... rgumentos adicionales pasados a `rgl::shade3d()`.
 #'
 #' @returns
-#' Invisiblemente, devuelve el identificador del objeto dibujado en la escena \pkg{rgl}.
+#' Devuelve (invisiblemente) el identificador del objeto dibujado en la escena de `rgl`.
 #'
 #' @seealso
 #' `fplot3d()` para la generación de leyendas categóricas.
 #'
 #' @details
 #' Esta función facilita la representación de categorías o regiones diferenciadas sobre
-#' mallas 3D, coloreando cada zona según la clase a la que pertenece. Cuando \code{add = FALSE},
-#' se genera además una leyenda lateral mediante \code{\link{fplot3d}} que asocia cada
-#' color con su categoría.
+#' mallas 3D, coloreando cada zona según la categoría correspondiente. Cuando `add = FALSE`,
+#' se genera además una leyenda lateral mediante `fplot3d()` que asocia cada color
+#' con su categoría.
 #'
 #' @examples
 #' require(rgl)
 #'
-#' # Genera una superficie 3D (dataset `volcano`)
+#' # Generar una superficie 3D (dataset `volcano`)
 #' z <- 2 * volcano                 # Aumentar el relieve
 #' x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 #' y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
@@ -49,17 +50,17 @@
 #' mesh <- as.mesh3d()
 #' mesh$meshColor <- "faces"
 #'
-#' # Valor por triangulo (media vértices)
+#' # Valor por triangulo (media de los vértices)
 #' vb2tri <- function(x, s) {
 #' if (!length(x$it)) stop("Argument 'x' must be a triangular mesh")
 #' return(apply(x$it, 2, function(tri) mean(s[tri])))
 #' }
+#' z_tri <- vb2tri(mesh, mesh$vb[3, ])
 #'
 #' # Factor con 5 niveles de altura
-#' z_tri <- vb2tri(mesh, mesh$vb[3, ])
 #' fz_tri <- cut(z_tri, 5)
 #'
-#' # Representa la superficie coloreada por niveles y barra de leyenda
+#' # Representar la superficie coloreada por niveles con leyenda
 #' open3d()
 #' fshade3d(mesh, fz_tri, legend.lab = seq_along(levels(fz_tri)))
 #'
