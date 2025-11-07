@@ -2,8 +2,8 @@
 #'
 #' Combina la representación de una malla tridimensional con el color asociado a los
 #' valores de una variable escalar y añade una leyenda lateral que indica el rango de
-#' valores representados. Utiliza `splot3d()` para la leyenda y los ejes, y `scolor()`
-#' para asignar colores a los triángulos o vértices de la malla.
+#' valores representados. Utiliza `splot3d()` para generar la leyenda y los ejes, y
+#' `npsp::scolor()` para asignar colores a los triángulos o vértices de la malla.
 #'
 #' @param x Objeto de clase `mesh3d` que define la malla a representar.
 #' @param s Vector numérico con los valores escalares asociados a los vértices o caras de la malla.
@@ -15,7 +15,7 @@
 #'   }
 #' @param slim Rango de valores de `s` utilizado para escalar los colores. Por defecto,
 #' `range(s, finite = TRUE)`.
-#' @param col Paleta de colores utilizada. Por defecto, `jet.colors(128)`.
+#' @param col Paleta de colores utilizada. Por defecto, `npsp::jet.colors(128)`.
 #' @param legend.zoom Factor de escala del tamaño de la leyenda. Por defecto, `0.4`.
 #' @param legend.width Ancho relativo de la leyenda. Por defecto, `0.1`.
 #' @param legend.mar Margen entre la leyenda y la superficie. Por defecto, `0.15`.
@@ -25,27 +25,28 @@
 #' @param lab.ticksize Tamaño de las marcas de la leyenda. Por defecto, `0.5`.
 #' @param lab.dist Distancia entre las etiquetas de la leyenda y las marcas. Por defecto, `3`.
 #' @param add Si es `TRUE`, añade la superficie al gráfico 3D actual sin crear una nueva leyenda.
-#' @param ... Argumentos adicionales pasados a `shade3d()`.
+#' @param ... Argumentos adicionales pasados a `rgl::shade3d()`.
 #'
 #' @details
 #' La función colorea la malla 3D de acuerdo con los valores de `s` utilizando la paleta
 #' especificada en `col`. El color puede asignarse por vértices o por caras, en función
 #' de `meshColor`. Posteriormente, se genera la representación tridimensional mediante
-#' `shade3d()` y se añade una leyenda lateral mediante `splot3d()`.
+#' `rgl::shade3d()` y se añade una leyenda lateral mediante `splot3d()`.
 #'
 #' @returns
-#' No devuelve ningún objeto, pero genera la representación tridimensional correspondiente.
+#' No devuelve ningún valor. Su efecto es generar la representación tridimensional
+#' coloreada de la malla junto con su leyenda.
 #'
 #' @seealso
 #' `axis3()`, `splot3d()` para funciones internas de representación;
-#' [npsp::scolor()], [npsp::jet.colors()] para funciones de mapeo de color.
+#' `npsp::scolor()`, `npsp::jet.colors()` para el mapeo de color.
 #'
 #' @importFrom npsp scolor jet.colors
 #'
 #' @examples
 #' require(rgl)
 #'
-#' # Genera una superficie 3D (dataset `volcano`)
+#' # Generar una superficie 3D (dataset `volcano`)
 #' z <- 2 * volcano                 # Aumentar el relieve
 #' x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 #' y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
@@ -53,7 +54,7 @@
 #' mesh <- as.mesh3d()
 #' mesh$meshColor <- "faces"
 #'
-#' # Representa la superficie coloreada por altura y barra de leyenda
+#' # Representar la superficie coloreada por altura con leyenda
 #' open3d()
 #' sshade3d(mesh, mesh$vb[3, ], meshColor = "facesvertices", lit = FALSE)
 #'

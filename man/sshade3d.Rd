@@ -37,7 +37,7 @@ sshade3d(
 \item{slim}{Rango de valores de \code{s} utilizado para escalar los colores. Por defecto,
 \code{range(s, finite = TRUE)}.}
 
-\item{col}{Paleta de colores utilizada. Por defecto, \code{jet.colors(128)}.}
+\item{col}{Paleta de colores utilizada. Por defecto, \code{npsp::jet.colors(128)}.}
 
 \item{legend.zoom}{Factor de escala del tamaño de la leyenda. Por defecto, \code{0.4}.}
 
@@ -57,27 +57,28 @@ sshade3d(
 
 \item{add}{Si es \code{TRUE}, añade la superficie al gráfico 3D actual sin crear una nueva leyenda.}
 
-\item{...}{Argumentos adicionales pasados a \code{shade3d()}.}
+\item{...}{Argumentos adicionales pasados a \code{rgl::shade3d()}.}
 }
 \value{
-No devuelve ningún objeto, pero genera la representación tridimensional correspondiente.
+No devuelve ningún valor. Su efecto es generar la representación tridimensional
+coloreada de la malla junto con su leyenda.
 }
 \description{
 Combina la representación de una malla tridimensional con el color asociado a los
 valores de una variable escalar y añade una leyenda lateral que indica el rango de
-valores representados. Utiliza \code{splot3d()} para la leyenda y los ejes, y \code{scolor()}
-para asignar colores a los triángulos o vértices de la malla.
+valores representados. Utiliza \code{splot3d()} para generar la leyenda y los ejes, y
+\code{npsp::scolor()} para asignar colores a los triángulos o vértices de la malla.
 }
 \details{
 La función colorea la malla 3D de acuerdo con los valores de \code{s} utilizando la paleta
 especificada en \code{col}. El color puede asignarse por vértices o por caras, en función
 de \code{meshColor}. Posteriormente, se genera la representación tridimensional mediante
-\code{shade3d()} y se añade una leyenda lateral mediante \code{splot3d()}.
+\code{rgl::shade3d()} y se añade una leyenda lateral mediante \code{splot3d()}.
 }
 \examples{
 require(rgl)
 
-# Genera una superficie 3D (dataset `volcano`)
+# Generar una superficie 3D (dataset `volcano`)
 z <- 2 * volcano                 # Aumentar el relieve
 x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
@@ -85,12 +86,12 @@ surface3d(x, y, z, back = "lines")
 mesh <- as.mesh3d()
 mesh$meshColor <- "faces"
 
-# Representa la superficie coloreada por altura y barra de leyenda
+# Representar la superficie coloreada por altura con leyenda
 open3d()
 sshade3d(mesh, mesh$vb[3, ], meshColor = "facesvertices", lit = FALSE)
 
 }
 \seealso{
 \code{axis3()}, \code{splot3d()} para funciones internas de representación;
-\code{\link[npsp:splot]{npsp::scolor()}}, \code{\link[npsp:splot]{npsp::jet.colors()}} para funciones de mapeo de color.
+\code{npsp::scolor()}, \code{npsp::jet.colors()} para el mapeo de color.
 }
