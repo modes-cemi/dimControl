@@ -18,7 +18,8 @@ RoxygenNote: 7.3.2
 Imports:
     rgl,
     data.table,
-    npsp
+    npsp, 
+    igraph
 URL: https://github.com/GroupMODES/controlDim
 BugReports: https://github.com/GroupMODES/controlDim/issues
 Depends: 
