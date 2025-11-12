@@ -20,7 +20,7 @@
 #' se considera que está orientado hacia la izquierda.
 #'
 #' @export
-lado_bulbo <- function(ref) { # bulbo a la izquierda: TRUE, bulbo a la derecha: FALSE
+sideBulb <- function(ref) { # bulbo a la izquierda: TRUE, bulbo a la derecha: FALSE
   zmedio <- (min(ref$vb[3, ]) + max(ref$vb[3, ])) / 2
   split_bulbo <- ref$vb[, ref$vb[3, ] > zmedio]
   split_refuerzo <- ref$vb[, ref$vb[3, ] <= zmedio]
