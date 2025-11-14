@@ -14,4 +14,12 @@ surfaceDistance <- function(segmento) {
   dx <- diff(segmento[, 1])  # Diferencias en x
   dy <- diff(segmento[, 2])  # Diferencias en y
   dz <- diff(segmento[, 3])  # Diferencias en z
+
+  # Distancia euclidea entre cada par de puntos consecutivos
+  distancias <- sqrt(dx^2 + dy^2 + dz^2)
+
+  # Longitud total del segmento (longitud de arco)
+  longitud <- sum(distancias)
+
+  return(longitud)
 }
