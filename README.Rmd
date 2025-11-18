@@ -29,9 +29,7 @@ expected measurements.
 * Separating components of the estimated mesh for individual evaluation.
 * Generating 3D visualizations that facilitate the interpretation of geometric features 
 and inspection results.
-*  Computing angles to analyze the alignment between different components of the panel.
-
-⚠️ **Note:** The `controlDim` package is currently under development.
+* Computing angles to analyze the alignment between different components of the panel.
 
 ## Installation
 

@@ -23,8 +23,6 @@ workflow, such as:
 - Computing angles to analyze the alignment between different components
   of the panel.
 
-⚠️ **Note:** The `controlDim` package is currently under development.
-
 ## Installation
 
 You can install the development version of controlDim from
