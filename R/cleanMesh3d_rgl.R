@@ -35,6 +35,7 @@
 #' @author Duncan Murdoch
 #'
 #' @examples
+#' \dontrun{
 #' # Crear un cubo
 #' cubo <- rgl::cube3d()
 #'
@@ -47,6 +48,7 @@
 #' # Comparar número de vértices
 #' dim(cubo$vb)
 #' dim(cubo_clean$vb)
+#' }
 #'
 #' @export
 cleanMesh3d_rgl <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {

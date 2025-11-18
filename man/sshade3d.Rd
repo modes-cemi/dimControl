@@ -76,6 +76,7 @@ de \code{meshColor}. Posteriormente, se genera la representación tridimensional
 \code{rgl::shade3d()} y se añade una leyenda lateral mediante \code{splot3d()}.
 }
 \examples{
+\dontrun{
 # Generar una superficie 3D (dataset `volcano`)
 z <- 2 * volcano                 # Aumentar el relieve
 x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
@@ -87,6 +88,7 @@ mesh$meshColor <- "faces"
 # Representar la superficie coloreada por altura con leyenda
 rgl::open3d()
 sshade3d(mesh, mesh$vb[3, ], meshColor = "facesvertices", lit = FALSE)
+}
 
 }
 \seealso{

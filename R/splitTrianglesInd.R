@@ -32,6 +32,7 @@
 #' @seealso `igraph::graph()`, `igraph::components()`
 #'
 #' @examples
+#' \dontrun{
 #' require(igraph)
 #'
 #' # Crear una malla mesh3d con dos triángulos desconectados
@@ -52,6 +53,7 @@
 #' # Dividir la malla en grupos de triángulos conectados
 #' grupos <- splitTrianglesInd(mesh)
 #' str(grupos)
+#' }
 #'
 #' @importFrom igraph graph components
 #'

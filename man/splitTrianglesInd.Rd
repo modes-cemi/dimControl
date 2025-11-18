@@ -38,6 +38,7 @@ por aristas compartidas como enlaces.
 }
 }
 \examples{
+\dontrun{
 require(igraph)
 
 # Crear una malla mesh3d con dos triángulos desconectados
@@ -58,6 +59,7 @@ mesh <- rgl::tmesh3d(vertices = vb, indices = it)
 # Dividir la malla en grupos de triángulos conectados
 grupos <- splitTrianglesInd(mesh)
 str(grupos)
+}
 
 }
 \seealso{

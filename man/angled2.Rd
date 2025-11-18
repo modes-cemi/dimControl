@@ -24,6 +24,7 @@ dirección de referencia en una dimensión específica. Permite obtener el resul
 en grados o radianes, y considerar la dirección opuesta si se desea.
 }
 \examples{
+\dontrun{
 # Tres vectores normalizados en las direcciones X, Y y Z
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
@@ -37,5 +38,6 @@ angled2(v, dim = 2)
 
 # Ángulo respecto al eje Z
 angled2(v, dim = 3)
+}
 
 }

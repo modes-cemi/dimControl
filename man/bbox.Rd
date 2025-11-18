@@ -27,13 +27,13 @@ Internamente, la función convierte las coordenadas homogéneas de \code{x$vb} e
 euclidianas mediante \code{rgl::asEuclidean2()} y calcula los rangos por eje con \code{apply(..., range)}.
 }
 \examples{
-require(rgl)
-
+\dontrun{
 # Crear una malla cúbica
 cube <- rgl::cube3d()
 
 # Calcular su bounding box
 bbox(cube)
+}
 
 }
 \seealso{

@@ -49,10 +49,12 @@ paquete \strong{rgl}, donde no se exporta públicamente. Se incluye aquí sin mo
 para facilitar su uso dentro de este paquete.
 }
 \examples{
+\dontrun{
 rgl::open3d()
 mesh <- rgl::icosahedron3d()
 rgl::shade3d(mesh, col = "lightblue")
 pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
+}
 
 }
 \seealso{

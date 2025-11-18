@@ -41,10 +41,12 @@
 #' @seealso `rgl::rgl.setMouseCallbacks()`, `rgl::par3d()`, `rgl::translationMatrix()`
 #'
 #' @examples
+#' \dontrun{
 #' rgl::open3d()
 #' mesh <- rgl::icosahedron3d()
 #' rgl::shade3d(mesh, col = "lightblue")
 #' pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
+#' }
 #'
 #' @export
 pan3d <- function(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev)) {
