@@ -6,5 +6,5 @@
 #'
 #' @export
 setview3d <- function(view) {
-  do.call(par3d, view)
+  do.call(rgl::par3d, view)
 }

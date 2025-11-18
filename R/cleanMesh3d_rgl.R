@@ -35,10 +35,8 @@
 #' @author Duncan Murdoch
 #'
 #' @examples
-#' require(rgl)
-#'
 #' # Crear un cubo
-#' cubo <- cube3d()
+#' cubo <- rgl::cube3d()
 #'
 #' # Añadir vértice no referenciado
 #' cubo$vb <- cbind(cubo$vb, c(10,10,10,1))

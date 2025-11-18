@@ -4,7 +4,7 @@
 \alias{pan3d}
 \title{Desplazamiento interactivo de la vista 3D}
 \usage{
-pan3d(button, dev = cur3d(), subscene = currentSubscene3d(dev))
+pan3d(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev))
 }
 \arguments{
 \item{button}{Entero que indica el botón del ratón usado para el desplazamiento:
@@ -49,10 +49,9 @@ paquete \strong{rgl}, donde no se exporta públicamente. Se incluye aquí sin mo
 para facilitar su uso dentro de este paquete.
 }
 \examples{
-require(rgl)
-
-open3d()
-shade3d(icosahedron3d(), col = "lightblue")
+rgl::open3d()
+mesh <- rgl::icosahedron3d()
+rgl::shade3d(mesh, col = "lightblue")
 pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
 
 }

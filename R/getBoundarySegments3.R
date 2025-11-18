@@ -28,22 +28,21 @@
 #'
 #' @examples
 #' # Obtener el borde de un cubo y representarlo
-#' require(rgl); require(data.table)
+#' require(data.table)
 #'
 #' # Crear un cubo y eliminar dos caras
-#' x <- cube3d(col = "lightblue")
+#' x <- rgl::cube3d(col = "lightblue")
 #' x$ib <- x$ib[, -(1:2)]
 #'
 #' # Generar el borde
 #' b <- getBoundarySegments3(x, malla = TRUE)
 #'
 #' # Representar la malla y su borde
-#' open3d()
-#' shade3d(x, alpha = 0.2)
-#' shade3d(b, col = "red", lwd = 2)
+#' rgl::open3d()
+#' rgl::shade3d(x, alpha = 0.2)
+#' rgl::shade3d(b, col = "red", lwd = 2)
 #'
 #' @importFrom data.table data.table
-#' @importFrom rgl mesh3d
 #'
 #' @export
 getBoundarySegments3 <- function(mesh, malla = FALSE, simplify = TRUE) {
@@ -77,7 +76,7 @@ getBoundarySegments3 <- function(mesh, malla = FALSE, simplify = TRUE) {
 
   # Si malla = TRUE, crear mesh3d con esos segmentos
   if (malla) {
-    result <- mesh3d(vertices = mesh$vb, segments = boundary)
+    result <- rgl::mesh3d(vertices = mesh$vb, segments = boundary)
     if (simplify)
       result <- cleanMesh3d_rgl(result)
     return(result)

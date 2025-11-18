@@ -44,18 +44,16 @@
 #' @importFrom npsp scolor jet.colors
 #'
 #' @examples
-#' require(rgl)
-#'
 #' # Generar una superficie 3D (dataset `volcano`)
 #' z <- 2 * volcano                 # Aumentar el relieve
 #' x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 #' y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
-#' surface3d(x, y, z, back = "lines")
-#' mesh <- as.mesh3d()
+#' rgl::surface3d(x, y, z, back = "lines")
+#' mesh <- rgl::as.mesh3d()
 #' mesh$meshColor <- "faces"
 #'
 #' # Representar la superficie coloreada por altura con leyenda
-#' open3d()
+#' rgl::open3d()
 #' sshade3d(mesh, mesh$vb[3, ], meshColor = "facesvertices", lit = FALSE)
 #'
 #' @export

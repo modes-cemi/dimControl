@@ -37,8 +37,8 @@
 #'
 axis3 <- function (edge, at = NULL, labels = TRUE, tick = TRUE, line = TRUE,
                    pos = NULL, nticks = 5, ticksize = 0.05, labeldist = 3, ...) {
-  save <- par3d(skipRedraw = TRUE, ignoreExtent = TRUE)
-  on.exit(par3d(save))
+  save <- rgl::par3d(skipRedraw = TRUE, ignoreExtent = TRUE)
+  on.exit(rgl::par3d(save))
 
   # Función local equivalente a rgl:::.getRanges()
   getRanges <- function (expand = 1.03, ranges = rgl::par3d("bbox")) {

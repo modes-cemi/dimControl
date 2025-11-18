@@ -6,5 +6,5 @@
 #'
 #' @export
 getview3d <- function() {
-  par3d()[c("zoom", "userMatrix", "userProjection")]
+  rgl::par3d()[c("zoom", "userMatrix", "userProjection")]
 }

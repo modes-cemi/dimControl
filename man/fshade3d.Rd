@@ -71,14 +71,12 @@ se genera además una leyenda lateral mediante \code{fplot3d()} que asocia cada 
 con su categoría.
 }
 \examples{
-require(rgl)
-
 # Generar una superficie 3D (dataset `volcano`)
 z <- 2 * volcano                 # Aumentar el relieve
 x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
-surface3d(x, y, z, back = "lines")
-mesh <- as.mesh3d()
+rgl::surface3d(x, y, z, back = "lines")
+mesh <- rgl::as.mesh3d()
 mesh$meshColor <- "faces"
 
 # Valor por triangulo (media de los vértices)
@@ -92,7 +90,7 @@ z_tri <- vb2tri(mesh, mesh$vb[3, ])
 fz_tri <- cut(z_tri, 5)
 
 # Representar la superficie coloreada por niveles con leyenda
-open3d()
+rgl::open3d()
 fshade3d(mesh, fz_tri, legend.lab = seq_along(levels(fz_tri)))
 
 }

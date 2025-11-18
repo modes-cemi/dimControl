@@ -38,7 +38,7 @@ por aristas compartidas como enlaces.
 }
 }
 \examples{
-require(rgl); require(igraph)
+require(igraph)
 
 # Crear una malla mesh3d con dos triángulos desconectados
 vb <- t(rbind(

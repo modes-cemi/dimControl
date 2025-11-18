@@ -41,23 +41,20 @@
 #' @seealso `rgl::rgl.setMouseCallbacks()`, `rgl::par3d()`, `rgl::translationMatrix()`
 #'
 #' @examples
-#' require(rgl)
-#'
-#' open3d()
-#' shade3d(icosahedron3d(), col = "lightblue")
+#' rgl::open3d()
+#' mesh <- rgl::icosahedron3d()
+#' rgl::shade3d(mesh, col = "lightblue")
 #' pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
 #'
-#' @importFrom rgl cur3d currentSubscene3d par3d rgl.setMouseCallbacks translationMatrix
-#'
 #' @export
-pan3d <- function(button, dev = cur3d(), subscene = currentSubscene3d(dev)) {
+pan3d <- function(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev)) {
   start <- list()
 
   begin <- function(x, y) {
-    activeSubscene <- par3d("activeSubscene", dev = dev)
-    start$listeners <<- par3d("listeners", dev = dev, subscene = activeSubscene)
+    activeSubscene <- rgl::par3d("activeSubscene", dev = dev)
+    start$listeners <<- rgl::par3d("listeners", dev = dev, subscene = activeSubscene)
     for (sub in start$listeners) {
-      init <- par3d(c("userProjection","viewport"), dev = dev, subscene = sub)
+      init <- rgl::par3d(c("userProjection","viewport"), dev = dev, subscene = sub)
       init$pos <- c(x/init$viewport[3], 1 - y/init$viewport[4], 0.5)
       start[[as.character(sub)]] <<- init
     }
@@ -67,10 +64,10 @@ pan3d <- function(button, dev = cur3d(), subscene = currentSubscene3d(dev)) {
     for (sub in start$listeners) {
       init <- start[[as.character(sub)]]
       xlat <- 2*(c(x/init$viewport[3], 1 - y/init$viewport[4], 0.5) - init$pos)
-      mouseMatrix <- translationMatrix(xlat[1], xlat[2], xlat[3])
-      par3d(userProjection = mouseMatrix %*% init$userProjection, dev = dev, subscene = sub )
+      mouseMatrix <- rgl::translationMatrix(xlat[1], xlat[2], xlat[3])
+      rgl::par3d(userProjection = mouseMatrix %*% init$userProjection, dev = dev, subscene = sub )
     }
   }
-  rgl.setMouseCallbacks(button, begin, update, dev = dev, subscene = subscene)
+  rgl::rgl.setMouseCallbacks(button, begin, update, dev = dev, subscene = subscene)
   cat("Callbacks set on button", button, "of RGL device", dev, "in subscene", subscene, "\n")
 }
