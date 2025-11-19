@@ -8,6 +8,9 @@
 
 # controlDim
 
+🔗 [Visita la documentación web de
+controlDim](https://groupmodes.github.io/controlDim/)
+
 The controlDim package provides a set of tools for dimensional control
 and geometric analysis of steel panels.
 

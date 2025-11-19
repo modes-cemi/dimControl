@@ -21,7 +21,8 @@ Imports:
     igraph
 Suggests:
     rgl
-URL: https://github.com/GroupMODES/controlDim
+URL: https://github.com/GroupMODES/controlDim,
+     https://groupmodes.github.io/controlDim/
 BugReports: https://github.com/GroupMODES/controlDim/issues
 Depends: 
     R (>= 3.5)
