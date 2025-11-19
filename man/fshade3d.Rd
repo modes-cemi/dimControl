@@ -75,6 +75,7 @@ con su categoría.
 z <- 2 * volcano                 # Aumentar el relieve
 x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
+rgl::open3d()
 rgl::surface3d(x, y, z, back = "lines", col = "blue")
 mesh <- rgl::as.mesh3d()
 mesh$meshColor <- "faces"
