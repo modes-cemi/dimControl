@@ -7,6 +7,9 @@ on:
 
 name: R-CMD-check.yaml
 
+env:
+  RGL_USE_NULL: true
+
 permissions: read-all
 
 jobs:
