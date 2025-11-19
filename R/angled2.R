@@ -12,7 +12,6 @@
 #' @returns Un vector numérico con los ángulos correspondientes a cada vector de entrada.
 #'
 #' @examples
-#' \dontrun{
 #' # Tres vectores normalizados en las direcciones X, Y y Z
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0,
@@ -26,7 +25,6 @@
 #'
 #' # Ángulo respecto al eje Z
 #' angled2(v, dim = 3)
-#' }
 #'
 #' @export
 angled2 <- function(v, dim, negdir = FALSE, deg = TRUE) {

@@ -40,12 +40,11 @@
 #' con su categoría.
 #'
 #' @examples
-#' \dontrun{
 #' # Generar una superficie 3D (dataset `volcano`)
 #' z <- 2 * volcano                 # Aumentar el relieve
 #' x <- 10 * (seq_len(nrow(z)) - 1) # Espaciado de 10 m (S a N)
 #' y <- 10 * (seq_len(ncol(z)) - 1) # Espaciado de 10 m (E a W)
-#' rgl::surface3d(x, y, z, back = "lines")
+#' rgl::surface3d(x, y, z, back = "lines", col = "blue")
 #' mesh <- rgl::as.mesh3d()
 #' mesh$meshColor <- "faces"
 #'
@@ -62,7 +61,6 @@
 #' # Representar la superficie coloreada por niveles con leyenda
 #' rgl::open3d()
 #' fshade3d(mesh, fz_tri, legend.lab = seq_along(levels(fz_tri)))
-#' }
 #'
 #' @export
 fshade3d <- function(x, f, meshColor = c("faces", "vertices"), legend.lab = levels(f),

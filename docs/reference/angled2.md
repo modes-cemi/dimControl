@@ -41,7 +41,6 @@ entrada.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 # Tres vectores normalizados en las direcciones X, Y y Z
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
@@ -49,11 +48,13 @@ v <- matrix(c(1, 0, 0,
 
 # Ángulo respecto al eje X
 angled2(v, dim = 1)
+#> [1]  0 90 90
 
 # Ángulo respecto al eje Y
 angled2(v, dim = 2)
+#> [1] 90  0 90
 
 # Ángulo respecto al eje Z
 angled2(v, dim = 3)
-} # }
+#> [1] 90 90  0
 ```

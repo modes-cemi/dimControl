@@ -37,7 +37,6 @@ con los segmentos correspondientes, con la posibilidad de aplicar una simplifica
 adicional.
 }
 \examples{
-\dontrun{
 # Obtener el borde de un cubo y representarlo
 require(data.table)
 
@@ -52,7 +51,6 @@ b <- getBoundarySegments3(x, malla = TRUE)
 rgl::open3d()
 rgl::shade3d(x, alpha = 0.2)
 rgl::shade3d(b, col = "red", lwd = 2)
-}
 
 }
 \seealso{

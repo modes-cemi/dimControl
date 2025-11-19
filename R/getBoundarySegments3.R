@@ -27,7 +27,6 @@
 #' @seealso `rgl::getBoundary3d()`, `cleanMesh3d_rgl()`
 #'
 #' @examples
-#' \dontrun{
 #' # Obtener el borde de un cubo y representarlo
 #' require(data.table)
 #'
@@ -42,7 +41,6 @@
 #' rgl::open3d()
 #' rgl::shade3d(x, alpha = 0.2)
 #' rgl::shade3d(b, col = "red", lwd = 2)
-#' }
 #'
 #' @importFrom data.table data.table
 #'

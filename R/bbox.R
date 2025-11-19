@@ -19,13 +19,11 @@
 #' @seealso `rgl::asEuclidean2()`
 #'
 #' @examples
-#' \dontrun{
 #' # Crear una malla cúbica
 #' cube <- rgl::cube3d()
 #'
 #' # Calcular su bounding box
 #' bbox(cube)
-#' }
 #'
 #' @export
 bbox <- function(x) {

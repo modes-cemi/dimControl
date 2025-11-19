@@ -57,8 +57,16 @@ El algoritmo sigue los siguientes pasos:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 require(igraph)
+#> Loading required package: igraph
+#> 
+#> Attaching package: 'igraph'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     decompose, spectrum
+#> The following object is masked from 'package:base':
+#> 
+#>     union
 
 # Crear una malla mesh3d con dos triángulos desconectados
 vb <- t(rbind(
@@ -78,5 +86,7 @@ mesh <- rgl::tmesh3d(vertices = vb, indices = it)
 # Dividir la malla en grupos de triángulos conectados
 grupos <- splitTrianglesInd(mesh)
 str(grupos)
-} # }
+#> List of 2
+#>  $ : int 1
+#>  $ : int 2
 ```

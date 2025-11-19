@@ -42,11 +42,13 @@ y calcula los rangos por eje con `apply(..., range)`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 # Crear una malla cúbica
 cube <- rgl::cube3d()
 
 # Calcular su bounding box
 bbox(cube)
-} # }
+#>   min max
+#> x  -1   1
+#> y  -1   1
+#> z  -1   1
 ```
