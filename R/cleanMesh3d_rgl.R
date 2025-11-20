@@ -50,6 +50,9 @@
 #' dim(cubo_clean$vb)
 #' }
 #'
+#' @keywords internal
+#' @noRd
+#'
 cleanMesh3d_rgl <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
   # Número original de vértices
   nold <- ncol(mesh$vb)

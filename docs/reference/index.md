@@ -9,8 +9,6 @@
   marcas
 - [`bbox()`](https://groupmodes.github.io/controlDim/reference/bbox.md)
   : Calcular los límites espaciales (bounding box) de una malla 3D
-- [`cleanMesh3d_rgl()`](https://groupmodes.github.io/controlDim/reference/cleanMesh3d_rgl.md)
-  : Limpieza de una malla 3D
 - [`deuclid()`](https://groupmodes.github.io/controlDim/reference/deuclid.md)
   : Calcular la distancia euclidiana entre dos puntos
 - [`findModes()`](https://groupmodes.github.io/controlDim/reference/findModes.md)

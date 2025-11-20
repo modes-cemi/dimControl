@@ -2,7 +2,7 @@ pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-11-20T06:32Z
+last_built: 2025-11-20T06:52Z
 urls:
   reference: https://groupmodes.github.io/controlDim/reference
   article: https://groupmodes.github.io/controlDim/articles
