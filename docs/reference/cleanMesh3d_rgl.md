@@ -63,6 +63,7 @@ Duncan Murdoch
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 # Crear un cubo
 cubo <- rgl::cube3d()
 
@@ -74,7 +75,6 @@ cubo_clean <- cleanMesh3d_rgl(cubo)
 
 # Comparar número de vértices
 dim(cubo$vb)
-#> [1] 4 9
 dim(cubo_clean$vb)
-#> [1] 4 8
+} # }
 ```

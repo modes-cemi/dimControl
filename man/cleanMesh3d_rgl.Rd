@@ -39,6 +39,7 @@ El objetivo es conservar únicamente la funcionalidad esencial:
 }
 }
 \examples{
+\dontrun{
 # Crear un cubo
 cubo <- rgl::cube3d()
 
@@ -51,6 +52,7 @@ cubo_clean <- cleanMesh3d_rgl(cubo)
 # Comparar número de vértices
 dim(cubo$vb)
 dim(cubo_clean$vb)
+}
 
 }
 \references{
