@@ -90,7 +90,7 @@ z_tri <- vb2tri(mesh, mesh$vb[3, ])
 # Factor con 5 niveles de altura
 fz_tri <- cut(z_tri, 5)
 
-# Representar la superficie coloreada por niveles con leyenda
+# Representa la superficie coloreada por niveles con leyenda
 rgl::open3d()
 fshade3d(mesh, fz_tri, legend.lab = seq_along(levels(fz_tri)))
 
