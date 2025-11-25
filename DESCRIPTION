@@ -1,12 +1,14 @@
 Package: controlDim
 Title: Dimensional Control Tools for Steel Panels
 Version: 0.1.0
-Authors@R: 
-    c(
-      person("Nataly", "Romaris", email = "nataly.romaris@udc.es", role = c("aut", "cre")),
-      person("Olamar", "Benavente", email = "o.benaventef@udc.es", role = "aut"),
-      person("Ruben", "Fernandez-Casal", email = "rubenfcasal@gmail.com", role = "aut")
-    )
+Authors@R: c(
+      person("Nataly", "Romaris", , "nataly.romaris@udc.es", role = c("aut", "cre")),
+      person("Olamar", "Benavente", role = "aut"),
+      person("Ruben", "Fernandez-Casal", role = "aut"),
+      person("Salvador", "Naya", role = "aut"),
+      person("Javier", "Tarrio-Saavedra", role = "aut")
+      )
+Maintainer: Nataly Romaris <nataly.romaris@udc.es>
 Description: R package developed by the MODES group for the dimensional control of 
     steel panels in naval construction. It provides functions for 3D visualization, bounding 
     box calculations, panel border extraction, directional angle computation, disconnected 
