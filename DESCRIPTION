@@ -10,9 +10,9 @@ Authors@R: c(
       )
 Maintainer: Nataly Romaris <nataly.romaris@udc.es>
 Description: R package developed by the MODES group for the dimensional control of 
-    steel panels in naval construction. It provides functions for 3D visualization, bounding 
-    box calculations, panel border extraction, directional angle computation, disconnected 
-    component detection, and other tools to support analysis and scientific publications.
+    steel panels in naval construction. It provides tools for geometric processing, bounding 
+    box computation, panel border extraction, directional angle estimation, detection 
+    of disconnected components, and other functions to support analysis and scientific publications.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
