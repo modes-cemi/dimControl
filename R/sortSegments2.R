@@ -1,44 +1,44 @@
-#' Reordenar segmentos conectados de un borde
+#' Reorder Connected Edge Segments
 #'
-#' Esta función reordena los segmentos de un borde (aristas) de manera que cada segmento
-#' esté conectado al siguiente. Se basa en la idea de la función `getBoundary3d` del paquete
-#' `rgl`, pero ha sido modificada para asegurar que la secuencia de segmentos sea correcta
-#' en casos donde el borde original no estaba ordenado adecuadamente.
+#' Reorders the segments of a boundary (edges) so that each segment is connected to
+#' the next one. This function is based on the idea of `getBoundary3d` from the `rgl`
+#' package but has been modified to ensure the segment sequence is correct even when
+#' the original boundary is not properly ordered.
 #'
-#' @param edges Matriz numérica de 2 filas y N columnas, donde cada columna representa
-#'   un segmento del borde con sus dos extremos. La primera fila contiene el primer vértice
-#'   de cada segmento y la segunda fila el segundo vértice.
+#' @param edges Numeric matrix with 2 rows and N columns, where each column represents
+#' a boundary segment with its two endpoints. The first row contains the first vertex
+#' of each segment, and the second row the second vertex.
 #'
-#' @returns Matriz de 2 filas y N columnas con los segmentos reordenados de forma que cada
-#'   segmento esté conectado al siguiente. Si hay segmentos desconectados, la secuencia
-#'   se interrumpe en el primer hueco.
+#' @returns A numeric matrix with 2 rows and N columns containing the segments reordered
+#' so that each segment is connected to the next. If there are disconnected segments,
+#' the sequence stops at the first gap.
 #'
 #' @export
 sortSegments2 <- function(edges) {
-  nedges <- ncol(edges)              # Número total de segmentos
-  order <- integer(nedges)           # Vector para almacenar el orden de los segmentos
-  order[1] <- 1                      # Empieza por el primer segmento
+  nedges <- ncol(edges)              # Total number of segments
+  order <- integer(nedges)           # Vector to store the segment order
+  order[1] <- 1                      # Start with the first segment
 
   for (i in seq_len(nedges - 1)) {
-    vfin <- edges[2, order[i]]       # Punto final del segmento actual
+    vfin <- edges[2, order[i]]       # Endpoint of the current segment
 
-    # Buscar candidatos que tengan ese punto como inicio o final, excluyendo los ya ordenados
-    candidatos <- setdiff(which(edges[1, ] == vfin | edges[2, ] == vfin), order[1:i])
+    # Find candidates that have this point as start or end, excluding already ordered segments
+    candidates <- setdiff(which(edges[1, ] == vfin | edges[2, ] == vfin), order[1:i])
 
-    # Si no hay candidatos, se interrumpe la secuencia
-    if (length(candidatos) == 0) break
+    # If no candidates, stop the sequence
+    if (length(candidates) == 0) break
 
-    # Elegimos el primer candidato
-    siguiente <- candidatos[1]
+    # Choose the first candidate
+    next_seg <- candidates[1]
 
-    # Si el candidato tiene ese punto en su posición final, se invierte para conectar correctamente
-    if (edges[1, siguiente] != vfin)
-      edges[, siguiente] <- edges[2:1, siguiente]
+    # If the candidate has the point at its end, reverse it to connect properly
+    if (edges[1, next_seg] != vfin)
+      edges[, next_seg] <- edges[2:1, next_seg]
 
-    # Guardar su posición
-    order[i + 1] <- siguiente
+    # Store its position
+    order[i + 1] <- next_seg
   }
 
-  # Segmentos reordenados
+  # Return reordered segments
   edges[, order, drop = FALSE]
 }

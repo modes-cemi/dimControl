@@ -1,10 +1,9 @@
-# Divide una malla en grupos de triángulos conectados
+# Split a Mesh into Connected Triangle Groups
 
-Agrupa los triángulos de una malla 3D en subconjuntos independientes
-según su conectividad, es decir, si comparten una arista (dos vértices).
-Cada componente conectada se devuelve como un grupo de índices que
-corresponden a los triángulos pertenecientes a una misma pieza o
-fragmento de la malla.
+Groups the triangles of a 3D mesh into independent subsets according to
+connectivity, i.e., if they share an edge (two vertices). Each connected
+component is returned as a group of indices corresponding to triangles
+belonging to the same piece or mesh fragment.
 
 ## Usage
 
@@ -16,37 +15,36 @@ splitTrianglesInd(mesh)
 
 - mesh:
 
-  Objeto de clase `mesh3d` que contiene la malla a analizar. Debe
-  incluir la matriz `it`, donde cada columna representa un triángulo
-  definido por los índices de sus vértices.
+  A `mesh3d` object containing the mesh to analyze. It must include the
+  `it` matrix, where each column represents a triangle defined by the
+  indices of its vertices.
 
 ## Value
 
-Una lista donde cada elemento contiene los índices de los triángulos que
-forman una componente conectada de la malla. Si no existen conexiones
-entre triángulos, cada elemento de la lista corresponde a un único
-triángulo.
+A list where each element contains the indices of triangles forming a
+connected component of the mesh. If there are no connections between
+triangles, each list element corresponds to a single triangle.
 
 ## Details
 
-Este procedimiento resulta útil cuando la malla contiene varias partes
-desconectadas (por ejemplo, refuerzos, paneles o fragmentos separados) y
-se requiere tratarlas por separado para análisis geométrico,
-representación o limpieza de datos.
+This procedure is useful when the mesh contains multiple disconnected
+parts (e.g., reinforcements, panels, or separate fragments) and they
+need to be handled separately for geometric analysis, visualization, or
+data cleaning.
 
-El algoritmo sigue los siguientes pasos:
+The algorithm follows these steps:
 
-1.  Se valida que la malla contenga la matriz `it` con los triángulos.
+1.  Checks that the mesh contains the `it` matrix with triangles.
 
-2.  Para cada vértice, se registran los triángulos en los que aparece.
+2.  For each vertex, records the triangles in which it appears.
 
-3.  Se determinan los pares de triángulos que comparten una arista (dos
-    vértices comunes).
+3.  Determines pairs of triangles that share an edge (two common
+    vertices).
 
-4.  Se construye un grafo no dirigido con los triángulos como nodos y
-    las conexiones por aristas compartidas como enlaces.
+4.  Builds an undirected graph with triangles as nodes and shared-edge
+    connections as edges.
 
-5.  Se identifican las componentes conectadas del grafo mediante
+5.  Identifies the connected components of the graph using
     [`igraph::components()`](https://r.igraph.org/reference/components.html).
 
 ## See also
@@ -68,7 +66,7 @@ require(igraph)
 #> 
 #>     union
 
-# Crear una malla mesh3d con dos triángulos desconectados
+# Create a mesh3d object with two disconnected triangles
 vb <- t(rbind(
   c(0, 0, 0),
   c(1, 0, 0),
@@ -83,9 +81,9 @@ it <- t(rbind(
 ))
 mesh <- rgl::tmesh3d(vertices = vb, indices = it)
 
-# Dividir la malla en grupos de triángulos conectados
-grupos <- splitTrianglesInd(mesh)
-str(grupos)
+# Split the mesh into connected triangle groups
+groups <- splitTrianglesInd(mesh)
+str(groups)
 #> List of 2
 #>  $ : int 1
 #>  $ : int 2

@@ -1,8 +1,8 @@
-# Calcular los límites espaciales (bounding box) de una malla 3D
+# Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 
-Determina las coordenadas mínimas y máximas de los vértices de una malla
-3D, devolviendo una matriz con los valores extremos en los ejes `X`, `Y`
-y `Z`.
+Computes the minimum and maximum coordinates of the vertices of a 3D
+mesh, returning a matrix with the extreme values along the `X`, `Y`, and
+`Z` axes.
 
 ## Usage
 
@@ -14,26 +14,25 @@ bbox(x)
 
 - x:
 
-  Objeto de clase `mesh3d` que contiene los vértices de la malla en el
-  componente `vb`.
+  A `mesh3d` object containing the mesh vertices in the `vb` component.
 
 ## Value
 
-Una matriz de 3 filas y 2 columnas con los valores mínimos y máximos de
-las coordenadas de los vértices:
+A matrix with 3 rows and 2 columns containing the minimum and maximum
+coordinate values of the mesh vertices:
 
-- Cada fila corresponde a un eje (`x`, `y`, `z`).
+- Each row corresponds to an axis (`X`, `Y`, `Z`).
 
-- La primera columna (`min`) contiene los valores mínimos.
+- The first column (`min`) contains the minimum values.
 
-- La segunda columna (`max`) contiene los valores máximos.
+- The second column (`max`) contains the maximum values.
 
 ## Details
 
-Internamente, la función convierte las coordenadas homogéneas de `x$vb`
-en coordenadas euclidianas mediante
-[`rgl::asEuclidean2()`](https://dmurdoch.github.io/rgl/dev/reference/matrices.html)
-y calcula los rangos por eje con `apply(..., range)`.
+Internally, the function converts homogeneous coordinates in `x$vb` to
+Euclidean coordinates using
+[`rgl::asEuclidean2()`](https://dmurdoch.github.io/rgl/dev/reference/matrices.html),
+and computes per-axis ranges using `apply(..., range)`.
 
 ## See also
 
@@ -42,10 +41,10 @@ y calcula los rangos por eje con `apply(..., range)`.
 ## Examples
 
 ``` r
-# Crear una malla cúbica
+# Create a cubic mesh
 cube <- rgl::cube3d()
 
-# Calcular su bounding box
+# Compute its bounding box
 bbox(cube)
 #>   min max
 #> x  -1   1

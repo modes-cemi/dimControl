@@ -1,8 +1,8 @@
-# Desplazamiento interactivo de la vista 3D
+# Interactive 3D View Panning
 
-Activa el desplazamiento de la cámara en una escena 3D de **rgl**,
-permitiendo mover la vista libremente dentro de la ventana gráfica al
-arrastrar el ratón con el botón indicado.
+Enables camera panning in an **rgl** 3D scene, allowing the user to move
+the view freely within the graphics window by dragging the mouse with
+the specified button.
 
 ## Usage
 
@@ -14,56 +14,56 @@ pan3d(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev))
 
 - button:
 
-  Entero que indica el botón del ratón usado para el desplazamiento:
+  Integer indicating the mouse button used for panning:
 
-  - `1`: botón izquierdo
+  - `1`: left button
 
-  - `2`: botón derecho
+  - `2`: right button
 
-  - `3`: botón central (rueda)
+  - `3`: middle button (wheel)
 
 - dev:
 
-  Identificador del dispositivo RGL (por defecto
+  RGL device ID (default
   [`rgl::cur3d()`](https://dmurdoch.github.io/rgl/dev/reference/open3d.html)).
 
 - subscene:
 
-  Subescena a la que se aplicará el movimiento (por defecto la subescena
-  activa obtenida con
+  Subscene to which the movement is applied (default is the active
+  subscene from
   [`rgl::currentSubscene3d()`](https://dmurdoch.github.io/rgl/dev/reference/subscene3d.html)).
 
 ## Value
 
-No devuelve ningún valor; su efecto es establecer los *callbacks* del
-ratón para desplazar la vista en la escena 3D.
+No value is returned; the function sets mouse callbacks to pan the 3D
+view interactively.
 
 ## Details
 
-De forma predeterminada, **rgl** solo permite rotar y hacer zoom sobre
-los objetos 3D, pero no desplazar la cámara. Esta función amplía dicha
-interacción al permitir trasladar toda la escena en cualquier dirección
-sin modificar la orientación del modelo.
+By default, **rgl** only allows rotation and zoom of 3D objects, but not
+camera translation. This function extends the interaction by enabling
+the user to translate the entire scene in any direction without altering
+the model orientation.
 
-Internamente, la función utiliza *callbacks* del ratón mediante
+Internally, the function uses mouse callbacks via
 [`rgl::rgl.setMouseCallbacks()`](https://dmurdoch.github.io/rgl/dev/reference/callbacks.html),
-de modo que, al presionar y arrastrar el ratón, se actualiza
-dinámicamente la matriz de proyección (`userProjection`) para simular un
-desplazamiento fluido dentro de la escena.
+so that when the mouse button is pressed and dragged, the projection
+matrix (`userProjection`) is dynamically updated to simulate smooth
+movement within the scene.
 
-Al presionar el botón indicado, la función registra la posición inicial
-del cursor (*evento* `begin`). Durante el movimiento del ratón (*evento*
-`update`), calcula el desplazamiento relativo y aplica una
-transformación de traslación sobre `userProjection` mediante
+When the specified button is pressed, the function records the initial
+cursor position (*begin* event). During mouse movement (*update* event),
+it calculates the relative displacement and applies a translation
+transformation on `userProjection` using
 [`rgl::translationMatrix()`](https://dmurdoch.github.io/rgl/dev/reference/matrices.html),
-consiguiendo que la cámara se desplace en la dirección del arrastre y
-permitiendo mover la escena libremente dentro de la ventana.
+allowing the camera to move in the drag direction and enabling free
+movement of the scene in the graphics window.
 
 ## Note
 
-El código original fue desarrollado por **Duncan Murdoch** y forma parte
-del paquete **rgl**, donde no se exporta públicamente. Se incluye aquí
-sin modificaciones para facilitar su uso dentro de este paquete.
+The original code was developed by **Duncan Murdoch** as part of the
+**rgl** package, where it is not exported. It is included here without
+modifications to facilitate use within this package.
 
 ## See also
 
@@ -82,6 +82,6 @@ if (FALSE) { # \dontrun{
 rgl::open3d()
 mesh <- rgl::icosahedron3d()
 rgl::shade3d(mesh, col = "lightblue")
-pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
+pan3d(2) # Activate panning with the right mouse button
 } # }
 ```

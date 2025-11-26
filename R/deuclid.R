@@ -1,22 +1,18 @@
-#' Calcular la distancia euclidiana entre dos puntos
+#' Compute the Euclidean Distance Between Two Points
 #'
-#' Calcula la distancia lineal (euclidiana) a partir de un vector de diferencias entre
-#' las coordenadas de dos puntos.
+#' Computes the linear (Euclidean) distance from a vector of differences between the
+#' coordinates of two points.
 #'
-#' Esta función aplica la fórmula clásica de la distancia euclidiana:
-#' \deqn{d = \sqrt{\sum_i (h_i)^2}}, donde \eqn{h_i} representa la diferencia en cada
-#' coordenada.
+#' @param h A numeric vector containing the differences between the coordinates of
+#' two points (for example, \code{(x2 - x1, y2 - y1, z2 - z1)}).
 #'
-#' @param h Vector numérico que contiene las diferencias entre las coordenadas de
-#' dos puntos (por ejemplo, `c(x2 - x1, y2 - y1, z2 - z1)`).
-#'
-#' @returns Un valor numérico que representa la distancia euclidiana entre los dos puntos.
+#' @returns A numeric value representing the Euclidean distance between the two points.
 #'
 #' @examples
-#' # Diferencia entre dos puntos en 3D
+#' # Differences between two points in 3D
 #' h <- c(3 - 0, 4 - 0, 0 - 0)
 #'
-#' # Calcular la distancia euclidiana
+#' # Compute the Euclidean distance
 #' deuclid(h)
 #'
 #' @export

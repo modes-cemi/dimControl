@@ -1,25 +1,24 @@
-#' Calcular la distancia sobre una superficie 3D
+#' Calculate Distance over a 3D Surface
 #'
-#' Esta función calcula la longitud total de una trayectoria tridimensional, sumando
-#' las distancias euclidianas entre puntos consecutivos. Es útil para estimar la distancia
-#' desarrollada sobre una superficie 3D.
+#' Computes the total length of a 3D path by summing the Euclidean distances between
+#' consecutive points. Useful for estimating the distance traveled over a 3D surface.
 #'
-#' @param segmento Matriz o data frame con tres columnas (`x`, `y`, `z`) que representan
-#' las coordenadas de los puntos consecutivos en el espacio 3D.
+#' @param segmento A matrix or data frame with three columns (`x`, `y`, `z`) representing
+#' the coordinates of consecutive points in 3D space.
 #'
-#' @returns Un valor numérico que indica la distancia total recorrida sobre la superficie.
+#' @returns A numeric value indicating the total distance traveled along the surface.
 #'
 #' @export
 surfaceDistance <- function(segmento) {
-  dx <- diff(segmento[, 1])  # Diferencias en x
-  dy <- diff(segmento[, 2])  # Diferencias en y
-  dz <- diff(segmento[, 3])  # Diferencias en z
+  dx <- diff(segmento[, 1])  # Differences in x
+  dy <- diff(segmento[, 2])  # Differences in y
+  dz <- diff(segmento[, 3])  # Differences in z
 
-  # Distancia euclidea entre cada par de puntos consecutivos
-  distancias <- sqrt(dx^2 + dy^2 + dz^2)
+  # Euclidean distance between consecutive points
+  distances <- sqrt(dx^2 + dy^2 + dz^2)
 
-  # Longitud total del segmento (longitud de arco)
-  longitud <- sum(distancias)
+  # Total length of the path
+  total_length <- sum(distances)
 
-  return(longitud)
+  return(total_length)
 }

@@ -1,6 +1,6 @@
-# Establecer una vista 3D
+# Set a 3D View
 
-Aplica una vista previamente guardada al dispositivo rgl.
+Applies a previously saved 3D view to the active `rgl` device.
 
 ## Usage
 
@@ -12,5 +12,5 @@ setview3d(view)
 
 - view:
 
-  Lista obtenida con
+  A list obtained from
   [`getview3d()`](https://groupmodes.github.io/controlDim/reference/getview3d.md).

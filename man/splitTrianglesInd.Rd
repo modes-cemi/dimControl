@@ -2,45 +2,42 @@
 % Please edit documentation in R/splitTrianglesInd.R
 \name{splitTrianglesInd}
 \alias{splitTrianglesInd}
-\title{Divide una malla en grupos de triángulos conectados}
+\title{Split a Mesh into Connected Triangle Groups}
 \usage{
 splitTrianglesInd(mesh)
 }
 \arguments{
-\item{mesh}{Objeto de clase \code{mesh3d} que contiene la malla a analizar. Debe incluir
-la matriz \code{it}, donde cada columna representa un triángulo definido por los índices
-de sus vértices.}
+\item{mesh}{A \code{mesh3d} object containing the mesh to analyze. It must include the
+\code{it} matrix, where each column represents a triangle defined by the indices of its vertices.}
 }
 \value{
-Una lista donde cada elemento contiene los índices de los triángulos que forman
-una componente conectada de la malla. Si no existen conexiones entre triángulos,
-cada elemento de la lista corresponde a un único triángulo.
+A list where each element contains the indices of triangles forming a connected
+component of the mesh. If there are no connections between triangles, each list
+element corresponds to a single triangle.
 }
 \description{
-Agrupa los triángulos de una malla 3D en subconjuntos independientes según su conectividad,
-es decir, si comparten una arista (dos vértices). Cada componente conectada se
-devuelve como un grupo de índices que corresponden a los triángulos pertenecientes
-a una misma pieza o fragmento de la malla.
+Groups the triangles of a 3D mesh into independent subsets according to connectivity,
+i.e., if they share an edge (two vertices). Each connected component is returned
+as a group of indices corresponding to triangles belonging to the same piece or mesh fragment.
 }
 \details{
-Este procedimiento resulta útil cuando la malla contiene varias partes desconectadas
-(por ejemplo, refuerzos, paneles o fragmentos separados) y se requiere tratarlas
-por separado para análisis geométrico, representación o limpieza de datos.
+This procedure is useful when the mesh contains multiple disconnected parts (e.g.,
+reinforcements, panels, or separate fragments) and they need to be handled separately
+for geometric analysis, visualization, or data cleaning.
 
-El algoritmo sigue los siguientes pasos:
+The algorithm follows these steps:
 \enumerate{
-\item Se valida que la malla contenga la matriz \code{it} con los triángulos.
-\item Para cada vértice, se registran los triángulos en los que aparece.
-\item Se determinan los pares de triángulos que comparten una arista (dos vértices comunes).
-\item Se construye un grafo no dirigido con los triángulos como nodos y las conexiones
-por aristas compartidas como enlaces.
-\item Se identifican las componentes conectadas del grafo mediante \code{igraph::components()}.
+\item Checks that the mesh contains the \code{it} matrix with triangles.
+\item For each vertex, records the triangles in which it appears.
+\item Determines pairs of triangles that share an edge (two common vertices).
+\item Builds an undirected graph with triangles as nodes and shared-edge connections as edges.
+\item Identifies the connected components of the graph using \code{igraph::components()}.
 }
 }
 \examples{
 require(igraph)
 
-# Crear una malla mesh3d con dos triángulos desconectados
+# Create a mesh3d object with two disconnected triangles
 vb <- t(rbind(
   c(0, 0, 0),
   c(1, 0, 0),
@@ -55,9 +52,9 @@ it <- t(rbind(
 ))
 mesh <- rgl::tmesh3d(vertices = vb, indices = it)
 
-# Dividir la malla en grupos de triángulos conectados
-grupos <- splitTrianglesInd(mesh)
-str(grupos)
+# Split the mesh into connected triangle groups
+groups <- splitTrianglesInd(mesh)
+str(groups)
 
 }
 \seealso{

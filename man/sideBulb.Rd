@@ -2,31 +2,30 @@
 % Please edit documentation in R/sideBulb.R
 \name{sideBulb}
 \alias{sideBulb}
-\title{Determinar la orientación del bulbo de un refuerzo}
+\title{Determine the Orientation of a Reinforcement Bulb}
 \usage{
 sideBulb(ref)
 }
 \arguments{
-\item{ref}{Objeto de tipo \code{mesh3d} que representa el refuerzo. Debe contener la
-matriz \code{vb}, donde las filas corresponden a las coordenadas X, Y y Z de los vértices.}
+\item{ref}{A \code{mesh3d} object representing the reinforcement. It must contain the
+\code{vb} matrix, where rows correspond to the X, Y, and Z coordinates of the vertices.}
 }
 \value{
-Lógico que indica la orientación del bulbo:
+Logical indicating the bulb orientation:
 \itemize{
-\item \code{TRUE} si el bulbo sobresale hacia la izquierda.
-\item \code{FALSE} si el bulbo sobresale hacia la derecha.
+\item \code{TRUE} if the bulb protrudes to the left.
+\item \code{FALSE} if the bulb protrudes to the right.
 }
 }
 \description{
-Identifica si el bulbo (la prolongación superior del refuerzo) se encuentra orientado
-hacia la izquierda o hacia la derecha de la cara plana. El criterio se basa en las
-coordenadas de los vértices del objeto 3D (\code{mesh3d}): se divide el refuerzo según
-su coordenada Z media y se compara la posición en X de ambas mitades.
+Identifies whether the bulb (the upper extension of the reinforcement) is oriented
+to the left or right of the flat face. The criterion is based on the vertex coordinates
+of the 3D object (\code{mesh3d}): the reinforcement is divided according to its mean
+Z coordinate, and the X positions of both halves are compared.
 }
 \details{
-La función calcula el valor medio de la coordenada Z para dividir el refuerzo en
-dos partes: la superior (que incluye el bulbo) y la inferior (que no lo contiene).
-Posteriormente, compara las coordenadas X mínimas de ambas partes para determinar
-la orientación. Si el bulbo tiene una posición X menor que la de la parte inferior,
-se considera que está orientado hacia la izquierda.
+The function calculates the mean Z coordinate to split the reinforcement into two
+parts: the upper part (including the bulb) and the lower part (excluding the bulb).
+Then, it compares the minimum X coordinates of both parts to determine the orientation.
+If the bulb has a smaller X position than the lower part, it is considered oriented to the left.
 }

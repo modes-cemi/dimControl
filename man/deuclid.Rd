@@ -2,31 +2,26 @@
 % Please edit documentation in R/deuclid.R
 \name{deuclid}
 \alias{deuclid}
-\title{Calcular la distancia euclidiana entre dos puntos}
+\title{Compute the Euclidean Distance Between Two Points}
 \usage{
 deuclid(h)
 }
 \arguments{
-\item{h}{Vector numérico que contiene las diferencias entre las coordenadas de
-dos puntos (por ejemplo, \code{c(x2 - x1, y2 - y1, z2 - z1)}).}
+\item{h}{A numeric vector containing the differences between the coordinates of
+two points (for example, \code{(x2 - x1, y2 - y1, z2 - z1)}).}
 }
 \value{
-Un valor numérico que representa la distancia euclidiana entre los dos puntos.
+A numeric value representing the Euclidean distance between the two points.
 }
 \description{
-Calcula la distancia lineal (euclidiana) a partir de un vector de diferencias entre
-las coordenadas de dos puntos.
-}
-\details{
-Esta función aplica la fórmula clásica de la distancia euclidiana:
-\deqn{d = \sqrt{\sum_i (h_i)^2}}, donde \eqn{h_i} representa la diferencia en cada
-coordenada.
+Computes the linear (Euclidean) distance from a vector of differences between the
+coordinates of two points.
 }
 \examples{
-# Diferencia entre dos puntos en 3D
+# Differences between two points in 3D
 h <- c(3 - 0, 4 - 0, 0 - 0)
 
-# Calcular la distancia euclidiana
+# Compute the Euclidean distance
 deuclid(h)
 
 }

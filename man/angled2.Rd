@@ -2,40 +2,40 @@
 % Please edit documentation in R/angled2.R
 \name{angled2}
 \alias{angled2}
-\title{Cálculo de ángulos direccionales de vectores normalizados}
+\title{Directional Angle Computation for Normalized Vectors}
 \usage{
 angled2(v, dim, negdir = FALSE, deg = TRUE)
 }
 \arguments{
-\item{v}{Matriz numérica de dimensión \eqn{d \times n}. Cada columna representa un vector normalizado.}
+\item{v}{A numeric matrix of dimension \code{d x n}. Each column represents a normalized vector.}
 
-\item{dim}{Entero que indica la dimensión de referencia, con \eqn{1 \leq \text{dim} \leq d}.}
+\item{dim}{Integer indicating the reference dimension, with \code{1 <= dim <= d}.}
 
-\item{negdir}{Lógico. Si es \code{TRUE}, considera la dirección negativa (ángulo complementario).}
+\item{negdir}{Logical. If \code{TRUE}, considers the negative direction (complementary angle).}
 
-\item{deg}{Lógico. Si es \code{TRUE}, devuelve los ángulos en grados; si es \code{FALSE}, en radianes.}
+\item{deg}{Logical. If \code{TRUE}, returns angles in degrees; if \code{FALSE}, returns them in radians.}
 }
 \value{
-Un vector numérico con los ángulos correspondientes a cada vector de entrada.
+A numeric vector containing the computed angles for each input vector.
 }
 \description{
-Calcula el ángulo direccional entre un conjunto de vectores normalizados y una
-dirección de referencia en una dimensión específica. Permite obtener el resultado
-en grados o radianes, y considerar la dirección opuesta si se desea.
+Computes the directional angle between a set of normalized vectors and a reference
+direction in a specific dimension. The function allows returning the result in
+degrees or radians and optionally considering the opposite direction.
 }
 \examples{
-# Tres vectores normalizados en las direcciones X, Y y Z
+# Three normalized vectors in the X, Y, and Z directions
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)
 
-# Ángulo respecto al eje X
+# Angle with respect to the X axis
 angled2(v, dim = 1)
 
-# Ángulo respecto al eje Y
+# Angle with respect to the Y axis
 angled2(v, dim = 2)
 
-# Ángulo respecto al eje Z
+# Angle with respect to the Z axis
 angled2(v, dim = 3)
 
 }

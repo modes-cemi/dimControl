@@ -1,28 +1,28 @@
-#' Calcular los límites espaciales (bounding box) de una malla 3D
+#' Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 #'
-#' Determina las coordenadas mínimas y máximas de los vértices de una malla 3D, devolviendo
-#' una matriz con los valores extremos en los ejes `X`, `Y` y `Z`.
+#' Computes the minimum and maximum coordinates of the vertices of a 3D mesh, returning
+#' a matrix with the extreme values along the `X`, `Y`, and `Z` axes.
 #'
-#' @param x Objeto de clase `mesh3d` que contiene los vértices de la malla en el componente `vb`.
+#' @param x A `mesh3d` object containing the mesh vertices in the `vb` component.
 #'
 #' @returns
-#' Una matriz de 3 filas y 2 columnas con los valores mínimos y máximos de las coordenadas
-#' de los vértices:
-#' - Cada fila corresponde a un eje (`x`, `y`, `z`).
-#' - La primera columna (`min`) contiene los valores mínimos.
-#' - La segunda columna (`max`) contiene los valores máximos.
+#' A matrix with 3 rows and 2 columns containing the minimum and maximum coordinate
+#' values of the mesh vertices:
+#' - Each row corresponds to an axis (`X`, `Y`, `Z`).
+#' - The first column (`min`) contains the minimum values.
+#' - The second column (`max`) contains the maximum values.
 #'
 #' @details
-#' Internamente, la función convierte las coordenadas homogéneas de `x$vb` en coordenadas
-#' euclidianas mediante `rgl::asEuclidean2()` y calcula los rangos por eje con `apply(..., range)`.
+#' Internally, the function converts homogeneous coordinates in `x$vb` to Euclidean
+#' coordinates using `rgl::asEuclidean2()`, and computes per-axis ranges using `apply(..., range)`.
 #'
 #' @seealso `rgl::asEuclidean2()`
 #'
 #' @examples
-#' # Crear una malla cúbica
+#' # Create a cubic mesh
 #' cube <- rgl::cube3d()
 #'
-#' # Calcular su bounding box
+#' # Compute its bounding box
 #' bbox(cube)
 #'
 #' @export
@@ -30,6 +30,6 @@ bbox <- function(x) {
   t(matrix(
     apply(rgl::asEuclidean2(x$vb), 1, range),
     nrow = 2,
-    dimnames = list(c("min", "max"), c("x", "y", "z"))
+    dimnames = list(c("min", "max"), c("X", "Y", "Z"))
   ))
 }

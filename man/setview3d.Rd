@@ -2,13 +2,13 @@
 % Please edit documentation in R/setview3d.R
 \name{setview3d}
 \alias{setview3d}
-\title{Establecer una vista 3D}
+\title{Set a 3D View}
 \usage{
 setview3d(view)
 }
 \arguments{
-\item{view}{Lista obtenida con \code{getview3d()}.}
+\item{view}{A list obtained from \code{getview3d()}.}
 }
 \description{
-Aplica una vista previamente guardada al dispositivo rgl.
+Applies a previously saved 3D view to the active \code{rgl} device.
 }

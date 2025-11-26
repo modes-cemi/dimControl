@@ -1,32 +1,29 @@
-#' Divide una malla en grupos de triángulos conectados
+#' Split a Mesh into Connected Triangle Groups
 #'
-#' Agrupa los triángulos de una malla 3D en subconjuntos independientes según su conectividad,
-#' es decir, si comparten una arista (dos vértices). Cada componente conectada se
-#' devuelve como un grupo de índices que corresponden a los triángulos pertenecientes
-#' a una misma pieza o fragmento de la malla.
+#' Groups the triangles of a 3D mesh into independent subsets according to connectivity,
+#' i.e., if they share an edge (two vertices). Each connected component is returned
+#' as a group of indices corresponding to triangles belonging to the same piece or mesh fragment.
 #'
-#' Este procedimiento resulta útil cuando la malla contiene varias partes desconectadas
-#' (por ejemplo, refuerzos, paneles o fragmentos separados) y se requiere tratarlas
-#' por separado para análisis geométrico, representación o limpieza de datos.
+#' This procedure is useful when the mesh contains multiple disconnected parts (e.g.,
+#' reinforcements, panels, or separate fragments) and they need to be handled separately
+#' for geometric analysis, visualization, or data cleaning.
 #'
-#' @param mesh Objeto de clase `mesh3d` que contiene la malla a analizar. Debe incluir
-#' la matriz `it`, donde cada columna representa un triángulo definido por los índices
-#' de sus vértices.
+#' @param mesh A `mesh3d` object containing the mesh to analyze. It must include the
+#' `it` matrix, where each column represents a triangle defined by the indices of its vertices.
 #'
 #' @returns
-#' Una lista donde cada elemento contiene los índices de los triángulos que forman
-#' una componente conectada de la malla. Si no existen conexiones entre triángulos,
-#' cada elemento de la lista corresponde a un único triángulo.
+#' A list where each element contains the indices of triangles forming a connected
+#' component of the mesh. If there are no connections between triangles, each list
+#' element corresponds to a single triangle.
 #'
 #' @details
-#' El algoritmo sigue los siguientes pasos:
+#' The algorithm follows these steps:
 #' \enumerate{
-#'   \item Se valida que la malla contenga la matriz `it` con los triángulos.
-#'   \item Para cada vértice, se registran los triángulos en los que aparece.
-#'   \item Se determinan los pares de triángulos que comparten una arista (dos vértices comunes).
-#'   \item Se construye un grafo no dirigido con los triángulos como nodos y las conexiones
-#'         por aristas compartidas como enlaces.
-#'   \item Se identifican las componentes conectadas del grafo mediante `igraph::components()`.
+#'   \item Checks that the mesh contains the `it` matrix with triangles.
+#'   \item For each vertex, records the triangles in which it appears.
+#'   \item Determines pairs of triangles that share an edge (two common vertices).
+#'   \item Builds an undirected graph with triangles as nodes and shared-edge connections as edges.
+#'   \item Identifies the connected components of the graph using `igraph::components()`.
 #' }
 #'
 #' @seealso `igraph::graph()`, `igraph::components()`
@@ -34,7 +31,7 @@
 #' @examples
 #' require(igraph)
 #'
-#' # Crear una malla mesh3d con dos triángulos desconectados
+#' # Create a mesh3d object with two disconnected triangles
 #' vb <- t(rbind(
 #'   c(0, 0, 0),
 #'   c(1, 0, 0),
@@ -49,48 +46,48 @@
 #' ))
 #' mesh <- rgl::tmesh3d(vertices = vb, indices = it)
 #'
-#' # Dividir la malla en grupos de triángulos conectados
-#' grupos <- splitTrianglesInd(mesh)
-#' str(grupos)
+#' # Split the mesh into connected triangle groups
+#' groups <- splitTrianglesInd(mesh)
+#' str(groups)
 #'
 #' @importFrom igraph graph components
 #'
 #' @export
 splitTrianglesInd <- function(mesh) {
   if (!"it" %in% names(mesh))
-    stop("El objeto mesh no es una malla triangular.")
+    stop("The mesh object is not a triangular mesh.")
 
-  tris  <- t(mesh$it)                 # cada fila = triángulo
+  tris  <- t(mesh$it)                 # each row = triangle
   n_tri <- nrow(tris)
 
-  # Lista de triángulos vecinos por vértice
+  # List of neighboring triangles per vertex
   vert2tris <- vector("list", max(tris))
   for (i in seq_len(n_tri))
     for (v in tris[i, ])
       vert2tris[[v]] <- c(vert2tris[[v]], i)
 
-  # Recopilar aristas (comparten 2 o más vértices)
+  # Collect edges (share 2 or more vertices)
   edge_list <- vector("list", 0)
   for (i in seq_len(n_tri)) {
-    vecinos <- unique(unlist(vert2tris[tris[i, ]]))
-    vecinos <- vecinos[vecinos > i]
-    for (j in vecinos)
+    neighbors <- unique(unlist(vert2tris[tris[i, ]]))
+    neighbors <- neighbors[neighbors > i]
+    for (j in neighbors)
       if (length(intersect(tris[i, ], tris[j, ])) >= 2)
         edge_list[[length(edge_list) + 1]] <- c(i, j)
   }
 
-  # Grafo con TODOS los triángulos como vértices
-  if (length(edge_list) == 0)                 # todos aislados
+  # Graph with all triangles as vertices
+  if (length(edge_list) == 0)                 # all isolated
     return(as.list(seq_len(n_tri)))
 
-  edge_mat <- do.call(rbind, edge_list)       # matriz 2-columnas
+  edge_mat <- do.call(rbind, edge_list)       # 2-column matrix
   g <- igraph::graph(
-    edges = as.vector(t(edge_mat)),           # vector c(v1,v2,v3,v4,.)
+    edges = as.vector(t(edge_mat)),           # vector c(v1,v2,v3,v4,...)
     n     = n_tri,
     directed = FALSE)
 
   comps <- igraph::components(g)
 
-  # Lista de índices por componente conectada
+  # List of indices per connected component
   split(seq_len(n_tri), comps$membership)
 }

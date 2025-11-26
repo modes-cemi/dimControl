@@ -2,58 +2,57 @@
 % Please edit documentation in R/pan3d.R
 \name{pan3d}
 \alias{pan3d}
-\title{Desplazamiento interactivo de la vista 3D}
+\title{Interactive 3D View Panning}
 \usage{
 pan3d(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev))
 }
 \arguments{
-\item{button}{Entero que indica el botón del ratón usado para el desplazamiento:
+\item{button}{Integer indicating the mouse button used for panning:
 \itemize{
-\item \code{1}: botón izquierdo
-\item \code{2}: botón derecho
-\item \code{3}: botón central (rueda)
+\item \code{1}: left button
+\item \code{2}: right button
+\item \code{3}: middle button (wheel)
 }}
 
-\item{dev}{Identificador del dispositivo RGL (por defecto \code{rgl::cur3d()}).}
+\item{dev}{RGL device ID (default \code{rgl::cur3d()}).}
 
-\item{subscene}{Subescena a la que se aplicará el movimiento (por defecto la subescena activa
-obtenida con \code{rgl::currentSubscene3d()}).}
+\item{subscene}{Subscene to which the movement is applied (default is the active
+subscene from \code{rgl::currentSubscene3d()}).}
 }
 \value{
-No devuelve ningún valor; su efecto es establecer los \emph{callbacks} del ratón
-para desplazar la vista en la escena 3D.
+No value is returned; the function sets mouse callbacks to pan the 3D
+view interactively.
 }
 \description{
-Activa el desplazamiento de la cámara en una escena 3D de \strong{rgl}, permitiendo mover
-la vista libremente dentro de la ventana gráfica al arrastrar el ratón con el botón
-indicado.
+Enables camera panning in an \strong{rgl} 3D scene, allowing the user to move the view
+freely within the graphics window by dragging the mouse with the specified button.
 }
 \details{
-De forma predeterminada, \strong{rgl} solo permite rotar y hacer zoom sobre los objetos
-3D, pero no desplazar la cámara. Esta función amplía dicha interacción al permitir
-trasladar toda la escena en cualquier dirección sin modificar la orientación del modelo.
+By default, \strong{rgl} only allows rotation and zoom of 3D objects, but not camera
+translation. This function extends the interaction by enabling the user to translate
+the entire scene in any direction without altering the model orientation.
 
-Internamente, la función utiliza \emph{callbacks} del ratón mediante \code{rgl::rgl.setMouseCallbacks()},
-de modo que, al presionar y arrastrar el ratón, se actualiza dinámicamente la matriz
-de proyección (\code{userProjection}) para simular un desplazamiento fluido dentro de la escena.
+Internally, the function uses mouse callbacks via \code{rgl::rgl.setMouseCallbacks()},
+so that when the mouse button is pressed and dragged, the projection matrix (\code{userProjection})
+is dynamically updated to simulate smooth movement within the scene.
 
-Al presionar el botón indicado, la función registra la posición inicial del cursor
-(\emph{evento} \code{begin}). Durante el movimiento del ratón (\emph{evento} \code{update}), calcula el
-desplazamiento relativo y aplica una transformación de traslación sobre \code{userProjection}
-mediante \code{rgl::translationMatrix()}, consiguiendo que la cámara se desplace en la
-dirección del arrastre y permitiendo mover la escena libremente dentro de la ventana.
+When the specified button is pressed, the function records the initial cursor position
+(\emph{begin} event). During mouse movement (\emph{update} event), it calculates the relative
+displacement and applies a translation transformation on \code{userProjection} using
+\code{rgl::translationMatrix()}, allowing the camera to move in the drag direction and
+enabling free movement of the scene in the graphics window.
 }
 \note{
-El código original fue desarrollado por \strong{Duncan Murdoch} y forma parte del
-paquete \strong{rgl}, donde no se exporta públicamente. Se incluye aquí sin modificaciones
-para facilitar su uso dentro de este paquete.
+The original code was developed by \strong{Duncan Murdoch} as part of the \strong{rgl}
+package, where it is not exported. It is included here without modifications to
+facilitate use within this package.
 }
 \examples{
 \dontrun{
 rgl::open3d()
 mesh <- rgl::icosahedron3d()
 rgl::shade3d(mesh, col = "lightblue")
-pan3d(2) # Activa el desplazamiento con el botón derecho del ratón
+pan3d(2) # Activate panning with the right mouse button
 }
 
 }

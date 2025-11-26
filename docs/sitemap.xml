@@ -5,13 +5,9 @@
 <url><loc>https://groupmodes.github.io/controlDim/LICENSE-text.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/LICENSE.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/angled2.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/axis3.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/bbox.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/cleanMesh3d_rgl.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/deuclid.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/findModes.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/fplot3d.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/fshade3d.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/getBoundarySegments3.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/getview3d.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/index.html</loc></url>
@@ -20,8 +16,6 @@
 <url><loc>https://groupmodes.github.io/controlDim/reference/sideBulb.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/sortSegments2.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/splitTrianglesInd.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/splot3d.html</loc></url>
-<url><loc>https://groupmodes.github.io/controlDim/reference/sshade3d.html</loc></url>
 <url><loc>https://groupmodes.github.io/controlDim/reference/surfaceDistance.html</loc></url>
 </urlset>
 

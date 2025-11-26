@@ -2,44 +2,42 @@
 % Please edit documentation in R/findModes.R
 \name{findModes}
 \alias{findModes}
-\title{Calcular modas de un conjunto de datos}
+\title{Detect Modes in a Dataset}
 \usage{
 findModes(x, bw = 2, Q1 = 0.95, plot = TRUE)
 }
 \arguments{
-\item{x}{Vector numérico. Los datos sobre los que se calcularán las modas.}
+\item{x}{Numeric vector. The data for which modes will be calculated.}
 
-\item{bw}{Número. Ancho de banda (\emph{bandwidth}) para la estimación de densidad.
-Por defecto \code{bw = 2}.}
+\item{bw}{Numeric. Bandwidth for the density estimation. Default is \code{bw = 2}.}
 
-\item{Q1}{Número entre 0 y 1. Percentil de la densidad que se usa para filtrar
-los picos más relevantes. Por defecto \code{Q1 = 0.95}.}
+\item{Q1}{Numeric between 0 and 1. Percentile of the density used to filter the
+most relevant peaks. Default is \code{Q1 = 0.95}.}
 
-\item{plot}{Lógico. Si es \code{TRUE}, se genera un gráfico de la densidad con los picos
-detectados. Por defecto es \code{TRUE}.}
+\item{plot}{Logical. If \code{TRUE}, generates a plot of the density with detected modes.
+Default is \code{TRUE}.}
 }
 \value{
-Una matriz con tantas filas como modas detectadas y dos columnas: \code{min}
-y \code{max}, que representan el rango en X de cada moda.
+A matrix with one row per detected mode and two columns (\code{min} and \code{max})
+representing the X-axis range of each mode.
 }
 \description{
-Esta función detecta los picos (modas) en un conjunto de datos \code{x} usando estimación
-de densidad. Para cada moda, determina el rango en el eje X donde la densidad desciende
-hacia los mínimos adyacentes. También permite representar la densidad y los picos
-detectados.
+Detects peaks (modes) in a numeric dataset \code{x} using kernel density estimation.
+For each mode, it determines the range along the X-axis where the density decreases
+toward the adjacent minima. The function can also plot the density and the detected modes.
 }
 \examples{
-set.seed(123) # Semilla
+set.seed(123) # Seed
 x <- c(
   rnorm(200, mean = 2, sd = 0.3),
   rnorm(5, mean = 3.5, sd = 0.1),
   rnorm(200, mean = 5, sd = 0.3)
 )
 
-# Calcular y representar modas
-modas <- findModes(x, bw = 0.2, Q1 = 0.5, plot = TRUE)
+# Compute and plot modes
+modes <- findModes(x, bw = 0.2, Q1 = 0.5, plot = TRUE)
 
-# Rangos en X de cada moda
-modas
+# X-axis ranges for each mode
+modes
 
 }

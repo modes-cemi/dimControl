@@ -2,13 +2,13 @@
 % Please edit documentation in R/getview3d.R
 \name{getview3d}
 \alias{getview3d}
-\title{Obtener la vista 3D actual}
+\title{Get the Current 3D View}
 \usage{
 getview3d()
 }
 \value{
-Lista con \code{zoom}, \code{userMatrix} y \code{userProjection}.
+A list containing the current \code{zoom}, \code{userMatrix}, and \code{userProjection}.
 }
 \description{
-Recupera los parámetros actuales de la vista 3D del dispositivo activo de rgl.
+Retrieves the current 3D view parameters from the active \code{rgl} device.
 }

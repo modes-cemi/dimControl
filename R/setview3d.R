@@ -1,8 +1,8 @@
-#' Establecer una vista 3D
+#' Set a 3D View
 #'
-#' Aplica una vista previamente guardada al dispositivo rgl.
+#' Applies a previously saved 3D view to the active `rgl` device.
 #'
-#' @param view Lista obtenida con `getview3d()`.
+#' @param view A list obtained from `getview3d()`.
 #'
 #' @export
 setview3d <- function(view) {

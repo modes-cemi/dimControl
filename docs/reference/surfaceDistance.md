@@ -1,9 +1,8 @@
-# Calcular la distancia sobre una superficie 3D
+# Calculate Distance over a 3D Surface
 
-Esta función calcula la longitud total de una trayectoria
-tridimensional, sumando las distancias euclidianas entre puntos
-consecutivos. Es útil para estimar la distancia desarrollada sobre una
-superficie 3D.
+Computes the total length of a 3D path by summing the Euclidean
+distances between consecutive points. Useful for estimating the distance
+traveled over a 3D surface.
 
 ## Usage
 
@@ -15,10 +14,10 @@ surfaceDistance(segmento)
 
 - segmento:
 
-  Matriz o data frame con tres columnas (`x`, `y`, `z`) que representan
-  las coordenadas de los puntos consecutivos en el espacio 3D.
+  A matrix or data frame with three columns (`x`, `y`, `z`) representing
+  the coordinates of consecutive points in 3D space.
 
 ## Value
 
-Un valor numérico que indica la distancia total recorrida sobre la
-superficie.
+A numeric value indicating the total distance traveled along the
+surface.

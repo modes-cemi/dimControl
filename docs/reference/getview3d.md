@@ -1,7 +1,6 @@
-# Obtener la vista 3D actual
+# Get the Current 3D View
 
-Recupera los parámetros actuales de la vista 3D del dispositivo activo
-de rgl.
+Retrieves the current 3D view parameters from the active `rgl` device.
 
 ## Usage
 
@@ -11,4 +10,5 @@ getview3d()
 
 ## Value
 
-Lista con `zoom`, `userMatrix` y `userProjection`.
+A list containing the current `zoom`, `userMatrix`, and
+`userProjection`.

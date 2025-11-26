@@ -2,35 +2,35 @@
 % Please edit documentation in R/bbox.R
 \name{bbox}
 \alias{bbox}
-\title{Calcular los límites espaciales (bounding box) de una malla 3D}
+\title{Compute the Spatial Bounds (Bounding Box) of a 3D Mesh}
 \usage{
 bbox(x)
 }
 \arguments{
-\item{x}{Objeto de clase \code{mesh3d} que contiene los vértices de la malla en el componente \code{vb}.}
+\item{x}{A \code{mesh3d} object containing the mesh vertices in the \code{vb} component.}
 }
 \value{
-Una matriz de 3 filas y 2 columnas con los valores mínimos y máximos de las coordenadas
-de los vértices:
+A matrix with 3 rows and 2 columns containing the minimum and maximum coordinate
+values of the mesh vertices:
 \itemize{
-\item Cada fila corresponde a un eje (\code{x}, \code{y}, \code{z}).
-\item La primera columna (\code{min}) contiene los valores mínimos.
-\item La segunda columna (\code{max}) contiene los valores máximos.
+\item Each row corresponds to an axis (\code{X}, \code{Y}, \code{Z}).
+\item The first column (\code{min}) contains the minimum values.
+\item The second column (\code{max}) contains the maximum values.
 }
 }
 \description{
-Determina las coordenadas mínimas y máximas de los vértices de una malla 3D, devolviendo
-una matriz con los valores extremos en los ejes \code{X}, \code{Y} y \code{Z}.
+Computes the minimum and maximum coordinates of the vertices of a 3D mesh, returning
+a matrix with the extreme values along the \code{X}, \code{Y}, and \code{Z} axes.
 }
 \details{
-Internamente, la función convierte las coordenadas homogéneas de \code{x$vb} en coordenadas
-euclidianas mediante \code{rgl::asEuclidean2()} y calcula los rangos por eje con \code{apply(..., range)}.
+Internally, the function converts homogeneous coordinates in \code{x$vb} to Euclidean
+coordinates using \code{rgl::asEuclidean2()}, and computes per-axis ranges using \code{apply(..., range)}.
 }
 \examples{
-# Crear una malla cúbica
+# Create a cubic mesh
 cube <- rgl::cube3d()
 
-# Calcular su bounding box
+# Compute its bounding box
 bbox(cube)
 
 }

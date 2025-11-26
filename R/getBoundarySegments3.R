@@ -1,43 +1,39 @@
-#' Extrae el borde de una malla tridimensional
+#' Extract the Boundary of a 3D Mesh
 #'
-#' Identifica los bordes no compartidos de una malla 3D, es decir, aquellos que pertenecen
-#' a una sola cara. Estos bordes pueden devolverse como índices de los vértices frontera
-#' o como una malla `mesh3d` formada por los segmentos correspondientes.
+#' Identifies the unshared edges of a 3D mesh, i.e., edges belonging to only one face.
+#' These edges can be returned either as vertex indices or as a `mesh3d` object consisting
+#' of the corresponding segments.
 #'
-#' Esta función es una adaptación de `getBoundary3d()` del paquete `rgl`. A diferencia
-#' de la versión original, que identifica los bordes frontera mediante la detección
-#' de duplicados en las aristas, esta implementación utiliza una tabla de frecuencias
-#' (`data.table`) para contabilizar cuántas veces aparece cada borde en las caras de
-#' la malla. Los bordes que aparecen una sola vez se consideran frontera. Además, se
-#' añade la opción de devolver los índices de los vértices frontera o una malla `mesh3d`
-#' con los segmentos correspondientes, con la posibilidad de aplicar una simplificación
-#' adicional.
+#' This function is an adaptation of `rgl::getBoundary3d()`. Unlike the original version,
+#' which detects boundary edges by finding duplicates in the edge list, this implementation
+#' uses a frequency table (`data.table`) to count how many times each edge appears in the mesh faces.
+#' Edges that appear only once are considered boundary edges. Additionally, the function
+#' allows returning either the vertex indices of the boundary edges or a `mesh3d` mesh
+#' of the segments, with an optional additional simplification.
 #'
-#' @param mesh Objeto de clase `mesh3d` que representa la malla 3D.
-#' @param malla Lógico. Si es `TRUE`, devuelve un objeto `mesh3d` que contiene los
-#' segmentos frontera; si es `FALSE`, devuelve únicamente los índices de los vértices
-#' que forman los bordes frontera. Por defecto es `FALSE`.
-#' @param simplify Lógico. Si es `TRUE` y `malla = TRUE`, simplifica la malla resultante
-#' mediante `cleanMesh3d_rgl()`. Por defecto es `TRUE`.
+#' @param mesh A `mesh3d` object representing the 3D mesh.
+#' @param malla Logical. If `TRUE`, returns a `mesh3d` object containing the boundary segments;
+#' if `FALSE`, returns only the vertex indices forming the boundary edges. Default is `FALSE`.
+#' @param simplify Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting mesh
+#' using `cleanMesh3d_rgl()`. Default is `TRUE`.
 #'
-#' @returns Si `malla = FALSE`, devuelve una matriz con los índices de los vértices
-#' que forman los bordes frontera. Si `malla = TRUE`, devuelve una malla de tipo `mesh3d`
-#' formada por dichos bordes.
+#' @returns If `malla = FALSE`, a matrix with the vertex indices forming the boundary edges.
+#' If `malla = TRUE`, a `mesh3d` object representing the boundary segments.
 #'
 #' @seealso `rgl::getBoundary3d()`, `cleanMesh3d_rgl()`
 #'
 #' @examples
-#' # Obtener el borde de un cubo y representarlo
+#' # Extract the boundary of a cube and visualize it
 #' require(data.table)
 #'
-#' # Crear un cubo y eliminar dos caras
+#' # Create a cube and remove two faces
 #' x <- rgl::cube3d(col = "lightblue")
 #' x$ib <- x$ib[, -(1:2)]
 #'
-#' # Generar el borde
+#' # Generate the boundary
 #' b <- getBoundarySegments3(x, malla = TRUE)
 #'
-#' # Representar la malla y su borde
+#' # Visualize the mesh and its boundary
 #' rgl::open3d()
 #' rgl::shade3d(x, alpha = 0.2)
 #' rgl::shade3d(b, col = "red", lwd = 2)
@@ -55,26 +51,26 @@ getBoundarySegments3 <- function(mesh, malla = FALSE, simplify = TRUE) {
     edges <- cbind(edges, mesh$ib[1:2,], mesh$ib[2:3,], mesh$ib[3:4,], mesh$ib[c(4,1),])
   if (!ncol(edges)) return(list(edges))
 
-  # Ordenar los extremos de cada arista para volverlas no dirigidas
+  # Sort the endpoints of each edge to make them undirected
   minv <- pmin(edges[1,], edges[2,])
   maxv <- pmax(edges[1,], edges[2,])
 
-  # data.table de extremos de cada arista
+  # data.table of edge endpoints
   dt_edges <- data.table(v1 = minv, v2 = maxv)
 
-  # Contar frecuencia de cada arista
+  # Count frequency of each edge
   counts <- dt_edges[, .N, by = .(v1, v2)]
 
-  # Filtrar aristas que aparecen una sola vez
+  # Filter edges that appear only once
   boundary_edges <- counts[N == 1]
 
-  # Seleccionar las que cumplen la condición
+  # Select edges satisfying the condition
   keep <- paste(dt_edges$v1, dt_edges$v2) %in% paste(boundary_edges$v1, boundary_edges$v2)
 
-  # Aristas de borde
+  # Boundary edges
   boundary <- edges[, keep, drop = FALSE]
 
-  # Si malla = TRUE, crear mesh3d con esos segmentos
+  # If malla = TRUE, create a mesh3d with these segments
   if (malla) {
     result <- rgl::mesh3d(vertices = mesh$vb, segments = boundary)
     if (simplify)
@@ -82,6 +78,6 @@ getBoundarySegments3 <- function(mesh, malla = FALSE, simplify = TRUE) {
     return(result)
   }
 
-  # Si no, devolver los índices de los segmentos frontera
+  # Otherwise, return the indices of boundary segments
   return(boundary)
 }

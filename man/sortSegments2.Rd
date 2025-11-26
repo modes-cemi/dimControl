@@ -2,23 +2,23 @@
 % Please edit documentation in R/sortSegments2.R
 \name{sortSegments2}
 \alias{sortSegments2}
-\title{Reordenar segmentos conectados de un borde}
+\title{Reorder Connected Edge Segments}
 \usage{
 sortSegments2(edges)
 }
 \arguments{
-\item{edges}{Matriz numérica de 2 filas y N columnas, donde cada columna representa
-un segmento del borde con sus dos extremos. La primera fila contiene el primer vértice
-de cada segmento y la segunda fila el segundo vértice.}
+\item{edges}{Numeric matrix with 2 rows and N columns, where each column represents
+a boundary segment with its two endpoints. The first row contains the first vertex
+of each segment, and the second row the second vertex.}
 }
 \value{
-Matriz de 2 filas y N columnas con los segmentos reordenados de forma que cada
-segmento esté conectado al siguiente. Si hay segmentos desconectados, la secuencia
-se interrumpe en el primer hueco.
+A numeric matrix with 2 rows and N columns containing the segments reordered
+so that each segment is connected to the next. If there are disconnected segments,
+the sequence stops at the first gap.
 }
 \description{
-Esta función reordena los segmentos de un borde (aristas) de manera que cada segmento
-esté conectado al siguiente. Se basa en la idea de la función \code{getBoundary3d} del paquete
-\code{rgl}, pero ha sido modificada para asegurar que la secuencia de segmentos sea correcta
-en casos donde el borde original no estaba ordenado adecuadamente.
+Reorders the segments of a boundary (edges) so that each segment is connected to
+the next one. This function is based on the idea of \code{getBoundary3d} from the \code{rgl}
+package but has been modified to ensure the segment sequence is correct even when
+the original boundary is not properly ordered.
 }

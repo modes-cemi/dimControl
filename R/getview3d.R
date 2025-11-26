@@ -1,8 +1,8 @@
-#' Obtener la vista 3D actual
+#' Get the Current 3D View
 #'
-#' Recupera los parámetros actuales de la vista 3D del dispositivo activo de rgl.
+#' Retrieves the current 3D view parameters from the active `rgl` device.
 #'
-#' @returns Lista con `zoom`, `userMatrix` y `userProjection`.
+#' @returns A list containing the current `zoom`, `userMatrix`, and `userProjection`.
 #'
 #' @export
 getview3d <- function() {

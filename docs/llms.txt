@@ -1,7 +1,7 @@
 # controlDim
 
-🔗 [Visita la documentación web de
-controlDim](https://groupmodes.github.io/controlDim/)
+🔗 [Visit the controlDim web
+documentation](https://groupmodes.github.io/controlDim/)
 
 The controlDim package provides a set of tools for dimensional control
 and geometric analysis of steel panels.
@@ -105,27 +105,27 @@ Coruña.
 ## All functions
 
 - [`angled2()`](https://groupmodes.github.io/controlDim/reference/angled2.md)
-  : Cálculo de ángulos direccionales de vectores normalizados
+  : Directional Angle Computation for Normalized Vectors
 - [`bbox()`](https://groupmodes.github.io/controlDim/reference/bbox.md)
-  : Calcular los límites espaciales (bounding box) de una malla 3D
+  : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 - [`deuclid()`](https://groupmodes.github.io/controlDim/reference/deuclid.md)
-  : Calcular la distancia euclidiana entre dos puntos
+  : Compute the Euclidean Distance Between Two Points
 - [`findModes()`](https://groupmodes.github.io/controlDim/reference/findModes.md)
-  : Calcular modas de un conjunto de datos
+  : Detect Modes in a Dataset
 - [`getBoundarySegments3()`](https://groupmodes.github.io/controlDim/reference/getBoundarySegments3.md)
-  : Extrae el borde de una malla tridimensional
+  : Extract the Boundary of a 3D Mesh
 - [`getview3d()`](https://groupmodes.github.io/controlDim/reference/getview3d.md)
-  : Obtener la vista 3D actual
+  : Get the Current 3D View
 - [`pan3d()`](https://groupmodes.github.io/controlDim/reference/pan3d.md)
-  : Desplazamiento interactivo de la vista 3D
+  : Interactive 3D View Panning
 - [`setview3d()`](https://groupmodes.github.io/controlDim/reference/setview3d.md)
-  : Establecer una vista 3D
+  : Set a 3D View
 - [`sideBulb()`](https://groupmodes.github.io/controlDim/reference/sideBulb.md)
-  : Determinar la orientación del bulbo de un refuerzo
+  : Determine the Orientation of a Reinforcement Bulb
 - [`sortSegments2()`](https://groupmodes.github.io/controlDim/reference/sortSegments2.md)
-  : Reordenar segmentos conectados de un borde
+  : Reorder Connected Edge Segments
 - [`splitTrianglesInd()`](https://groupmodes.github.io/controlDim/reference/splitTrianglesInd.md)
-  : Divide una malla en grupos de triángulos conectados
+  : Split a Mesh into Connected Triangle Groups
 - [`surfaceDistance()`](https://groupmodes.github.io/controlDim/reference/surfaceDistance.md)
-  : Calcular la distancia sobre una superficie 3D
+  : Calculate Distance over a 3D Surface
 
