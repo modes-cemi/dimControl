@@ -15,8 +15,8 @@ The controlDim package provides a set of tools for dimensional control
 and geometric analysis of steel panels.
 
 It is designed to be used together with packages such as rgl, misc3d,
-and Rvcg, offering complementary functions that support the processing,
-analysis, and visualization of 3D data.
+and Rvcg, offering complementary functions that support the processing
+and analysis of 3D data.
 
 These tools assist in different stages of the dimensional inspection
 workflow, such as:
@@ -26,8 +26,6 @@ workflow, such as:
 - Calculating linear and developed dimensions to verify the panel’s
   conformity with expected measurements.
 - Separating components of the estimated mesh for individual evaluation.
-- Generating 3D visualizations that facilitate the interpretation of
-  geometric features and inspection results.
 - Computing angles to analyze the alignment between different components
   of the panel.
 
