@@ -53,6 +53,6 @@ modes <- findModes(x, bw = 0.2, Q1 = 0.5, plot = TRUE)
 # X-axis ranges for each mode
 modes
 #>             min      max
-#> moda1 0.7072493 3.156928
-#> moda2 3.9328437 6.371437
+#> mode1 0.7072493 3.156928
+#> mode2 3.9328437 6.371437
 ```

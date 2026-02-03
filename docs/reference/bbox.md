@@ -47,7 +47,7 @@ cube <- rgl::cube3d()
 # Compute its bounding box
 bbox(cube)
 #>   min max
-#> x  -1   1
-#> y  -1   1
-#> z  -1   1
+#> X  -1   1
+#> Y  -1   1
+#> Z  -1   1
 ```
