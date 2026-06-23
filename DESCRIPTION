@@ -1,4 +1,4 @@
-Package: controlDim
+Package: dimControl
 Title: Dimensional Control Tools for Steel Panels
 Version: 0.1.0
 Authors@R: c(
@@ -23,9 +23,9 @@ Imports:
     igraph
 Suggests:
     rgl
-URL: https://github.com/GroupMODES/controlDim,
-     https://groupmodes.github.io/controlDim/
-BugReports: https://github.com/GroupMODES/controlDim/issues
+URL: https://github.com/modes-cemi/dimControl,
+     https://modes-cemi.github.io/dimControl/
+BugReports: https://github.com/modes-cemi/dimControl/issues
 Depends: 
     R (>= 3.5)
 LazyData: false

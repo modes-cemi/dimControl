@@ -1,4 +1,4 @@
 # License
 
     YEAR: 2025
-    COPYRIGHT HOLDER: controlDim authors
+    COPYRIGHT HOLDER: dimControl authors

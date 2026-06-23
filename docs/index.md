@@ -1,9 +1,9 @@
-# controlDim
+# dimControl
 
-🔗 [Visit the controlDim web
-documentation](https://groupmodes.github.io/controlDim/)
+🔗 [Visit the dimControl web
+documentation](https://modes-cemi.github.io/dimControl/)
 
-The controlDim package provides a set of tools for dimensional control
+The dimControl package provides a set of tools for dimensional control
 and geometric analysis of steel panels.
 
 It is designed to be used together with packages such as rgl, misc3d,
@@ -23,12 +23,12 @@ workflow, such as:
 
 ## Installation
 
-You can install the development version of controlDim from
+You can install the development version of dimControl from
 [GitHub](https://github.com/) with:
 
 ``` r
 #install.packages("devtools")
-devtools::install_github("GroupMODES/controlDim")
+devtools::install_github("modes-cemi/dimControl")
 ```
 
 ## Acknowledgments
