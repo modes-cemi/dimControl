@@ -12,5 +12,4 @@ setview3d(view)
 
 - view:
 
-  A list obtained from
-  [`getview3d()`](https://modes-cemi.github.io/dimControl/reference/getview3d.md).
+  A list obtained from `getview3d()`.

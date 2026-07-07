@@ -132,8 +132,6 @@ Coruña.
   : Detect Modes in a Dataset
 - [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md)
   : Extract the Boundary of a 3D Mesh
-- [`getview3d()`](https://modes-cemi.github.io/dimControl/reference/getview3d.md)
-  : Get the Current 3D View
 - [`normals.mesh3d()`](https://modes-cemi.github.io/dimControl/reference/normals.mesh3d.md)
   : Compute face normals of a triangular mesh
 - [`pan3d()`](https://modes-cemi.github.io/dimControl/reference/pan3d.md)

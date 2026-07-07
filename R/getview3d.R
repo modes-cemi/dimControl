@@ -5,6 +5,6 @@
 #' @returns A list containing the current `zoom`, `userMatrix`, and `userProjection`.
 #'
 #' @export
-getview3d <- function() {
+getView3d <- function() {
   rgl::par3d()[c("zoom", "userMatrix", "userProjection")]
 }
