@@ -20,10 +20,10 @@
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0,
 #'               0, 0, 1), nrow = 3)
-#' angled(v, dim = 1, dir = 1, deg = TRUE)
+#' angleFromAxis(v, dim = 1, dir = 1, deg = TRUE)
 #'
 #' @export
-angled <- function(v, dim, dir = 1, deg = TRUE) {
+angleFromAxis <- function(v, dim, dir = 1, deg = TRUE) {
   res <- acos(dir * v[dim, ])
   if (deg) res <- rad2deg(res)
   return(res)

@@ -8,10 +8,10 @@
   : Angle Between Two Normalized Vectors
 - [`angleBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenVectors.md)
   : Angle Between Two 3D Vectors
-- [`angled()`](https://modes-cemi.github.io/dimControl/reference/angled.md)
-  : Directional Angles of Normalized Vectors
 - [`angled2()`](https://modes-cemi.github.io/dimControl/reference/angled2.md)
   : Directional Angle Computation for Normalized Vectors
+- [`angleFromAxis()`](https://modes-cemi.github.io/dimControl/reference/angleFromAxis.md)
+  : Directional Angles of Normalized Vectors
 - [`angleFromReference()`](https://modes-cemi.github.io/dimControl/reference/angleFromReference.md)
   : Angle Between a Set of Vectors and a Reference Vector
 - [`anglen()`](https://modes-cemi.github.io/dimControl/reference/anglen.md)

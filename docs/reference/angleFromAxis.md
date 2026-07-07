@@ -7,7 +7,7 @@ reversed by `dir`.
 ## Usage
 
 ``` r
-angled(v, dim, dir = 1, deg = TRUE)
+angleFromAxis(v, dim, dir = 1, deg = TRUE)
 ```
 
 ## Arguments
@@ -47,6 +47,6 @@ normalization is performed.
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)
-angled(v, dim = 1, dir = 1, deg = TRUE)
-#> [1]  0 90 90
+angleFromAxis(v, dim = 1, dir = 1, deg = TRUE)
+#> Error in angleFromAxis(v, dim = 1, dir = 1, deg = TRUE): could not find function "angleFromAxis"
 ```
