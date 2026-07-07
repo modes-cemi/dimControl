@@ -6,7 +6,7 @@ between the coordinates of two points.
 ## Usage
 
 ``` r
-deuclid(h)
+euclideanDistance(h)
 ```
 
 ## Arguments
@@ -28,6 +28,6 @@ points.
 h <- c(3 - 0, 4 - 0, 0 - 0)
 
 # Compute the Euclidean distance
-deuclid(h)
-#> [1] 5
+euclideanDistance(h)
+#> Error in euclideanDistance(h): could not find function "euclideanDistance"
 ```

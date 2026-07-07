@@ -126,7 +126,7 @@ Coruña.
   : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 - [`cad`](https://modes-cemi.github.io/dimControl/reference/cad.md) :
   CAD object of a steel panel
-- [`deuclid()`](https://modes-cemi.github.io/dimControl/reference/deuclid.md)
+- [`euclideanDistance()`](https://modes-cemi.github.io/dimControl/reference/euclideanDistance.md)
   : Compute the Euclidean Distance Between Two Points
 - [`findModes()`](https://modes-cemi.github.io/dimControl/reference/findModes.md)
   : Detect Modes in a Dataset

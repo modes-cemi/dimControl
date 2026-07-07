@@ -13,9 +13,9 @@
 #' h <- c(3 - 0, 4 - 0, 0 - 0)
 #'
 #' # Compute the Euclidean distance
-#' deuclid(h)
+#' euclideanDistance(h)
 #'
 #' @export
-deuclid <- function(h) {
+euclideanDistance <- function(h) {
   sqrt(sum((h)^2))
 }
