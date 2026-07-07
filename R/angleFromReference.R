@@ -9,7 +9,7 @@
 #' @returns A numeric vector containing the angles between each vector in \code{v} and \code{a}.
 #'
 #' @details
-#' The function uses `angle0()` to calculate each angle, ensuring numerical stability
+#' The function uses `angleBetweenVectors()` to calculate each angle, ensuring numerical stability
 #' by limiting the argument of `acos()` to the interval \eqn{[-1, 1]}.
 #' The matrix `v` can have any number of columns, and the vector `a` must have
 #' the same dimension as the columns of `v`.
@@ -22,7 +22,7 @@
 #'
 #' @export
 angleFromReference <- function(v, a, deg = TRUE) {
-  res <- apply(v, 2, function(b) angle0(b, a))
+  res <- apply(v, 2, function(b) angleBetweenVectors(b, a))
   if (deg) res <- rad2deg(res)
   return(res)
 }

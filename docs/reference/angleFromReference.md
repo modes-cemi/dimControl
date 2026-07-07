@@ -32,7 +32,7 @@ A numeric vector containing the angles between each vector in `v` and
 ## Details
 
 The function uses
-[`angle0()`](https://modes-cemi.github.io/dimControl/reference/angle0.md)
+[`angleBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenVectors.md)
 to calculate each angle, ensuring numerical stability by limiting the
 argument of [`acos()`](https://rdrr.io/r/base/Trig.html) to the interval
 \\\[-1, 1\]\\. The matrix `v` can have any number of columns, and the

@@ -15,9 +15,9 @@
 #' @examples
 #' a <- c(1, 0, 0)
 #' b <- c(0, 1, 0)
-#' angle0(a, b)
+#' angleBetweenVectors(a, b)
 #'
 #' @export
-angle0 <- function(a, b) {
+angleBetweenVectors <- function(a, b) {
   acos(min(1, max(-1, sum(a*b)/sqrt(sum(a^2) * sum(b^2)))))
 }

@@ -6,7 +6,7 @@ product. The result is restricted to the interval \\\[0, \pi\]\\.
 ## Usage
 
 ``` r
-angle0(a, b)
+angleBetweenVectors(a, b)
 ```
 
 ## Arguments
@@ -35,6 +35,6 @@ of [`acos()`](https://rdrr.io/r/base/Trig.html) lies within the interval
 ``` r
 a <- c(1, 0, 0)
 b <- c(0, 1, 0)
-angle0(a, b)
-#> [1] 1.570796
+angleBetweenVectors(a, b)
+#> Error in angleBetweenVectors(a, b): could not find function "angleBetweenVectors"
 ```

@@ -40,7 +40,7 @@ angles <- function(v, w, deg = TRUE) {
     }
   }
   # Compute angles for each corresponding pair of vectors
-  res <- mapply(angle0, as.list2(v), as.list2(w))
+  res <- mapply(angleBetweenVectors, as.list2(v), as.list2(w))
   # Convert to degrees if requested
   if (deg) res <- rad2deg(res)
   return(res)

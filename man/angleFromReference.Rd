@@ -20,7 +20,7 @@ A numeric vector containing the angles between each vector in \code{v} and \code
 Computes the angle between each column of a matrix of vectors and a reference vector.
 }
 \details{
-The function uses \code{angle0()} to calculate each angle, ensuring numerical stability
+The function uses \code{angleBetweenVectors()} to calculate each angle, ensuring numerical stability
 by limiting the argument of \code{acos()} to the interval \eqn{[-1, 1]}.
 The matrix \code{v} can have any number of columns, and the vector \code{a} must have
 the same dimension as the columns of \code{v}.
