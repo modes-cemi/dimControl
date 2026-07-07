@@ -31,7 +31,7 @@
 #' x$ib <- x$ib[, -(1:2)]
 #'
 #' # Generate the boundary
-#' b <- getBoundarySegments3(x, malla = TRUE)
+#' b <- getBoundarySegments(x, malla = TRUE)
 #'
 #' # Visualize the mesh and its boundary
 #' rgl::open3d()
@@ -41,7 +41,7 @@
 #' @importFrom data.table data.table
 #'
 #' @export
-getBoundarySegments3 <- function(mesh, malla = FALSE, simplify = TRUE) {
+getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
   if (!inherits(mesh, "mesh3d"))
     stop(deparse(substitute(mesh)), " is not a mesh3d object.")
   edges <- NULL
