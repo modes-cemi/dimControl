@@ -25,10 +25,10 @@
 #'               0, 1, 0), nrow = 3)
 #' w <- matrix(c(0, 1, 0,
 #'               1, 0, 0), nrow = 3)
-#' angles(v, w, deg = TRUE)
+#' anglesBetweenVectors(v, w, deg = TRUE)
 #'
 #' @export
-angles <- function(v, w, deg = TRUE) {
+anglesBetweenVectors <- function(v, w, deg = TRUE) {
   # Internal helper: converts a vector or matrix into a list of 3D vectors
   as.list2 <- function(a) {
     if (!is.matrix(a)) {

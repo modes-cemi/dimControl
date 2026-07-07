@@ -118,7 +118,7 @@ Coruña.
   : Angle Between a Set of Vectors and a Reference Vector
 - [`angleFromReferenceUnit()`](https://modes-cemi.github.io/dimControl/reference/angleFromReferenceUnit.md)
   : Angle Between Normalized Vectors and a Reference Vector
-- [`angles()`](https://modes-cemi.github.io/dimControl/reference/angles.md)
+- [`anglesBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/anglesBetweenVectors.md)
   : Angles Between Two Sets of 3D Vectors
 - [`bbox()`](https://modes-cemi.github.io/dimControl/reference/bbox.md)
   : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh

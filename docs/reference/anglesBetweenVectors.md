@@ -7,7 +7,7 @@ a 3D vector.
 ## Usage
 
 ``` r
-angles(v, w, deg = TRUE)
+anglesBetweenVectors(v, w, deg = TRUE)
 ```
 
 ## Arguments
@@ -54,6 +54,6 @@ v <- matrix(c(1, 0, 0,
               0, 1, 0), nrow = 3)
 w <- matrix(c(0, 1, 0,
               1, 0, 0), nrow = 3)
-angles(v, w, deg = TRUE)
-#> [1] 90 90
+anglesBetweenVectors(v, w, deg = TRUE)
+#> Error in anglesBetweenVectors(v, w, deg = TRUE): could not find function "anglesBetweenVectors"
 ```
