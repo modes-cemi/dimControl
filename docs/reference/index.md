@@ -4,8 +4,6 @@
 
 - [`addNormals()`](https://modes-cemi.github.io/dimControl/reference/addNormals.md)
   : Compute vertex normals by averaging triangle normals
-- [`angle()`](https://modes-cemi.github.io/dimControl/reference/angle.md)
-  : Angle Between a Set of Vectors and a Reference Vector
 - [`angle0()`](https://modes-cemi.github.io/dimControl/reference/angle0.md)
   : Angle Between Two 3D Vectors
 - [`angle1()`](https://modes-cemi.github.io/dimControl/reference/angle1.md)
@@ -14,6 +12,8 @@
   : Directional Angles of Normalized Vectors
 - [`angled2()`](https://modes-cemi.github.io/dimControl/reference/angled2.md)
   : Directional Angle Computation for Normalized Vectors
+- [`angleFromReference()`](https://modes-cemi.github.io/dimControl/reference/angleFromReference.md)
+  : Angle Between a Set of Vectors and a Reference Vector
 - [`anglen()`](https://modes-cemi.github.io/dimControl/reference/anglen.md)
   : Angle Between Normalized Vectors and a Reference Vector
 - [`angles()`](https://modes-cemi.github.io/dimControl/reference/angles.md)

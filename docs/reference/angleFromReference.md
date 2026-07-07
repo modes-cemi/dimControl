@@ -6,7 +6,7 @@ reference vector.
 ## Usage
 
 ``` r
-angle(v, a, deg = TRUE)
+angleFromReference(v, a, deg = TRUE)
 ```
 
 ## Arguments
@@ -44,6 +44,6 @@ vector `a` must have the same dimension as the columns of `v`.
 v <- matrix(c(1, 0, 0,
               0, 1, 0), nrow = 3)
 a <- c(1, 0, 0)
-angle(v, a, deg = TRUE)
-#> [1]  0 90
+angleFromReference(v, a, deg = TRUE)
+#> Error in angleFromReference(v, a, deg = TRUE): could not find function "angleFromReference"
 ```

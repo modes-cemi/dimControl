@@ -18,10 +18,10 @@
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0), nrow = 3)
 #' a <- c(1, 0, 0)
-#' angle(v, a, deg = TRUE)
+#' angleFromReference(v, a, deg = TRUE)
 #'
 #' @export
-angle <- function(v, a, deg = TRUE) {
+angleFromReference <- function(v, a, deg = TRUE) {
   res <- apply(v, 2, function(b) angle0(b, a))
   if (deg) res <- rad2deg(res)
   return(res)
