@@ -20,8 +20,10 @@ RoxygenNote: 7.3.2
 Imports:
     data.table,
     Rvcg,
-    igraph
-Suggests:
+    igraph,
+    matrixStats,
+    misc3d,
+    npsp,
     rgl
 URL: https://github.com/modes-cemi/dimControl,
      https://modes-cemi.github.io/dimControl/
