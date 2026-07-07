@@ -2,7 +2,7 @@
 
 ## All functions
 
-- [`addNormals2()`](https://modes-cemi.github.io/dimControl/reference/addNormals2.md)
+- [`addNormals()`](https://modes-cemi.github.io/dimControl/reference/addNormals.md)
   : Compute vertex normals by averaging triangle normals
 - [`angle()`](https://modes-cemi.github.io/dimControl/reference/angle.md)
   : Angle Between a Set of Vectors and a Reference Vector

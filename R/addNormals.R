@@ -22,13 +22,13 @@
 #' norm_tri <- normals.mesh3d(mesh)
 #'
 #' # Compute vertex normals by averaging triangle normals
-#' mesh <- addNormals2(mesh, norm_tri)
+#' mesh <- addNormals(mesh, norm_tri)
 #'
 #' # Show the first 5 vertex normals
 #' mesh$normals[, 1:5]
 #'
 #' @export
-addNormals2  <- function(x, normals.tri) {
+addNormals <- function(x, normals.tri) {
   ntri <- ncol(x$it)
   if (!ntri)
     stop("Argument 'x' must be a triangular mesh")
