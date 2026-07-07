@@ -54,7 +54,7 @@ by averaging the normals of the triangles.</p>
 
 <dt id="arg-normals-tri">normals.tri<a class="anchor" aria-label="anchor" href="#arg-normals-tri"></a></dt>
 <dd><p>A 4 x ntri matrix of triangle normals.
-If not provided, they are computed internally using <code><a href="normals.mesh3d.html">normals.mesh3d()</a></code>.</p></dd>
+If not provided, they are computed internally using <code><a href="meshNormals.html">meshNormals()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -74,7 +74,8 @@ No weighting by area or angle is applied.</p>
 <span class="r-in"><span><span class="va">mesh</span> <span class="op">&lt;-</span> <span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/subdivision3d.html" class="external-link">subdivision3d</a></span><span class="op">(</span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/cube3d.html" class="external-link">icosahedron3d</a></span><span class="op">(</span><span class="op">)</span>, depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)</span></span></span>
-<span class="r-in"><span><span class="va">norm_tri</span> <span class="op">&lt;-</span> <span class="fu"><a href="normals.mesh3d.html">normals.mesh3d</a></span><span class="op">(</span><span class="va">mesh</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">norm_tri</span> <span class="op">&lt;-</span> <span class="fu"><a href="meshNormals.html">meshNormals</a></span><span class="op">(</span><span class="va">mesh</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in meshNormals(mesh):</span> could not find function "meshNormals"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute vertex normals by averaging triangle normals</span></span></span>
 <span class="r-in"><span><span class="va">mesh</span> <span class="op">&lt;-</span> <span class="fu">addNormals</span><span class="op">(</span><span class="va">mesh</span>, <span class="va">norm_tri</span><span class="op">)</span></span></span>

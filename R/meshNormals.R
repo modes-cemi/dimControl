@@ -27,13 +27,13 @@
 #' mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 #'
 #' # Compute normals
-#' norm <- normals.mesh3d(mesh)
+#' norm <- meshNormals(mesh)
 #'
 #' # Display the first 5 normals
 #' norm[, 1:5]
 #'
 #' @export
-normals.mesh3d <- function(x) {
+meshNormals <- function(x) {
   if (!length(x$it))
     stop("Argument 'x' must be a triangular mesh")
   v <- x$vb

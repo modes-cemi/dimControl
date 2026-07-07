@@ -20,11 +20,12 @@
 <url><loc>https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/getView3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/index.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/normals.mesh3d.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/meshNormals.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/pan3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/panelPoints.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/rad2deg.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sampleMesh.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/setView3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sideBulb.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sortSegments.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.html</loc></url>

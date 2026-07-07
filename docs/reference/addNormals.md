@@ -19,7 +19,7 @@ addNormals(x, normals.tri)
 
   A 4 x ntri matrix of triangle normals. If not provided, they are
   computed internally using
-  [`normals.mesh3d()`](https://modes-cemi.github.io/dimControl/reference/normals.mesh3d.md).
+  [`meshNormals()`](https://modes-cemi.github.io/dimControl/reference/meshNormals.md).
 
 ## Value
 
@@ -38,7 +38,8 @@ vertex. No weighting by area or angle is applied.
 mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
 # Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)
-norm_tri <- normals.mesh3d(mesh)
+norm_tri <- meshNormals(mesh)
+#> Error in meshNormals(mesh): could not find function "meshNormals"
 
 # Compute vertex normals by averaging triangle normals
 mesh <- addNormals(mesh, norm_tri)

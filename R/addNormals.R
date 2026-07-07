@@ -5,7 +5,7 @@
 #'
 #' @param x A `mesh3d` object.
 #' @param normals.tri  A 4 x ntri matrix of triangle normals.
-#' If not provided, they are computed internally using `normals.mesh3d()`.
+#' If not provided, they are computed internally using `meshNormals()`.
 #'
 #' @returns A `mesh3d` object with the `normals` field updated,
 #' containing the unit normals for each vertex.
@@ -19,7 +19,7 @@
 #' mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 #'
 #' # Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)
-#' norm_tri <- normals.mesh3d(mesh)
+#' norm_tri <- meshNormals(mesh)
 #'
 #' # Compute vertex normals by averaging triangle normals
 #' mesh <- addNormals(mesh, norm_tri)
@@ -32,7 +32,7 @@ addNormals <- function(x, normals.tri) {
   ntri <- ncol(x$it)
   if (!ntri)
     stop("Argument 'x' must be a triangular mesh")
-  if (missing(normals.tri)) normals.tri <- normals.mesh3d(x)
+  if (missing(normals.tri)) normals.tri <- meshNormals(x)
   normals.tri <- normals.tri[1:3, ]
   normals <- matrix(0, nrow = 3, ncol = ncol(x$vb))
   for (j in seq_len(ntri)) {

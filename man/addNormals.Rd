@@ -10,7 +10,7 @@ addNormals(x, normals.tri)
 \item{x}{A \code{mesh3d} object.}
 
 \item{normals.tri}{A 4 x ntri matrix of triangle normals.
-If not provided, they are computed internally using \code{normals.mesh3d()}.}
+If not provided, they are computed internally using \code{meshNormals()}.}
 }
 \value{
 A \code{mesh3d} object with the \code{normals} field updated,
@@ -29,7 +29,7 @@ No weighting by area or angle is applied.
 mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
 # Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)
-norm_tri <- normals.mesh3d(mesh)
+norm_tri <- meshNormals(mesh)
 
 # Compute vertex normals by averaging triangle normals
 mesh <- addNormals(mesh, norm_tri)
