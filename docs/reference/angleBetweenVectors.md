@@ -36,5 +36,5 @@ of [`acos()`](https://rdrr.io/r/base/Trig.html) lies within the interval
 a <- c(1, 0, 0)
 b <- c(0, 1, 0)
 angleBetweenVectors(a, b)
-#> Error in angleBetweenVectors(a, b): could not find function "angleBetweenVectors"
+#> [1] 1.570796
 ```

@@ -46,5 +46,8 @@ cube <- rgl::cube3d()
 
 # Compute its bounding box
 boundingBox(cube)
-#> Error in boundingBox(cube): could not find function "boundingBox"
+#>   min max
+#> X  -1   1
+#> Y  -1   1
+#> Z  -1   1
 ```

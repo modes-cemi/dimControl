@@ -30,5 +30,5 @@ radians.
 a <- c(1, 0, 0)
 b <- c(0, 1, 0)
 angleBetweenUnitVectors(a, b)
-#> Error in angleBetweenUnitVectors(a, b): could not find function "angleBetweenUnitVectors"
+#> [1] 1.570796
 ```

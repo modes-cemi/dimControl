@@ -39,13 +39,15 @@ mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
 # Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)
 norm_tri <- meshNormals(mesh)
-#> Error in meshNormals(mesh): could not find function "meshNormals"
 
 # Compute vertex normals by averaging triangle normals
 mesh <- addNormals(mesh, norm_tri)
-#> Error in addNormals(mesh, norm_tri): could not find function "addNormals"
 
 # Show the first 5 vertex normals
 mesh$normals[, 1:5]
-#> NULL
+#>              [,1]          [,2]          [,3]          [,4]      [,5]
+#> [1,] 1.574277e-16  1.166131e-17 -7.710928e-17 -1.166131e-17 0.5257311
+#> [2,] 5.257311e-01  5.257311e-01 -5.257311e-01 -5.257311e-01 0.8506508
+#> [3,] 8.506508e-01 -8.506508e-01  8.506508e-01 -8.506508e-01 0.0000000
+#> [4,] 1.000000e+00  1.000000e+00  1.000000e+00  1.000000e+00 1.0000000
 ```

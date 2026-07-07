@@ -24,6 +24,8 @@
   : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 - [`cad`](https://modes-cemi.github.io/dimControl/reference/cad.md) :
   CAD object of a steel panel
+- [`cleanBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.md)
+  : Clean and Reconnect Boundary Segments of a 3D Mesh
 - [`euclideanDistance()`](https://modes-cemi.github.io/dimControl/reference/euclideanDistance.md)
   : Compute the Euclidean Distance Between Two Points
 - [`findModes()`](https://modes-cemi.github.io/dimControl/reference/findModes.md)

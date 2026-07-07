@@ -29,5 +29,5 @@ h <- c(3 - 0, 4 - 0, 0 - 0)
 
 # Compute the Euclidean distance
 euclideanDistance(h)
-#> Error in euclideanDistance(h): could not find function "euclideanDistance"
+#> [1] 5
 ```

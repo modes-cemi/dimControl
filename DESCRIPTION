@@ -24,6 +24,8 @@ Imports:
     matrixStats,
     misc3d,
     npsp,
+    FNN,
+    stats,
     rgl
 URL: https://github.com/modes-cemi/dimControl,
      https://modes-cemi.github.io/dimControl/

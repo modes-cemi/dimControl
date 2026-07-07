@@ -46,9 +46,12 @@ mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
 # Compute normals
 norm <- meshNormals(mesh)
-#> Error in meshNormals(mesh): could not find function "meshNormals"
 
 # Display the first 5 normals
 norm[, 1:5]
-#> Error in norm[, 1:5]: object of type 'closure' is not subsettable
+#>           [,1]       [,2]      [,3]      [,4]      [,5]
+#> [1,] 0.1798157  0.1798157 0.6490360 0.3568221 0.2909479
+#> [2,] 0.2899941 -0.2899941 0.0000000 0.0000000 0.5809420
+#> [3,] 0.9399839  0.9399839 0.7607577 0.9341724 0.7601682
+#> [4,] 1.0000000  1.0000000 1.0000000 1.0000000 1.0000000
 ```

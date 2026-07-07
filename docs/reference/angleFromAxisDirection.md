@@ -46,13 +46,13 @@ v <- matrix(c(1, 0, 0,
 
 # Angle with respect to the X axis
 angleFromAxisDirection(v, dim = 1)
-#> Error in angleFromAxisDirection(v, dim = 1): could not find function "angleFromAxisDirection"
+#> [1]  0 90 90
 
 # Angle with respect to the Y axis
 angleFromAxisDirection(v, dim = 2)
-#> Error in angleFromAxisDirection(v, dim = 2): could not find function "angleFromAxisDirection"
+#> [1] 90  0 90
 
 # Angle with respect to the Z axis
 angleFromAxisDirection(v, dim = 3)
-#> Error in angleFromAxisDirection(v, dim = 3): could not find function "angleFromAxisDirection"
+#> [1] 90 90  0
 ```

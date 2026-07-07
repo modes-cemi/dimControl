@@ -45,5 +45,5 @@ v <- matrix(c(1, 0, 0,
               0, 1, 0), nrow = 3)
 a <- c(1, 0, 0)
 angleFromReference(v, a, deg = TRUE)
-#> Error in angleFromReference(v, a, deg = TRUE): could not find function "angleFromReference"
+#> [1]  0 90
 ```

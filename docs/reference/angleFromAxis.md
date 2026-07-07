@@ -48,5 +48,5 @@ v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)
 angleFromAxis(v, dim = 1, dir = 1, deg = TRUE)
-#> Error in angleFromAxis(v, dim = 1, dir = 1, deg = TRUE): could not find function "angleFromAxis"
+#> [1]  0 90 90
 ```

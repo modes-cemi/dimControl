@@ -41,5 +41,5 @@ v <- matrix(c(1, 0, 0,
               0, 1, 0), nrow = 3)
 a <- c(1, 0, 0)
 angleFromReferenceUnit(v, a, deg = TRUE)
-#> Error in angleFromReferenceUnit(v, a, deg = TRUE): could not find function "angleFromReferenceUnit"
+#> [1]  0 90
 ```

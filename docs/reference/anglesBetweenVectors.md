@@ -55,5 +55,5 @@ v <- matrix(c(1, 0, 0,
 w <- matrix(c(0, 1, 0,
               1, 0, 0), nrow = 3)
 anglesBetweenVectors(v, w, deg = TRUE)
-#> Error in anglesBetweenVectors(v, w, deg = TRUE): could not find function "anglesBetweenVectors"
+#> [1] 90 90
 ```
