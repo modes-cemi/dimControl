@@ -7,7 +7,7 @@ mesh, returning a matrix with the extreme values along the `X`, `Y`, and
 ## Usage
 
 ``` r
-bbox(x)
+boundingBox(x)
 ```
 
 ## Arguments
@@ -45,9 +45,6 @@ and computes per-axis ranges using `apply(..., range)`.
 cube <- rgl::cube3d()
 
 # Compute its bounding box
-bbox(cube)
-#>   min max
-#> X  -1   1
-#> Y  -1   1
-#> Z  -1   1
+boundingBox(cube)
+#> Error in boundingBox(cube): could not find function "boundingBox"
 ```

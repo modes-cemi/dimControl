@@ -18,10 +18,10 @@
   : Angle Between Normalized Vectors and a Reference Vector
 - [`anglesBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/anglesBetweenVectors.md)
   : Angles Between Two Sets of 3D Vectors
-- [`bbox()`](https://modes-cemi.github.io/dimControl/reference/bbox.md)
-  : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 - [`binningMarchingCubes()`](https://modes-cemi.github.io/dimControl/reference/binningMarchingCubes.md)
   : Generate a Triangular Mesh Using Binning and Marching Cubes
+- [`boundingBox()`](https://modes-cemi.github.io/dimControl/reference/boundingBox.md)
+  : Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
 - [`cad`](https://modes-cemi.github.io/dimControl/reference/cad.md) :
   CAD object of a steel panel
 - [`deuclid()`](https://modes-cemi.github.io/dimControl/reference/deuclid.md)

@@ -23,10 +23,10 @@
 #' cube <- rgl::cube3d()
 #'
 #' # Compute its bounding box
-#' bbox(cube)
+#' boundingBox(cube)
 #'
 #' @export
-bbox <- function(x) {
+boundingBox <- function(x) {
   t(matrix(
     apply(rgl::asEuclidean2(x$vb), 1, range),
     nrow = 2,
