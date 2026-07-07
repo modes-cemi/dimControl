@@ -106,7 +106,7 @@ Coruña.
 
 - [`addNormals()`](https://modes-cemi.github.io/dimControl/reference/addNormals.md)
   : Compute vertex normals by averaging triangle normals
-- [`angle1()`](https://modes-cemi.github.io/dimControl/reference/angle1.md)
+- [`angleBetweenUnitVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenUnitVectors.md)
   : Angle Between Two Normalized Vectors
 - [`angleBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenVectors.md)
   : Angle Between Two 3D Vectors

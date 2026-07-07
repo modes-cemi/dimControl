@@ -11,9 +11,9 @@
 #' @examples
 #' a <- c(1, 0, 0)
 #' b <- c(0, 1, 0)
-#' angle1(a, b)
+#' angleBetweenUnitVectors(a, b)
 #'
 #' @export
-angle1 <- function(a, b) {
+angleBetweenUnitVectors <- function(a, b) {
   acos(sum(a*b))
 }

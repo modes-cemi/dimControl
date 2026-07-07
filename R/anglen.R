@@ -21,7 +21,7 @@
 #'
 #' @export
 anglen <- function(v, a, deg = TRUE) {
-  res <- apply(v, 2, function(b) angle1(b, a))
+  res <- apply(v, 2, function(b) angleBetweenUnitVectors(b, a))
   if (deg) res <- rad2deg(res)
   return(res)
 }
