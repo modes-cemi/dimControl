@@ -14,7 +14,7 @@
   : Directional Angle Computation for Normalized Vectors
 - [`angleFromReference()`](https://modes-cemi.github.io/dimControl/reference/angleFromReference.md)
   : Angle Between a Set of Vectors and a Reference Vector
-- [`anglen()`](https://modes-cemi.github.io/dimControl/reference/anglen.md)
+- [`angleFromReferenceUnit()`](https://modes-cemi.github.io/dimControl/reference/angleFromReferenceUnit.md)
   : Angle Between Normalized Vectors and a Reference Vector
 - [`angles()`](https://modes-cemi.github.io/dimControl/reference/angles.md)
   : Angles Between Two Sets of 3D Vectors

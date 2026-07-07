@@ -6,7 +6,7 @@ and a normalized reference vector.
 ## Usage
 
 ``` r
-anglen(v, a, deg = TRUE)
+angleFromReferenceUnit(v, a, deg = TRUE)
 ```
 
 ## Arguments
@@ -40,6 +40,6 @@ to 1). No internal normalization is performed.
 v <- matrix(c(1, 0, 0,
               0, 1, 0), nrow = 3)
 a <- c(1, 0, 0)
-anglen(v, a, deg = TRUE)
-#> [1]  0 90
+angleFromReferenceUnit(v, a, deg = TRUE)
+#> Error in angleFromReferenceUnit(v, a, deg = TRUE): could not find function "angleFromReferenceUnit"
 ```

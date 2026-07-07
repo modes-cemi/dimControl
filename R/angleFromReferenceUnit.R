@@ -17,10 +17,10 @@
 #' v <- matrix(c(1, 0, 0,
 #'               0, 1, 0), nrow = 3)
 #' a <- c(1, 0, 0)
-#' anglen(v, a, deg = TRUE)
+#' angleFromReferenceUnit(v, a, deg = TRUE)
 #'
 #' @export
-anglen <- function(v, a, deg = TRUE) {
+angleFromReferenceUnit <- function(v, a, deg = TRUE) {
   res <- apply(v, 2, function(b) angleBetweenUnitVectors(b, a))
   if (deg) res <- rad2deg(res)
   return(res)
