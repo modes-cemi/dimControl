@@ -13,7 +13,7 @@ getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
 if \code{FALSE}, returns only the vertex indices forming the boundary edges. Default is \code{FALSE}.}
 
 \item{simplify}{Logical. If \code{TRUE} and \code{malla = TRUE}, simplifies the resulting mesh
-using \code{cleanMesh3d_rgl()}. Default is \code{TRUE}.}
+using \code{cleanMesh3d()}. Default is \code{TRUE}.}
 }
 \value{
 If \code{malla = FALSE}, a matrix with the vertex indices forming the boundary edges.
@@ -50,5 +50,5 @@ rgl::shade3d(b, col = "red", lwd = 2)
 
 }
 \seealso{
-\code{rgl::getBoundary3d()}, \code{cleanMesh3d_rgl()}
+\code{rgl::getBoundary3d()}, \code{cleanMesh3d()}
 }

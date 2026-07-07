@@ -15,12 +15,12 @@
 #' @param malla Logical. If `TRUE`, returns a `mesh3d` object containing the boundary segments;
 #' if `FALSE`, returns only the vertex indices forming the boundary edges. Default is `FALSE`.
 #' @param simplify Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting mesh
-#' using `cleanMesh3d_rgl()`. Default is `TRUE`.
+#' using `cleanMesh3d()`. Default is `TRUE`.
 #'
 #' @returns If `malla = FALSE`, a matrix with the vertex indices forming the boundary edges.
 #' If `malla = TRUE`, a `mesh3d` object representing the boundary segments.
 #'
-#' @seealso `rgl::getBoundary3d()`, `cleanMesh3d_rgl()`
+#' @seealso `rgl::getBoundary3d()`, `cleanMesh3d()`
 #'
 #' @examples
 #' # Extract the boundary of a cube and visualize it
@@ -74,7 +74,7 @@ getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
   if (malla) {
     result <- rgl::mesh3d(vertices = mesh$vb, segments = boundary)
     if (simplify)
-      result <- cleanMesh3d_rgl(result)
+      result <- cleanMesh3d(result)
     return(result)
   }
 

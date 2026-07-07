@@ -39,7 +39,7 @@
 #' cube$vb <- cbind(cube$vb, c(10,10,10,1))
 #'
 #' # Clean the cube
-#' cube_clean <- cleanMesh3d_rgl(cube)
+#' cube_clean <- cleanMesh3d(cube)
 #'
 #' # Compare number of vertices
 #' dim(cube$vb)
@@ -49,7 +49,7 @@
 #' @keywords internal
 #' @noRd
 #'
-cleanMesh3d_rgl <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
+cleanMesh3d <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
   # Original number of vertices
   nold <- ncol(mesh$vb)
 
