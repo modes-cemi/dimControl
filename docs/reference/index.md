@@ -30,6 +30,8 @@
   : Detect Modes in a Dataset
 - [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md)
   : Extract the Boundary of a 3D Mesh
+- [`getView3d()`](https://modes-cemi.github.io/dimControl/reference/getView3d.md)
+  : Get the Current 3D View
 - [`normals.mesh3d()`](https://modes-cemi.github.io/dimControl/reference/normals.mesh3d.md)
   : Compute face normals of a triangular mesh
 - [`pan3d()`](https://modes-cemi.github.io/dimControl/reference/pan3d.md)
@@ -40,8 +42,6 @@
   : Conversion from Radians to Degrees
 - [`sampleMesh()`](https://modes-cemi.github.io/dimControl/reference/sampleMesh.md)
   : Sampling points over a triangular mesh
-- [`setview3d()`](https://modes-cemi.github.io/dimControl/reference/setview3d.md)
-  : Set a 3D View
 - [`sideBulb()`](https://modes-cemi.github.io/dimControl/reference/sideBulb.md)
   : Determine the Orientation of a Reinforcement Bulb
 - [`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)

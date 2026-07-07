@@ -5,6 +5,6 @@
 #' @param view A list obtained from `getview3d()`.
 #'
 #' @export
-setview3d <- function(view) {
+setView3d <- function(view) {
   do.call(rgl::par3d, view)
 }
