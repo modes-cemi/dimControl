@@ -14,7 +14,7 @@
 #' the sequence stops at the first gap.
 #'
 #' @export
-sortSegments2 <- function(edges) {
+sortSegments <- function(edges) {
   nedges <- ncol(edges)              # Total number of segments
   order <- integer(nedges)           # Vector to store the segment order
   order[1] <- 1                      # Start with the first segment

@@ -9,7 +9,7 @@ properly ordered.
 ## Usage
 
 ``` r
-sortSegments2(edges)
+sortSegments(edges)
 ```
 
 ## Arguments

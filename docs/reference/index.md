@@ -46,7 +46,7 @@
   : Set a 3D View
 - [`sideBulb()`](https://modes-cemi.github.io/dimControl/reference/sideBulb.md)
   : Determine the Orientation of a Reinforcement Bulb
-- [`sortSegments2()`](https://modes-cemi.github.io/dimControl/reference/sortSegments2.md)
+- [`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)
   : Reorder Connected Edge Segments
 - [`splitTrianglesInd()`](https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.md)
   : Split a Mesh into Connected Triangle Groups
