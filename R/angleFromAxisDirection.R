@@ -18,16 +18,16 @@
 #'               0, 0, 1), nrow = 3)
 #'
 #' # Angle with respect to the X axis
-#' angled2(v, dim = 1)
+#' angleFromAxisDirection(v, dim = 1)
 #'
 #' # Angle with respect to the Y axis
-#' angled2(v, dim = 2)
+#' angleFromAxisDirection(v, dim = 2)
 #'
 #' # Angle with respect to the Z axis
-#' angled2(v, dim = 3)
+#' angleFromAxisDirection(v, dim = 3)
 #'
 #' @export
-angled2 <- function(v, dim, negdir = FALSE, deg = TRUE) {
+angleFromAxisDirection <- function(v, dim, negdir = FALSE, deg = TRUE) {
   # Convert radians to degrees
   rad2deg <- function(x) (x / pi) * 180
 

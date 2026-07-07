@@ -8,7 +8,7 @@ the opposite direction.
 ## Usage
 
 ``` r
-angled2(v, dim, negdir = FALSE, deg = TRUE)
+angleFromAxisDirection(v, dim, negdir = FALSE, deg = TRUE)
 ```
 
 ## Arguments
@@ -45,14 +45,14 @@ v <- matrix(c(1, 0, 0,
               0, 0, 1), nrow = 3)
 
 # Angle with respect to the X axis
-angled2(v, dim = 1)
-#> [1]  0 90 90
+angleFromAxisDirection(v, dim = 1)
+#> Error in angleFromAxisDirection(v, dim = 1): could not find function "angleFromAxisDirection"
 
 # Angle with respect to the Y axis
-angled2(v, dim = 2)
-#> [1] 90  0 90
+angleFromAxisDirection(v, dim = 2)
+#> Error in angleFromAxisDirection(v, dim = 2): could not find function "angleFromAxisDirection"
 
 # Angle with respect to the Z axis
-angled2(v, dim = 3)
-#> [1] 90 90  0
+angleFromAxisDirection(v, dim = 3)
+#> Error in angleFromAxisDirection(v, dim = 3): could not find function "angleFromAxisDirection"
 ```
