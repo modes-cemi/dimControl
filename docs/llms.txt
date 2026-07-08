@@ -106,20 +106,12 @@ Coruña.
 
 - [`addNormals()`](https://modes-cemi.github.io/dimControl/reference/addNormals.md)
   : Compute vertex normals by averaging triangle normals
-- [`angleBetweenUnitVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenUnitVectors.md)
-  : Angle Between Two Normalized Vectors
-- [`angleBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/angleBetweenVectors.md)
-  : Angle Between Two 3D Vectors
+- [`angleBetween()`](https://modes-cemi.github.io/dimControl/reference/angleBetween.md)
+  : Angle Between Two Vectors
 - [`angleFromAxis()`](https://modes-cemi.github.io/dimControl/reference/angleFromAxis.md)
-  : Directional Angles of Normalized Vectors
-- [`angleFromAxisDirection()`](https://modes-cemi.github.io/dimControl/reference/angleFromAxisDirection.md)
-  : Directional Angle Computation for Normalized Vectors
-- [`angleFromReference()`](https://modes-cemi.github.io/dimControl/reference/angleFromReference.md)
-  : Angle Between a Set of Vectors and a Reference Vector
-- [`angleFromReferenceUnit()`](https://modes-cemi.github.io/dimControl/reference/angleFromReferenceUnit.md)
-  : Angle Between Normalized Vectors and a Reference Vector
-- [`anglesBetweenVectors()`](https://modes-cemi.github.io/dimControl/reference/anglesBetweenVectors.md)
-  : Angles Between Two Sets of 3D Vectors
+  : Directional Angle from an Axis
+- [`angleFromVectors()`](https://modes-cemi.github.io/dimControl/reference/angleFromVectors.md)
+  : Angles Between Vectors and Reference Vectors
 - [`binningMarchingCubes()`](https://modes-cemi.github.io/dimControl/reference/binningMarchingCubes.md)
   : Generate a Triangular Mesh Using Binning and Marching Cubes
 - [`boundingBox()`](https://modes-cemi.github.io/dimControl/reference/boundingBox.md)

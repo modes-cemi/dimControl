@@ -2,37 +2,49 @@
 % Please edit documentation in R/angleFromAxis.R
 \name{angleFromAxis}
 \alias{angleFromAxis}
-\title{Directional Angles of Normalized Vectors}
+\title{Directional Angle from an Axis}
 \usage{
-angleFromAxis(v, dim, dir = 1, deg = TRUE)
+angleFromAxis(v, dim, negdir = FALSE, dir = NULL, deg = TRUE)
 }
 \arguments{
-\item{v}{Numeric matrix of dimension \code{d x n} containing normalized vectors.}
+\item{v}{Numeric matrix of dimension \code{d x n} containing normalized
+vectors by columns.}
 
-\item{dim}{Integer specifying the reference dimension (\code{1 <= dim <= d}).}
+\item{dim}{Integer. Coordinate axis used as reference.}
 
-\item{dir}{Numeric scalar equal to \code{1} or \code{-1} indicating the orientation of the reference axis.}
+\item{negdir}{Logical. If \code{TRUE}, the negative direction of the selected axis
+is used. Default is \code{FALSE}.}
 
-\item{deg}{Logical. If \code{TRUE}, angles are returned in degrees; otherwise in radians.}
+\item{dir}{Optional numeric value, either $1$ or $-1$. Compatibility argument
+for selecting the positive or negative direction of the axis. Default is
+\code{NULL}.}
+
+\item{deg}{Logical. If \code{TRUE}, angles are returned in degrees; otherwise in
+radians.}
 }
 \value{
-A numeric vector of length \code{n} containing the directional
-angles between each column of \code{v} and the axis \eqn{\pm e_{dim}}.
+A numeric vector containing the directional angles.
 }
 \description{
-Computes the directional angle between each column of a matrix of
-normalized vectors and the canonical axis specified by \code{dim},
-optionally reversed by \code{dir}.
+Computes the directional angle between normalized vectors and a reference
+coordinate axis.
 }
 \details{
-The angle is computed as \eqn{\theta = \arccos(dir * v[dim, ])}.
-All vectors must be unit vectors (Euclidean norm equal to 1).
-No internal normalization is performed.
+The input \code{v} must contain normalized vectors by columns. The argument \code{dim}
+selects the coordinate axis used as reference. For example, \code{dim = 1} uses the
+X axis, \code{dim = 2} uses the Y axis and \code{dim = 3} uses the Z axis.
+
+If \code{negdir = TRUE}, the angle is computed with respect to the negative
+direction of the selected axis. The argument \code{dir} is kept for compatibility:
+if provided, \code{dir = -1} is equivalent to \code{negdir = TRUE}, and \code{dir = 1} is
+equivalent to \code{negdir = FALSE}.
 }
 \examples{
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)
-angleFromAxis(v, dim = 1, dir = 1, deg = TRUE)
+
+angleFromAxis(v, dim = 1, negdir = FALSE, deg = TRUE)
+angleFromAxis(v, dim = 1, negdir = TRUE,  deg = TRUE)
 
 }

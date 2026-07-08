@@ -5,13 +5,9 @@
 <url><loc>https://modes-cemi.github.io/dimControl/LICENSE-text.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/LICENSE.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/addNormals.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/angleBetweenUnitVectors.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/angleBetweenVectors.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/angleBetween.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/angleFromAxis.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/angleFromAxisDirection.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/angleFromReference.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/angleFromReferenceUnit.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/anglesBetweenVectors.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/angleFromVectors.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/binningMarchingCubes.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/boundingBox.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/cad.html</loc></url>
