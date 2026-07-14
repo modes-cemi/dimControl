@@ -1,30 +1,42 @@
 #' Split a Mesh into Connected Triangle Groups
 #'
-#' Groups the triangles of a 3D mesh into independent subsets according to connectivity,
-#' i.e., if they share an edge (two vertices). Each connected component is returned
-#' as a group of indices corresponding to triangles belonging to the same piece or mesh fragment.
+#' Groups the triangles of a 3D mesh into independent subsets according to
+#' connectivity. Two triangles are considered connected when they share an edge,
+#' that is, two vertex indices. Each connected component is returned as a group
+#' of triangle indices belonging to the same mesh fragment.
 #'
-#' This procedure is useful when the mesh contains multiple disconnected parts (e.g.,
-#' reinforcements, panels, or separate fragments) and they need to be handled separately
-#' for geometric analysis, visualization, or data cleaning.
+#' The implementation generates the three edges of every triangle, encodes each
+#' undirected edge using a numeric key and identifies shared edges through a
+#' vectorized sorting operation. This avoids repeated pairwise intersection
+#' calculations and improves performance on large meshes.
 #'
-#' @param mesh A `mesh3d` object containing the mesh to analyze. It must include the
-#' `it` matrix, where each column represents a triangle defined by the indices of its vertices.
+#' @param mesh A `mesh3d` object containing the mesh to analyze. It must include
+#' the `it` matrix, where each column represents a triangle defined by three
+#' vertex indices.
 #'
-#' @returns
-#' A list where each element contains the indices of triangles forming a connected
-#' component of the mesh. If there are no connections between triangles, each list
-#' element corresponds to a single triangle.
+#' @returns A list where each element contains the indices of the triangles
+#' forming one connected component. Components are sorted from largest to
+#' smallest according to their number of triangles. If no triangles share an
+#' edge, each list element contains the index of a single triangle.
 #'
 #' @details
 #' The algorithm follows these steps:
 #' \enumerate{
-#'   \item Checks that the mesh contains the `it` matrix with triangles.
-#'   \item For each vertex, records the triangles in which it appears.
-#'   \item Determines pairs of triangles that share an edge (two common vertices).
-#'   \item Builds an undirected graph with triangles as nodes and shared-edge connections as edges.
-#'   \item Identifies the connected components of the graph using `igraph::components()`.
+#'   \item Checks that the mesh contains the `it` matrix.
+#'   \item Generates the three edges of every triangle.
+#'   \item Represents each edge as an ordered pair of vertex indices.
+#'   \item Encodes each edge using a numeric key so that the same undirected edge
+#'   receives the same value regardless of vertex order.
+#'   \item Sorts the edge keys to identify triangles that share an edge.
+#'   \item Builds an undirected graph in which triangles are vertices and shared
+#'   edges define graph connections.
+#'   \item Identifies the connected components using `igraph::components()`.
+#'   \item Sorts the resulting components from largest to smallest.
 #' }
+#'
+#' Triangles that share only one vertex are not considered connected. The
+#' connectivity criterion therefore corresponds specifically to edge
+#' connectivity.
 #'
 #' @seealso `igraph::graph()`, `igraph::components()`
 #'
@@ -40,11 +52,16 @@
 #'   c(3, 0, 0),
 #'   c(2, 1, 0)
 #' ))
+#'
 #' it <- t(rbind(
 #'   c(1, 2, 3),
 #'   c(4, 5, 6)
 #' ))
-#' mesh <- rgl::tmesh3d(vertices = vb, indices = it)
+#'
+#' mesh <- rgl::tmesh3d(
+#'   vertices = vb,
+#'   indices = it
+#' )
 #'
 #' # Split the mesh into connected triangle groups
 #' groups <- splitTrianglesInd(mesh)
@@ -57,37 +74,77 @@ splitTrianglesInd <- function(mesh) {
   if (!"it" %in% names(mesh))
     stop("The mesh object is not a triangular mesh.")
 
-  tris  <- t(mesh$it)                 # each row = triangle
+  tris <- t(mesh$it)
   n_tri <- nrow(tris)
 
-  # List of neighboring triangles per vertex
-  vert2tris <- vector("list", max(tris))
-  for (i in seq_len(n_tri))
-    for (v in tris[i, ])
-      vert2tris[[v]] <- c(vert2tris[[v]], i)
+  if (n_tri == 0)
+    return(list())
 
-  # Collect edges (share 2 or more vertices)
-  edge_list <- vector("list", 0)
-  for (i in seq_len(n_tri)) {
-    neighbors <- unique(unlist(vert2tris[tris[i, ]]))
-    neighbors <- neighbors[neighbors > i]
-    for (j in neighbors)
-      if (length(intersect(tris[i, ], tris[j, ])) >= 2)
-        edge_list[[length(edge_list) + 1]] <- c(i, j)
-  }
+  # Generate the three edges of each triangle
+  edge_1 <- tris[, c(1, 2), drop = FALSE]
+  edge_2 <- tris[, c(2, 3), drop = FALSE]
+  edge_3 <- tris[, c(1, 3), drop = FALSE]
 
-  # Graph with all triangles as vertices
-  if (length(edge_list) == 0)                 # all isolated
+  edges <- rbind(edge_1, edge_2, edge_3)
+
+  # Triangle associated with each edge
+  tri_id <- rep.int(seq_len(n_tri), 3L)
+
+  # Store each undirected edge as an ordered vertex pair
+  lower_vertex <- pmin(edges[, 1], edges[, 2])
+  upper_vertex <- pmax(edges[, 1], edges[, 2])
+
+  # Encode each edge using a numeric key
+  max_vertex <- max(tris)
+
+  edge_key <- as.double(lower_vertex) * (max_vertex + 1) +
+    upper_vertex
+
+  # Sort edges so equal keys are adjacent
+  edge_order <- order(edge_key)
+
+  sorted_key <- edge_key[edge_order]
+  sorted_tri <- tri_id[edge_order]
+
+  same_as_next <- sorted_key[-length(sorted_key)] ==
+    sorted_key[-1]
+
+  # No shared edges: every triangle is isolated
+  if (!any(same_as_next))
     return(as.list(seq_len(n_tri)))
 
-  edge_mat <- do.call(rbind, edge_list)       # 2-column matrix
-  g <- igraph::graph(
-    edges = as.vector(t(edge_mat)),           # vector c(v1,v2,v3,v4,...)
-    n     = n_tri,
-    directed = FALSE)
+  shared_positions <- which(same_as_next)
 
-  comps <- igraph::components(g)
+  edge_matrix <- cbind(
+    sorted_tri[shared_positions],
+    sorted_tri[shared_positions + 1L]
+  )
 
-  # List of indices per connected component
-  split(seq_len(n_tri), comps$membership)
+  # Remove self-connections that may arise from degenerate triangles
+  edge_matrix <- edge_matrix[
+    edge_matrix[, 1] != edge_matrix[, 2],
+    ,
+    drop = FALSE
+  ]
+
+  if (nrow(edge_matrix) == 0)
+    return(as.list(seq_len(n_tri)))
+
+  # Build graph with triangles as vertices
+  graph <- igraph::graph(
+    edges = as.vector(t(edge_matrix)),
+    n = n_tri,
+    directed = FALSE
+  )
+
+  components <- igraph::components(graph)
+
+  # Triangle indices for each connected component
+  groups <- split(
+    seq_len(n_tri),
+    components$membership
+  )
+
+  # Sort components from largest to smallest
+  groups[order(lengths(groups), decreasing = TRUE)]
 }

@@ -1,9 +1,9 @@
 # Split a Mesh into Connected Triangle Groups
 
 Groups the triangles of a 3D mesh into independent subsets according to
-connectivity, i.e., if they share an edge (two vertices). Each connected
-component is returned as a group of indices corresponding to triangles
-belonging to the same piece or mesh fragment.
+connectivity. Two triangles are considered connected when they share an
+edge, that is, two vertex indices. Each connected component is returned
+as a group of triangle indices belonging to the same mesh fragment.
 
 ## Usage
 
@@ -16,36 +16,47 @@ splitTrianglesInd(mesh)
 - mesh:
 
   A `mesh3d` object containing the mesh to analyze. It must include the
-  `it` matrix, where each column represents a triangle defined by the
-  indices of its vertices.
+  `it` matrix, where each column represents a triangle defined by three
+  vertex indices.
 
 ## Value
 
-A list where each element contains the indices of triangles forming a
-connected component of the mesh. If there are no connections between
-triangles, each list element corresponds to a single triangle.
+A list where each element contains the indices of the triangles forming
+one connected component. Components are sorted from largest to smallest
+according to their number of triangles. If no triangles share an edge,
+each list element contains the index of a single triangle.
 
 ## Details
 
-This procedure is useful when the mesh contains multiple disconnected
-parts (e.g., reinforcements, panels, or separate fragments) and they
-need to be handled separately for geometric analysis, visualization, or
-data cleaning.
+The implementation generates the three edges of every triangle, encodes
+each undirected edge using a numeric key and identifies shared edges
+through a vectorized sorting operation. This avoids repeated pairwise
+intersection calculations and improves performance on large meshes.
 
 The algorithm follows these steps:
 
-1.  Checks that the mesh contains the `it` matrix with triangles.
+1.  Checks that the mesh contains the `it` matrix.
 
-2.  For each vertex, records the triangles in which it appears.
+2.  Generates the three edges of every triangle.
 
-3.  Determines pairs of triangles that share an edge (two common
-    vertices).
+3.  Represents each edge as an ordered pair of vertex indices.
 
-4.  Builds an undirected graph with triangles as nodes and shared-edge
-    connections as edges.
+4.  Encodes each edge using a numeric key so that the same undirected
+    edge receives the same value regardless of vertex order.
 
-5.  Identifies the connected components of the graph using
+5.  Sorts the edge keys to identify triangles that share an edge.
+
+6.  Builds an undirected graph in which triangles are vertices and
+    shared edges define graph connections.
+
+7.  Identifies the connected components using
     [`igraph::components()`](https://r.igraph.org/reference/components.html).
+
+8.  Sorts the resulting components from largest to smallest.
+
+Triangles that share only one vertex are not considered connected. The
+connectivity criterion therefore corresponds specifically to edge
+connectivity.
 
 ## See also
 
@@ -75,11 +86,16 @@ vb <- t(rbind(
   c(3, 0, 0),
   c(2, 1, 0)
 ))
+
 it <- t(rbind(
   c(1, 2, 3),
   c(4, 5, 6)
 ))
-mesh <- rgl::tmesh3d(vertices = vb, indices = it)
+
+mesh <- rgl::tmesh3d(
+  vertices = vb,
+  indices = it
+)
 
 # Split the mesh into connected triangle groups
 groups <- splitTrianglesInd(mesh)
