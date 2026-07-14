@@ -20,6 +20,8 @@
   : Clean and Reconnect Boundary Segments of a 3D Mesh
 - [`euclideanDistance()`](https://modes-cemi.github.io/dimControl/reference/euclideanDistance.md)
   : Compute the Euclidean Distance Between Two Points
+- [`filterMeshComponents()`](https://modes-cemi.github.io/dimControl/reference/filterMeshComponents.md)
+  : Filter Mesh Components by Minimum Size
 - [`findModes()`](https://modes-cemi.github.io/dimControl/reference/findModes.md)
   : Detect Modes in a Dataset
 - [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md)
