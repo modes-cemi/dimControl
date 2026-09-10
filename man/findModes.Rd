@@ -4,40 +4,56 @@
 \alias{findModes}
 \title{Detect Modes in a Dataset}
 \usage{
-findModes(x, bw = 2, Q1 = 0.95, plot = TRUE)
+findModes(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE)
 }
 \arguments{
-\item{x}{Numeric vector. The data for which modes will be calculated.}
+\item{x}{A numeric vector containing the data.}
 
-\item{bw}{Numeric. Bandwidth for the density estimation. Default is \code{bw = 2}.}
+\item{bw}{A numeric value specifying the bandwidth used for kernel density estimation.
+Default is \code{0.2}.}
 
-\item{Q1}{Numeric between 0 and 1. Percentile of the density used to filter the
-most relevant peaks. Default is \code{Q1 = 0.95}.}
+\item{q1}{A numeric value between 0 and 1 specifying the density quantile used to
+retain the most relevant peaks. Default is \code{0.95}.}
 
-\item{plot}{Logical. If \code{TRUE}, generates a plot of the density with detected modes.
+\item{plot}{Logical. If \code{TRUE}, plots the estimated density and the detected modes.
 Default is \code{TRUE}.}
+
+\item{showRanges}{Logical. If \code{TRUE}, draws vertical dashed lines marking the lower
+and upper limits of each detected mode. Default is \code{FALSE}.}
 }
 \value{
-A matrix with one row per detected mode and two columns (\code{min} and \code{max})
-representing the X-axis range of each mode.
+A matrix with one row per detected mode and two columns, \code{min} and \code{max}, containing
+the X-axis limits associated with each mode.
 }
 \description{
-Detects peaks (modes) in a numeric dataset \code{x} using kernel density estimation.
-For each mode, it determines the range along the X-axis where the density decreases
-toward the adjacent minima. The function can also plot the density and the detected modes.
+Detects modes in a numeric dataset using kernel density estimation. For each detected
+mode, the function determines the interval along the X-axis bounded by the adjacent
+decreases in density.
+}
+\details{
+The density of \code{x} is estimated using \code{\link[stats:density]{stats::density()}}. Local maxima are identified
+by comparing each density value with its immediate neighbours.
+
+Peaks are retained only when their density is greater than the quantile defined
+by \code{q1}. For each retained peak, the function searches in both directions until
+the density stops decreasing, defining the approximate interval associated with
+that mode.
+
+The number and location of detected modes depend strongly on the bandwidth \code{bw}: smaller
+values may detect more local peaks, whereas larger values produce a smoother density
+estimate.
 }
 \examples{
-set.seed(123) # Seed
-x <- c(
-  rnorm(200, mean = 2, sd = 0.3),
-  rnorm(5, mean = 3.5, sd = 0.1),
-  rnorm(200, mean = 5, sd = 0.3)
-)
+\dontrun{
+set.seed(123)
 
-# Compute and plot modes
-modes <- findModes(x, bw = 0.2, Q1 = 0.5, plot = TRUE)
 
-# X-axis ranges for each mode
+# Detect and plot modes
+modes <- findModes(x, bw = 0.2, q1 = 0.5, plot = TRUE, showRanges = TRUE)
 modes
+}
 
+}
+\seealso{
+\code{\link[stats:density]{stats::density()}}, \code{\link[stats:quantile]{stats::quantile()}}
 }

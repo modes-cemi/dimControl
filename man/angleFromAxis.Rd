@@ -4,47 +4,43 @@
 \alias{angleFromAxis}
 \title{Directional Angle from an Axis}
 \usage{
-angleFromAxis(v, dim, negdir = FALSE, dir = NULL, deg = TRUE)
+angleFromAxis(v, dim, negDir = FALSE, dir = NULL, deg = TRUE)
 }
 \arguments{
-\item{v}{Numeric matrix of dimension \code{d x n} containing normalized
-vectors by columns.}
+\item{v}{Numeric matrix of dimension \verb{d x n} containing normalized vectors by columns.}
 
 \item{dim}{Integer. Coordinate axis used as reference.}
 
-\item{negdir}{Logical. If \code{TRUE}, the negative direction of the selected axis
-is used. Default is \code{FALSE}.}
+\item{negDir}{Logical. If \code{TRUE}, the negative direction of the selected axis is
+used. Default is \code{FALSE}.}
 
-\item{dir}{Optional numeric value, either $1$ or $-1$. Compatibility argument
-for selecting the positive or negative direction of the axis. Default is
-\code{NULL}.}
+\item{dir}{Optional numeric value, either \eqn{1} or \eqn{-1}. If provided, \code{dir = -1}
+is equivalent to \code{negDir = TRUE}, and \code{dir = 1} to \code{negDir = FALSE}. Default is \code{NULL}.}
 
-\item{deg}{Logical. If \code{TRUE}, angles are returned in degrees; otherwise in
-radians.}
+\item{deg}{Logical. If \code{TRUE}, angles are returned in degrees; otherwise, in radians.}
 }
 \value{
 A numeric vector containing the directional angles.
 }
 \description{
-Computes the directional angle between normalized vectors and a reference
-coordinate axis.
+Computes the directional angle between normalized vectors and a reference coordinate
+axis.
 }
 \details{
-The input \code{v} must contain normalized vectors by columns. The argument \code{dim}
-selects the coordinate axis used as reference. For example, \code{dim = 1} uses the
-X axis, \code{dim = 2} uses the Y axis and \code{dim = 3} uses the Z axis.
-
-If \code{negdir = TRUE}, the angle is computed with respect to the negative
-direction of the selected axis. The argument \code{dir} is kept for compatibility:
-if provided, \code{dir = -1} is equivalent to \code{negdir = TRUE}, and \code{dir = 1} is
-equivalent to \code{negdir = FALSE}.
+The argument \code{dim} selects the coordinate axis used as reference: \code{dim = 1} for
+X, \code{dim = 2} for Y, and \code{dim = 3} for Z.
 }
 \examples{
+\dontrun{
 v <- matrix(c(1, 0, 0,
               0, 1, 0,
               0, 0, 1), nrow = 3)
 
-angleFromAxis(v, dim = 1, negdir = FALSE, deg = TRUE)
-angleFromAxis(v, dim = 1, negdir = TRUE,  deg = TRUE)
+angleFromAxis(v, dim = 1, negDir = FALSE, deg = TRUE)
+angleFromAxis(v, dim = 1, negDir = TRUE,  deg = TRUE)
+}
 
+}
+\seealso{
+\code{\link[=radDeg]{radDeg()}}
 }

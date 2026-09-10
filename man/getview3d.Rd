@@ -7,8 +7,25 @@
 getView3d()
 }
 \value{
-A list containing the current \code{zoom}, \code{userMatrix}, and \code{userProjection}.
+A list containing:
+\itemize{
+\item \code{zoom}: current zoom factor.
+\item \code{userMatrix}: current user transformation matrix.
+\item \code{userProjection}: current projection matrix.
+}
 }
 \description{
 Retrieves the current 3D view parameters from the active \code{rgl} device.
+}
+\examples{
+\dontrun{
+rgl::open3d()
+
+view <- getView3d()
+view
+}
+
+}
+\seealso{
+\code{\link[=setView3d]{setView3d()}}, \code{\link[rgl:par3d]{rgl::par3d()}}
 }

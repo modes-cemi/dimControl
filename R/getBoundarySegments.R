@@ -1,44 +1,48 @@
 #' Extract the Boundary of a 3D Mesh
 #'
-#' Identifies the unshared edges of a 3D mesh, i.e., edges belonging to only one face.
-#' These edges can be returned either as vertex indices or as a `mesh3d` object consisting
-#' of the corresponding segments.
-#'
-#' This function is an adaptation of `rgl::getBoundary3d()`. Unlike the original version,
-#' which detects boundary edges by finding duplicates in the edge list, this implementation
-#' uses a frequency table (`data.table`) to count how many times each edge appears in the mesh faces.
-#' Edges that appear only once are considered boundary edges. Additionally, the function
-#' allows returning either the vertex indices of the boundary edges or a `mesh3d` mesh
-#' of the segments, with an optional additional simplification.
+#' Identifies the unshared edges of a `mesh3d` object, i.e., edges belonging to only
+#' one face of the mesh.
 #'
 #' @param mesh A `mesh3d` object representing the 3D mesh.
-#' @param malla Logical. If `TRUE`, returns a `mesh3d` object containing the boundary segments;
-#' if `FALSE`, returns only the vertex indices forming the boundary edges. Default is `FALSE`.
-#' @param simplify Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting mesh
-#' using `cleanMesh3d()`. Default is `TRUE`.
+#' @param malla Logical. If `TRUE`, returns a `mesh3d` object containing the boundary
+#' segments. If `FALSE`, returns a matrix with the corresponding vertex indices. Default
+#' is `FALSE`.
+#' @param simplify Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting
+#' boundary mesh using the internal mesh-cleaning routine. Default is `TRUE`.
 #'
-#' @returns If `malla = FALSE`, a matrix with the vertex indices forming the boundary edges.
-#' If `malla = TRUE`, a `mesh3d` object representing the boundary segments.
+#' @returns
+#' If `malla = FALSE`, a two-row matrix containing the vertex indices of the boundary
+#' segments. If `malla = TRUE`, a `mesh3d` object containing the boundary segments.
 #'
-#' @seealso `rgl::getBoundary3d()`, `cleanMesh3d()`
+#' @details
+#' The function is adapted from [rgl::getBoundary3d()]. Edge endpoints are sorted
+#' to represent undirected edges, and their frequencies are counted. Edges appearing
+#' only once are identified as boundary edges.
+#'
+#' @seealso [rgl::getBoundary3d()]
 #'
 #' @examples
-#' # Extract the boundary of a cube and visualize it
-#' require(data.table)
-#'
+#' \dontrun{
 #' # Create a cube and remove two faces
-#' x <- rgl::cube3d(col = "lightblue")
-#' x$ib <- x$ib[, -(1:2)]
+#' mesh <- rgl::cube3d(color = "lightblue")
+#' mesh$ib <- mesh$ib[, -(1:2)]
 #'
-#' # Generate the boundary
-#' b <- getBoundarySegments(x, malla = TRUE)
+#' # Extract boundary segments
+#' boundary <- getBoundarySegments(mesh, malla = TRUE)
 #'
-#' # Visualize the mesh and its boundary
-#' rgl::open3d()
-#' rgl::shade3d(x, alpha = 0.2)
-#' rgl::shade3d(b, col = "red", lwd = 2)
+#' # Display mesh and boundary side by side
+#' rgl::clear3d()
+#' rgl::mfrow3d(1, 2)
 #'
-#' @importFrom data.table data.table
+#' rgl::shade3d(mesh, color = "lightgray", alpha = 0.4)
+#' rgl::title3d("Mesh", level = 4)
+#'
+#' rgl::next3d()
+#' rgl::shade3d(boundary, color = "red", lwd = 2)
+#' rgl::title3d("Boundary", level = 4)
+#' }
+#'
+#' @import data.table
 #'
 #' @export
 getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
@@ -51,26 +55,26 @@ getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
     edges <- cbind(edges, mesh$ib[1:2,], mesh$ib[2:3,], mesh$ib[3:4,], mesh$ib[c(4,1),])
   if (!ncol(edges)) return(list(edges))
 
-  # Sort the endpoints of each edge to make them undirected
-  minv <- pmin(edges[1,], edges[2,])
-  maxv <- pmax(edges[1,], edges[2,])
+  # Sort edge endpoints to represent undirected edges
+  minV <- pmin(edges[1,], edges[2,])
+  maxV <- pmax(edges[1,], edges[2,])
 
-  # data.table of edge endpoints
-  dt_edges <- data.table(v1 = minv, v2 = maxv)
+  # Create a table of edge endpoints with data.table
+  edgeTable <- data.table::data.table(v1 = minV, v2 = maxV)
 
-  # Count frequency of each edge
-  counts <- dt_edges[, .N, by = .(v1, v2)]
+  # Count the frequency of each edge
+  edgeCounts <- edgeTable[, .N, by = .(v1, v2)]
 
-  # Filter edges that appear only once
-  boundary_edges <- counts[N == 1]
+  # Keep edges that appear only once
+  boundaryEdges <- edgeCounts[N == 1]
 
   # Select edges satisfying the condition
-  keep <- paste(dt_edges$v1, dt_edges$v2) %in% paste(boundary_edges$v1, boundary_edges$v2)
+  keep <- paste(edgeTable$v1, edgeTable$v2) %in% paste(boundaryEdges$v1, boundaryEdges$v2)
 
   # Boundary edges
   boundary <- edges[, keep, drop = FALSE]
 
-  # If malla = TRUE, create a mesh3d with these segments
+  # Return a mesh3d object if requested
   if (malla) {
     result <- rgl::mesh3d(vertices = mesh$vb, segments = boundary)
     if (simplify)
@@ -78,6 +82,5 @@ getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
     return(result)
   }
 
-  # Otherwise, return the indices of boundary segments
-  return(boundary)
+  boundary
 }

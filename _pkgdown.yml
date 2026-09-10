@@ -2,6 +2,7 @@ url: https://modes-cemi.github.io/dimControl/
 
 template:
   mathjax: true
+  bootstrap: 5
 
 reference:
 
@@ -52,8 +53,8 @@ reference:
   desc: >
     Auxiliary functions used throughout the geometric processing workflow.
   contents:
-  - rad2deg
-  - xprod
+  - radDeg
+  - xProd
   - getView3d
   - setView3d
   - pan3d

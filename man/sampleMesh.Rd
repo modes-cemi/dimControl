@@ -2,47 +2,55 @@
 % Please edit documentation in R/sampleMesh.R
 \name{sampleMesh}
 \alias{sampleMesh}
-\title{Sampling points over a triangular mesh}
+\title{Sample Points over a Triangular Mesh}
 \usage{
 sampleMesh(mesh, n, shuffle = FALSE)
 }
 \arguments{
-\item{mesh}{A list representing a triangular mesh, containing:
+\item{mesh}{A \code{mesh3d} object containing a triangular mesh. It must include:
 \itemize{
-\item \code{vb}: a 3xN (or 4xN homogeneous) matrix with the mesh vertex coordinates.
-\item \code{it}: a 3xM matrix with the vertex indices for each triangle (each column is a triangle).
+\item \code{vb}: a 3 x N or 4 x N matrix containing the vertex coordinates.
+\item \code{it}: a 3 x M matrix containing the vertex indices of each triangle.
 }}
 
-\item{n}{Integer greater than 0. Total number of points to generate.}
+\item{n}{A positive integer specifying the total number of points to generate.}
 
-\item{shuffle}{Logical. Whether to shuffle the generated points randomly.}
+\item{shuffle}{Logical. If \code{TRUE}, randomly shuffles the order of the generated
+points. Default is \code{FALSE}.}
 }
 \value{
-A numeric matrix of dimension 3 x n, where each column represents
-a point sampled in 3D space.
+A numeric matrix with 3 rows and \code{n} columns, where each column represents a sampled
+3D point.
 }
 \description{
-Generates random points uniformly distributed over a triangular mesh.
-Each triangle receives a number of points proportional to its area, and the points
-are generated using barycentric coordinates.
+Generates random points uniformly distributed over the surface of a triangular mesh.
+The number of points assigned to each triangle is proportional to its area.
 }
 \details{
-Internally, this function uses \code{sampleTriangle()} to sample points
-within each triangle.
+The surface area of each triangle is obtained using \code{\link[Rvcg:vcgArea]{Rvcg::vcgArea()}}. The number
+of points assigned to each triangle is then generated from a multinomial distribution
+with probabilities proportional to triangle area.
 
-If the mesh uses homogeneous coordinates (4th row in \code{vb}), points are converted
-to 3D by dividing by the w component. The points are returned as columns
-of a 3xN matrix. If \code{shuffle = TRUE}, the point order is shuffled randomly.
+Points within each triangle are generated uniformly using barycentric coordinates.
+
+If \code{mesh$vb} contains homogeneous coordinates, the vertices are converted to Cartesian
+coordinates by dividing the first three coordinates by the homogeneous coordinate.
 }
 \examples{
 \dontrun{
 # Create a triangular sphere
 mesh <- Rvcg::vcgSphere(1, subdiv = 1)
-rgl::wire3d(mesh) # visualize the mesh
-# Sample 10000 points over the mesh
-pts <- sampleMesh(mesh, 10000, shuffle = TRUE)
-# Plot the sampled points
-rgl::points3d(t(pts), col = "red", size = 5)
+
+rgl::wire3d(mesh)
+
+# Sample points over the mesh
+points <- sampleMesh(mesh, 10000, shuffle = TRUE)
+
+# Display sampled points
+rgl::points3d(t(points), col = "red", size = 2)
 }
 
+}
+\seealso{
+\code{\link[Rvcg:vcgArea]{Rvcg::vcgArea()}}, \code{\link[rgl:primitives]{rgl::points3d()}}
 }

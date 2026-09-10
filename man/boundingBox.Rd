@@ -2,7 +2,7 @@
 % Please edit documentation in R/boundingBox.R
 \name{boundingBox}
 \alias{boundingBox}
-\title{Compute the Spatial Bounds (Bounding Box) of a 3D Mesh}
+\title{Compute the Bounding Box of a 3D Mesh}
 \usage{
 boundingBox(x)
 }
@@ -10,30 +10,27 @@ boundingBox(x)
 \item{x}{A \code{mesh3d} object containing the mesh vertices in the \code{vb} component.}
 }
 \value{
-A matrix with 3 rows and 2 columns containing the minimum and maximum coordinate
-values of the mesh vertices:
-\itemize{
-\item Each row corresponds to an axis (\code{X}, \code{Y}, \code{Z}).
-\item The first column (\code{min}) contains the minimum values.
-\item The second column (\code{max}) contains the maximum values.
-}
+A 3 x 2 matrix with rows corresponding to the \code{X}, \code{Y}, and \code{Z} axes and columns
+\code{min} and \code{max}.
 }
 \description{
-Computes the minimum and maximum coordinates of the vertices of a 3D mesh, returning
-a matrix with the extreme values along the \code{X}, \code{Y}, and \code{Z} axes.
+Computes the minimum and maximum coordinates of the vertices of a 3D mesh, along
+the \code{X}, \code{Y}, and \code{Z} axes.
 }
 \details{
-Internally, the function converts homogeneous coordinates in \code{x$vb} to Euclidean
-coordinates using \code{rgl::asEuclidean2()}, and computes per-axis ranges using \code{apply(..., range)}.
+Homogeneous coordinates in \code{x$vb} are converted to Euclidean coordinates using
+\code{\link[rgl:matrices]{rgl::asEuclidean2()}} before computing the coordinate ranges.
 }
 \examples{
+\dontrun{
 # Create a cubic mesh
 cube <- rgl::cube3d()
 
 # Compute its bounding box
 boundingBox(cube)
+}
 
 }
 \seealso{
-\code{rgl::asEuclidean2()}
+\code{\link[rgl:matrices]{rgl::asEuclidean2()}}
 }

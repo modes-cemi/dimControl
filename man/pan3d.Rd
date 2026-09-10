@@ -9,55 +9,50 @@ pan3d(button, dev = rgl::cur3d(), subscene = rgl::currentSubscene3d(dev))
 \arguments{
 \item{button}{Integer indicating the mouse button used for panning:
 \itemize{
-\item \code{1}: left button
-\item \code{2}: right button
-\item \code{3}: middle button (wheel)
+\item \code{1}: left mouse button.
+\item \code{2}: right mouse button.
+\item \code{3}: middle mouse button.
 }}
 
-\item{dev}{RGL device ID (default \code{rgl::cur3d()}).}
+\item{dev}{An \code{rgl} device ID. Default is \code{\link[rgl:open3d]{rgl::cur3d()}}.}
 
-\item{subscene}{Subscene to which the movement is applied (default is the active
-subscene from \code{rgl::currentSubscene3d()}).}
+\item{subscene}{Subscene to which the panning interaction is applied. Default is
+the active subscene returned by \code{\link[rgl:subscene3d]{rgl::currentSubscene3d()}}.}
 }
 \value{
-No value is returned; the function sets mouse callbacks to pan the 3D
-view interactively.
+Invisibly returns \code{NULL}. The function sets mouse callbacks on the selected \code{rgl}
+device to enable interactive panning.
 }
 \description{
-Enables camera panning in an \strong{rgl} 3D scene, allowing the user to move the view
-freely within the graphics window by dragging the mouse with the specified button.
+Enables interactive panning in an \code{rgl} 3D scene by dragging the mouse with the
+specified button. The view is translated without changing the model orientation.
 }
 \details{
-By default, \strong{rgl} only allows rotation and zoom of 3D objects, but not camera
-translation. This function extends the interaction by enabling the user to translate
-the entire scene in any direction without altering the model orientation.
+When the specified mouse button is pressed, the initial cursor position and projection
+parameters are stored. During mouse movement, the relative cursor displacement is
+converted into a translation matrix using \code{\link[rgl:matrices]{rgl::translationMatrix()}}.
 
-Internally, the function uses mouse callbacks via \code{rgl::rgl.setMouseCallbacks()},
-so that when the mouse button is pressed and dragged, the projection matrix (\code{userProjection})
-is dynamically updated to simulate smooth movement within the scene.
-
-When the specified button is pressed, the function records the initial cursor position
-(\emph{begin} event). During mouse movement (\emph{update} event), it calculates the relative
-displacement and applies a translation transformation on \code{userProjection} using
-\code{rgl::translationMatrix()}, allowing the camera to move in the drag direction and
-enabling free movement of the scene in the graphics window.
+The resulting transformation is applied to \code{userProjection} for each listening subscene,
+producing an interactive translation of the 3D view.
 }
 \note{
-The original code was developed by \strong{Duncan Murdoch} as part of the \strong{rgl}
-package, where it is not exported. It is included here without modifications to
-facilitate use within this package.
+This function is based on code developed by Duncan Murdoch for the \code{rgl} package
+and adapted for use in this package.
 }
 \examples{
 \dontrun{
 rgl::open3d()
+
 mesh <- rgl::icosahedron3d()
-rgl::shade3d(mesh, col = "lightblue")
-pan3d(2) # Activate panning with the right mouse button
+rgl::shade3d(mesh, col = "lightgray")
+
+# Activate panning with the right mouse button
+pan3d(2)
 }
 
 }
 \seealso{
-\code{rgl::rgl.setMouseCallbacks()}, \code{rgl::par3d()}, \code{rgl::translationMatrix()}
+\code{\link[rgl:callbacks]{rgl::rgl.setMouseCallbacks()}}, \code{\link[rgl:par3d]{rgl::par3d()}}, \code{\link[rgl:matrices]{rgl::translationMatrix()}}
 }
 \author{
 Duncan Murdoch

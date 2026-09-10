@@ -4,38 +4,102 @@
 \alias{cleanBoundarySegments}
 \title{Clean and Reconnect Boundary Segments of a 3D Mesh}
 \usage{
-cleanBoundarySegments(
-  iborde,
-  base_mesh,
-  length_prob = 0.98,
-  min_group_size = 20
-)
+cleanBoundarySegments(iBorde, baseMesh, lengthProb = 0.98, minGroupSize = 20)
 }
 \arguments{
-\item{iborde}{A two-row matrix containing the boundary segment indices, where
-each column represents a segment defined by the indices of its two vertices.}
+\item{iBorde}{A two-row matrix containing the boundary segment indices, where each
+column defines a segment by the indices of its two vertices.}
 
-\item{base_mesh}{A \code{mesh3d} object containing the mesh geometry to which the
-boundary segments belong.}
+\item{baseMesh}{A \code{mesh3d} object containing the mesh geometry associated with the
+boundary segments.}
 
-\item{length_prob}{A numeric value between 0 and 1 defining the percentile
-used to identify and remove abnormally long boundary segments. Default is
-\code{0.98}.}
+\item{lengthProb}{A numeric value between 0 and 1 defining the quantile used to
+remove abnormally long boundary segments. Default is \code{0.98}.}
 
-\item{min_group_size}{Minimum number of segments required for a connected
-component to be retained. Smaller groups are removed. Default is \code{20}.}
+\item{minGroupSize}{Minimum number of segments required for a connected component
+to be retained. Default is \code{20}.}
 }
 \value{
-A two-row matrix containing the indices of the cleaned and
-reconnected boundary segments.
+A two-row matrix containing the cleaned and reconnected boundary segments.
 }
 \description{
-Cleans a set of boundary segments previously extracted from a \code{mesh3d}
-object. The function removes redundant connections at vertices with degree
-greater than two, filters abnormally long segments, removes small connected
-groups of segments, reconnects disconnected endpoints using the nearest
-neighbor and retains only the main connected boundary.
+Cleans boundary segments extracted from a \code{mesh3d} object by removing redundant
+connections, long segments, and small connected components, reconnecting endpoints,
+and retaining the main connected boundary.
+}
+\details{
+Vertices with more than two incident boundary segments are simplified, unusually
+long segments and small connected components are removed, disconnected endpoints
+are paired by nearest-neighbor distance, and only the largest connected boundary
+is retained.
+}
+\examples{
+\dontrun{
+# Create a rectangular mesh with a triangular hole
+vertices <- matrix(
+  c(
+    0, 0, 0,
+    4, 0, 0,
+    4, 2, 0,
+    0, 2, 0,
+    1.5, 0.8, 0,
+    2.2, 0.8, 0,
+    1.8, 1.4, 0
+  ),
+  ncol = 3,
+  byrow = TRUE
+)
+
+# Define the triangular faces around the hole
+triangles <- matrix(
+  c(
+    1, 2, 5,
+    2, 6, 5,
+    2, 3, 6,
+    3, 7, 6,
+    3, 4, 7,
+    4, 1, 7,
+    1, 5, 7
+  ),
+  ncol = 3,
+  byrow = TRUE
+)
+
+# Create the mesh
+baseMesh <- rgl::tmesh3d(
+  vertices = t(vertices),
+  indices = t(triangles),
+  homogeneous = FALSE
+)
+
+# Extract boundary segment indices
+iBorde <- getBoundarySegments(baseMesh)
+
+# Clean the boundary segments
+cleanBorde <- cleanBoundarySegments(
+  iBorde,
+  baseMesh,
+  lengthProb = 1,
+  minGroupSize = 4
+)
+
+# Display the original mesh and boundaries
+rgl::clear3d()
+rgl::mfrow3d(1, 3)
+
+rgl::shade3d(baseMesh, color = "lightgray")
+rgl::title3d("Mesh", level = 8)
+
+rgl::next3d()
+rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorde))
+rgl::title3d("Original boundary", level = 8)
+
+rgl::next3d()
+rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorde))
+rgl::title3d("Cleaned boundary", level = 8)
+}
+
 }
 \seealso{
-\code{getBoundarySegments()}
+\code{\link[=getBoundarySegments]{getBoundarySegments()}}
 }

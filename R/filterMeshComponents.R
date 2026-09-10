@@ -1,217 +1,202 @@
 #' Filter Mesh Components by Minimum Size
 #'
-#' Filters the connected components of a triangular mesh according to their
-#' number of triangles and rebuilds the mesh using only the retained
-#' components. Optionally, the surviving components can be assigned distinct
-#' colors and plotted directly.
+#' Filters the connected components of a triangular mesh according to their number
+#' of triangles and rebuilds the mesh using only the retained components.
 #'
-#' The component list is normally obtained with `splitTrianglesInd()`. Each
-#' element of the list must contain triangle-column indices referring to the
-#' same `mesh$it` matrix supplied to this function.
+#' @param mesh A `mesh3d` object containing a triangular mesh. It must include the `it`
+#' matrix, where each column represents a triangle.
+#' @param comps A list of integer vectors containing triangle indices for each connected
+#' component, typically returned by [splitTrianglesInd()].
+#' @param minSize Minimum number of triangles required for a component to be retained.
+#' Default is `1000`. If `NULL`, all components are retained.
+#' @param color Logical. If `TRUE`, creates an additional rendering mesh with a distinct
+#' color assigned to each retained component. Default is `FALSE`. This argument is
+#' automatically set to `TRUE` when `plot = TRUE`.
+#' @param plot Logical. If `TRUE`, plots the retained components using [rgl::shade3d()].
+#' Default is `FALSE`.
+#' @param palette A function receiving the number of retained components and returning
+#' the corresponding colors. Default is [grDevices::rainbow()].
 #'
-#' @param mesh A `mesh3d` object containing a triangular mesh. It must include
-#' the `it` matrix, where each column represents a triangle.
-#' @param comps A list of integer vectors containing triangle indices for each
-#' connected component, typically returned by `splitTrianglesInd(mesh)`.
-#' The components must have been calculated from the same version and triangle
-#' order of `mesh`.
-#' @param min_size Minimum number of triangles required for a component to be
-#' retained. Default is `1000`. If `NULL`, all components are retained.
-#' @param color Logical. If `TRUE`, creates an additional rendering mesh with a
-#' distinct color assigned to each retained component. Default is `FALSE`.
-#' This argument is automatically set to `TRUE` when `plot = TRUE`.
-#' @param plot Logical. If `TRUE`, plots the retained components using
-#' `rgl::shade3d()`. The current `rgl` scene is not cleared. Default is
-#' `FALSE`.
-#' @param palette A function that receives the number of retained components
-#' and returns the corresponding colors. Default is `grDevices::rainbow`.
-#'
-#' @returns A list containing:
+#' @returns
+#' A list containing:
 #' \itemize{
-#'   \item `mesh`: a `mesh3d` object containing only the retained triangles.
-#'   \item `tri_idx`: triangle-column indices retained from the input
-#'   `mesh$it`.
-#'   \item `comp_id`: original component index associated with each retained
-#'   triangle.
-#'   \item `render`: `NULL` unless `color = TRUE` or `plot = TRUE`; otherwise,
-#'   a list containing an exploded rendering mesh and its per-vertex color
-#'   vector.
+#'   \item `mesh`: a `mesh3d` object containing the retained triangles.
+#'   \item `triIdx`: triangle-column indices retained from the input `mesh$it`.
+#'   \item `compId`: original component index associated with each retained triangle.
+#'   \item `render`: `NULL` unless `color = TRUE` or `plot = TRUE`; otherwise, a list
+#'   containing the rendering mesh and its per-vertex color vector.
 #' }
 #'
 #' @details
-#' Filtering changes the column positions of the triangles in the returned
-#' `mesh$it`, but it does not modify the vertex indices stored inside the
-#' triangles or the layout of `mesh$vb`. The element `tri_idx` preserves the
-#' correspondence with the triangle columns of the input mesh.
+#' Components are retained when their number of triangles is greater than or equal
+#' to `minSize`. The original vertex indices and the `mesh$vb` matrix are preserved
+#' in the filtered mesh.
 #'
-#' When coloring is requested, vertices are duplicated so that every triangle
-#' has its own three vertices. This guarantees an unambiguous solid color for
-#' each triangle using ordinary per-vertex coloring. The exploded mesh stored
-#' in `render$mesh` is intended only for visualization and should not replace
-#' the filtered mesh in subsequent geometric analyses.
+#' When coloring is requested, the vertices of each triangle are duplicated so that
+#' every retained component can be displayed with an independent color. The resulting
+#' mesh stored in `render$mesh` is intended only for visualization.
 #'
-#' Creating the rendering mesh increases memory usage because adjacent
-#' triangles no longer share vertices. For large meshes, use `color = TRUE` or
-#' `plot = TRUE` only when visualization is required.
-#'
-#' @seealso `splitTrianglesInd()`, `rgl::shade3d()`
+#' @seealso [splitTrianglesInd()], [rgl::shade3d()]
 #'
 #' @examples
 #' \dontrun{
-#' # Alternative 1: filter and rebuild without coloring
-#' components <- splitTrianglesInd(base_mesh)
+#' # Create a mesh with two disconnected components
+#' vertices <- t(rbind(
+#'   c(0, 0, 0),
+#'   c(1, 0, 0),
+#'   c(0, 1, 0),
+#'   c(1, 1, 0),
+#'   c(3, 0, 0),
+#'   c(4, 0, 0),
+#'   c(3, 1, 0)
+#' ))
 #'
+#' triangles <- t(rbind(
+#'   c(1, 2, 3),
+#'   c(2, 4, 3),
+#'   c(5, 6, 7)
+#' ))
+#'
+#' mesh <- rgl::tmesh3d(
+#'   vertices = vertices,
+#'   indices = triangles
+#' )
+#'
+#' # Identify connected components
+#' components <- splitTrianglesInd(mesh)
+#'
+#' # Retain components with at least two triangles
 #' result <- filterMeshComponents(
-#'   mesh = base_mesh,
+#'   mesh = mesh,
 #'   comps = components,
-#'   min_size = 1000
+#'   minSize = 2,
+#'   color = TRUE
 #' )
 #'
-#' base_mesh_clean <- result$mesh
-#'
-#' # Alternative 2: filter, color and plot
+#' # Display original and filtered meshes side by side
 #' rgl::clear3d()
+#' rgl::mfrow3d(1, 2)
 #'
-#' result_plot <- filterMeshComponents(
-#'   mesh = base_mesh,
-#'   comps = components,
-#'   min_size = 1000,
-#'   plot = TRUE
-#' )
+#' rgl::shade3d(mesh, color = "lightgray")
+#' rgl::title3d("Original mesh", level = 10)
 #'
-#' base_mesh_clean_plot <- result_plot$mesh
+#' rgl::next3d()
+#' rgl::shade3d(result$render$mesh, color = result$render$col)
+#' rgl::title3d("Filtered mesh", level = 4)
 #' }
 #'
 #' @export
 filterMeshComponents <- function(mesh,
                                  comps,
-                                 min_size = 1000,
+                                 minSize = 1000,
                                  color = FALSE,
                                  plot = FALSE,
                                  palette = grDevices::rainbow) {
 
   # Validate the triangular mesh
   if (!inherits(mesh, "mesh3d"))
-    stop("Argument 'mesh' must be an object of class 'mesh3d'.")
+    stop("Argument 'mesh' must be an object of class 'mesh3d'")
 
   if (is.null(mesh$it) || !is.matrix(mesh$it) || nrow(mesh$it) != 3)
-    stop("Argument 'mesh' must contain a triangular 'it' matrix with three rows.")
+    stop("Argument 'mesh' must contain a triangular 'it' matrix with three rows")
 
   # Validate the component list
   if (!is.list(comps))
-    stop("Argument 'comps' must be a list of triangle-index vectors.")
+    stop("Argument 'comps' must be a list of triangle-index vectors")
 
   if (length(comps) == 0)
-    stop("Argument 'comps' contains no mesh components.")
+    stop("Argument 'comps' contains no mesh components")
 
-  if (!is.null(min_size)) {
-    if (length(min_size) != 1 ||
-        !is.numeric(min_size) ||
-        is.na(min_size) ||
-        min_size < 1) {
-      stop("Argument 'min_size' must be NULL or a positive numeric value.")
+  if (!is.null(minSize)) {
+    if (length(minSize) != 1 ||
+        !is.numeric(minSize) ||
+        is.na(minSize) ||
+        minSize < 1) {
+      stop("Argument 'minSize' must be NULL or a positive numeric value")
     }
   }
 
   if (!is.function(palette))
-    stop("Argument 'palette' must be a function.")
+    stop("Argument 'palette' must be a function")
 
   # Validate triangle indices
-  component_indices <- unlist(comps, use.names = FALSE)
+  componentIndices <- unlist(comps, use.names = FALSE)
 
-  if (length(component_indices) == 0)
-    stop("Argument 'comps' contains no triangle indices.")
+  if (length(componentIndices) == 0)
+    stop("Argument 'comps' contains no triangle indices")
 
-  if (anyNA(component_indices) ||
-      any(component_indices < 1) ||
-      any(component_indices > ncol(mesh$it)) ||
-      any(component_indices != as.integer(component_indices))) {
-    stop("All component indices must be valid triangle-column indices of 'mesh$it'.")
+  if (anyNA(componentIndices) ||
+      any(componentIndices < 1) ||
+      any(componentIndices > ncol(mesh$it)) ||
+      any(componentIndices != as.integer(componentIndices))) {
+    stop("All component indices must be valid triangle-column indices of 'mesh$it'")
   }
 
+  # Plotting requires component colors
   color <- isTRUE(color) || isTRUE(plot)
 
   # Select components according to their number of triangles
   sizes <- lengths(comps)
 
-  keep <- if (is.null(min_size)) {
+  keep <- if (is.null(minSize)) {
     seq_along(comps)
   } else {
-    which(sizes >= min_size)
+    which(sizes >= minSize)
   }
 
   if (length(keep) == 0) {
     stop(
-      "No component reaches 'min_size' = ",
-      min_size,
+      "No component reaches 'minSize' = ",
+      minSize,
       "."
     )
   }
 
-  retained_components <- comps[keep]
-  retained_sizes <- sizes[keep]
+  retainedComponents <- comps[keep]
+  retainedSizes <- sizes[keep]
 
-  tri_idx <- unlist(
-    retained_components,
-    use.names = FALSE
-  )
+  triIdx <- unlist(retainedComponents, use.names = FALSE)
 
-  # Rebuild the processing mesh with retained triangles
-  filtered_mesh <- mesh
-  filtered_mesh$it <- mesh$it[, tri_idx, drop = FALSE]
+  # Rebuild the mesh with retained triangles
+  filteredMesh <- mesh
+  filteredMesh$it <- mesh$it[, triIdx, drop = FALSE]
 
   render <- NULL
 
   if (color) {
-    component_colors <- palette(length(keep))
+    componentColors <- palette(length(keep))
 
-    triangle_colors <- rep(
-      component_colors,
-      times = retained_sizes
-    )
+    triangleColors <- rep(componentColors, times = retainedSizes)
 
-    # Duplicate the three vertices of each triangle for unambiguous coloring
-    vb_flat <- filtered_mesh$vb[
-      ,
-      as.vector(filtered_mesh$it),
-      drop = FALSE
-    ]
+    # Duplicate vertices for unambiguous triangle coloring
+    vbFlat <- filteredMesh$vb[ , as.vector(filteredMesh$it), drop = FALSE]
 
-    it_render <- matrix(
-      seq_len(ncol(vb_flat)),
-      nrow = 3
-    )
+    itRender <- matrix(seq_len(ncol(vbFlat)), nrow = 3)
 
-    vertex_colors <- rep(
-      triangle_colors,
-      each = 3
-    )
+    vertexColors <- rep(triangleColors, each = 3)
 
-    render_mesh <- filtered_mesh
-    render_mesh$vb <- vb_flat
-    render_mesh$it <- it_render
+    renderMesh <- filteredMesh
+    renderMesh$vb <- vbFlat
+    renderMesh$it <- itRender
 
     # Existing normals no longer correspond to the duplicated vertices
-    render_mesh$normals <- NULL
+    renderMesh$normals <- NULL
 
     render <- list(
-      mesh = render_mesh,
-      col = vertex_colors
+      mesh = renderMesh,
+      col = vertexColors
     )
   }
 
+  # Plot retained components
   if (isTRUE(plot)) {
-    rgl::shade3d(
-      render$mesh,
-      col = render$col,
-      lit = FALSE
-    )
+    rgl::shade3d(render$mesh, col = render$col, lit = FALSE)
   }
 
   list(
-    mesh = filtered_mesh,
-    tri_idx = tri_idx,
-    comp_id = rep(keep, times = retained_sizes),
+    mesh = filteredMesh,
+    triIdx = triIdx,
+    compId = rep(keep, times = retainedSizes),
     render = render
   )
 }

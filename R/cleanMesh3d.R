@@ -1,34 +1,29 @@
 #' Clean a 3D Mesh
 #'
-#' Removes unused or non-finite vertices and updates the face indices in a `mesh3d` object.
-#'
-#' This function is a simplified version of `rgl::cleanMesh3d()`, adapted for basic
-#' mesh debugging and cleaning tasks.
+#' Removes non-finite or unused vertices from a `mesh3d` object and updates the corresponding
+#' mesh indices.
 #'
 #' @param mesh A `mesh3d` object representing the mesh to be cleaned.
-#' @param onlyFinite Logical. If `TRUE` (default), removes vertices with non-finite coordinates.
-#' @param allUsed Logical. If `TRUE` (default), removes vertices that are not referenced by any face.
+#' @param onlyFinite Logical. If `TRUE`, removes vertices with non-finite coordinates.
+#' Default is `TRUE`.
+#' @param allUsed Logical. If `TRUE`, removes vertices that are not referenced by any
+#' mesh element. Default is `TRUE`.
 #'
-#' @returns A cleaned `mesh3d` object, with updated vertices and face indices.
+#' @returns
+#' A cleaned `mesh3d` object with updated vertex and mesh indices.
 #'
 #' @details
-#' This function is based on `rgl::cleanMesh3d()` (D. Murdoch, 2024), but removes
-#' elements unnecessary for structural cleaning, such as tags, textures, normals,
-#' vertex colors, and the `rejoin` parameter.
+#' This function is a simplified adaptation of the internal `cleanMesh3d()` function
+#' from the `rgl` package. It retains only the functionality required in `dimControl`
+#' to remove non-finite or unused vertices and reindex the `ip`, `is`, `it`, and `ib`
+#' components.
 #'
-#' The goal is to retain only essential functionality:
-#' \itemize{
-#'   \item Remove vertices with non-finite values (`NA`, `NaN`, `Inf`) when `onlyFinite = TRUE`.
-#'   \item Remove vertices not used in any face when `allUsed = TRUE`.
-#'   \item Automatically reindex face matrices (`ip`, `is`, `it`, `ib`) after cleaning.
-#' }
+#' Unlike the original implementation, this version does not handle additional mesh
+#' attributes such as tags, texture coordinates, vertex attributes, or triangle rejoining.
 #'
 #' @references
-#' Murdoch, D. (2024). *rgl: 3D Visualization Using OpenGL*.
-#' R package version as appropriate.
-#' URL: <https://CRAN.R-project.org/package=rgl>
-#'
-#' @author Duncan Murdoch
+#' Murdoch, D., et al. \emph{rgl: 3D Visualization Using OpenGL}.
+#' R package. \url{https://CRAN.R-project.org/package=rgl}
 #'
 #' @examples
 #' \dontrun{
@@ -38,12 +33,12 @@
 #' # Add an unreferenced vertex
 #' cube$vb <- cbind(cube$vb, c(10,10,10,1))
 #'
-#' # Clean the cube
-#' cube_clean <- cleanMesh3d(cube)
+#' # Clean the mesh
+#' cubeClean <- cleanMesh3d(cube)
 #'
-#' # Compare number of vertices
-#' dim(cube$vb)
-#' dim(cube_clean$vb)
+#' # Compare the number of vertices
+#' ncol(cube$vb)
+#' ncol(cubeClean$vb)
 #' }
 #'
 #' @keywords internal
@@ -51,46 +46,54 @@
 #'
 cleanMesh3d <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
   # Original number of vertices
-  nold <- ncol(mesh$vb)
+  nOld <- ncol(mesh$vb)
 
-  # Logical vector to mark vertices to keep
-  keep <- rep(TRUE, nold)
+  # Logical vector indicating vertices to retain
+  keep <- rep(TRUE, nOld)
 
-  # Remove non-finite vertices if onlyFinite = TRUE
+  # Remove vertices with non-finite coordinates
   if (onlyFinite)
     keep <- keep & apply(mesh$vb, 2, function(col) all(is.finite(col)))
 
-  # Remove unused vertices if allUsed = TRUE
+  # Remove vertices not referenced by any mesh element
   if (allUsed)
-    keep <- keep & (seq_len(nold) %in% c(mesh$ip, mesh$is, mesh$it, mesh$ib))
+    keep <- keep & (seq_len(nOld) %in% c(mesh$ip, mesh$is, mesh$it, mesh$ib))
 
-  # Reindex if vertices are removed
+  # Reindex mesh elements if vertices are removed
   if (!all(keep)) {
-    oldnums <- which(keep)
-    newnums <- rep(NA, nold)
-    nnew <- sum(keep)
-    newnums[oldnums] <- seq_len(nnew)
+    oldNums <- which(keep)
+    newNums <- rep(NA, nOld)
+    nNew <- sum(keep)
+    newNums[oldNums] <- seq_len(nNew)
 
     # Update vertex matrix
-    mesh$vb <- mesh$vb[, oldnums, drop = FALSE]
+    mesh$vb <- mesh$vb[, oldNums, drop = FALSE]
 
-    # Reindex face matrices after vertex removal
-    reindex <- function(m) {
-      if (!is.null(m)) {
-        newcols <- newnums[m]
-        dim(newcols) <- dim(m)
-        keep <- apply(newcols, 2, function(col) all(!is.na(col)))
-        list(m = newcols[, keep, drop = FALSE])
-      } else list(m = NULL)
+    # Reindex mesh component
+    reindex <- function(x) {
+
+      if (is.null(x)) {
+        return(NULL)
+      }
+
+      newX <- newNums[x]
+      dim(newX) <- dim(x)
+
+      keepCols <- apply(
+        newX,
+        2,
+        function(col) all(!is.na(col))
+      )
+
+      newX[, keepCols, drop = FALSE]
     }
 
-    # Reindex all faces
-    mesh$ip <- reindex(mesh$ip)$m
-    mesh$is <- reindex(mesh$is)$m
-    mesh$it <- reindex(mesh$it)$m
-    mesh$ib <- reindex(mesh$ib)$m
+    # Update mesh indices
+    mesh$ip <- reindex(mesh$ip)
+    mesh$is <- reindex(mesh$is)
+    mesh$it <- reindex(mesh$it)
+    mesh$ib <- reindex(mesh$ib)
   }
 
-  # Return cleaned mesh
   mesh
 }

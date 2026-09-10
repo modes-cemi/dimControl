@@ -7,18 +7,36 @@
 sortSegments(edges)
 }
 \arguments{
-\item{edges}{Numeric matrix with 2 rows and N columns, where each column represents
-a boundary segment with its two endpoints. The first row contains the first vertex
-of each segment, and the second row the second vertex.}
+\item{edges}{A matrix with 2 rows and N columns, where each column represents a
+segment defined by the indices of its two endpoint vertices.}
 }
 \value{
-A numeric matrix with 2 rows and N columns containing the segments reordered
-so that each segment is connected to the next. If there are disconnected segments,
-the sequence stops at the first gap.
+A matrix containing the reordered segments. Segment orientation is reversed when
+necessary to preserve connectivity. If no connected segment can be found, the sequence
+stops at the first gap.
 }
 \description{
-Reorders the segments of a boundary (edges) so that each segment is connected to
-the next one. This function is based on the idea of \code{getBoundary3d} from the \code{rgl}
-package but has been modified to ensure the segment sequence is correct even when
-the original boundary is not properly ordered.
+Reorders boundary segments so that the end vertex of each segment matches the start
+vertex of the next one.
+}
+\details{
+The first segment in \code{edges} is used as the starting segment. At each step, the
+function searches for an unused segment sharing the current endpoint. If the matching
+vertex is the second endpoint of the candidate segment, its orientation is reversed.
+}
+\examples{
+\dontrun{
+edges <- matrix(
+  c(
+    1, 2,
+    4, 3,
+    2, 3,
+    4, 5
+  ),
+  nrow = 2
+)
+
+sortSegments(edges)
+}
+
 }

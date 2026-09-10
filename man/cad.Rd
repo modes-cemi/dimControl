@@ -5,7 +5,7 @@
 \alias{cad}
 \title{CAD Object of a Steel Panel}
 \format{
-A \code{mesh3d} object (list) with three main components:
+A \code{mesh3d} object with the following components:
 \describe{
 \item{vb}{A 4 x 267 matrix containing vertex coordinates in homogeneous form.}
 \item{it}{A 3 x 343 matrix containing triangle indices.}
@@ -19,7 +19,7 @@ Theoretical CAD model of a steel panel.
 cad
 }
 \description{
-This object corresponds to a portion of the theoretical CAD model of a steel
-panel, stored as a \code{mesh3d} object.
+A portion of the theoretical CAD model of a steel panel, represented as a \code{mesh3d}
+object.
 }
 \keyword{datasets}

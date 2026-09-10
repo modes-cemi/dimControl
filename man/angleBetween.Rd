@@ -11,11 +11,10 @@ angleBetween(a, b, normalized = FALSE, deg = TRUE)
 
 \item{b}{Numeric vector with the same length as \code{a}.}
 
-\item{normalized}{Logical. If \code{TRUE}, \code{a} and \code{b} are assumed to be already
-normalized. If \code{FALSE}, internal normalization is performed.}
+\item{normalized}{Logical. If \code{TRUE}, \code{a} and \code{b} are assumed to be unit vectors.
+If \code{FALSE}, they are internally normalized.}
 
-\item{deg}{Logical. If \code{TRUE}, the angle is returned in degrees; otherwise
-in radians.}
+\item{deg}{Logical. If \code{TRUE}, the angle is returned in degrees; otherwise, in radians.}
 }
 \value{
 A numeric value containing the angle between \code{a} and \code{b}.
@@ -24,17 +23,26 @@ A numeric value containing the angle between \code{a} and \code{b}.
 Computes the angle between two numeric vectors.
 }
 \details{
-If \code{normalized = FALSE}, the vectors are internally normalized before
-computing the angle. If \code{normalized = TRUE}, both \code{a} and \code{b} are assumed to
-be unit vectors, i.e., vectors with Euclidean norm equal to 1.
+The angle between two vectors is computed as:
 
-To avoid numerical errors in \code{acos()}, the cosine value is clamped to the
-interval \eqn{[-1, 1]}.
+\deqn{
+\theta = \arccos\left(
+\frac{a \cdot b}{\lVert a \rVert \lVert b \rVert}
+\right)
+}
+
+To avoid numerical errors in \code{acos()}, the cosine value is clamped to the interval
+\eqn{[-1, 1]}.
 }
 \examples{
+\dontrun{
 a <- c(1, 0, 0)
 b <- c(0, 1, 0)
 
 angleBetween(a, b, normalized = FALSE, deg = TRUE)
+}
 
+}
+\seealso{
+\code{\link[=radDeg]{radDeg()}}
 }

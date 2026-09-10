@@ -22,7 +22,7 @@
 <url><loc>https://modes-cemi.github.io/dimControl/reference/meshNormals.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/pan3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/preparePanelMesh.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/rad2deg.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/radDeg.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sampleMesh.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/setView3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sideBulb.html</loc></url>
@@ -30,6 +30,6 @@
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sortSegments.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/surfaceDistance.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/xprod.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/xProd.html</loc></url>
 </urlset>
 

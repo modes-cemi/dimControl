@@ -6,90 +6,78 @@
 \usage{
 simulatePanelFloorCloud(
   mesh,
-  n_panel = 1e+07,
-  n_floor = 1e+06,
+  nPanel = 1e+07,
+  nFloor = 1e+06,
   prec = 0.5,
-  sd_panel = 0.2,
-  sd_floor_z = 0.2,
-  margin_xy = 20,
-  gap_z = 2,
+  sdPanel = 0.2,
+  sdFloorZ = 0.2,
+  marginXY = 20,
+  gapZ = 2,
   seed = 1
 )
 }
 \arguments{
-\item{mesh}{A theoretical \code{mesh3d} object representing the steel panel,
-typically obtained with \code{preparePanelMesh()}.}
+\item{mesh}{A theoretical \code{mesh3d} object representing the panel, typically obtained
+with \code{\link[=preparePanelMesh]{preparePanelMesh()}}.}
 
-\item{n_panel}{Number of points sampled from the panel surface.
-Default is \code{1e7}.}
+\item{nPanel}{Number of points sampled from the panel surface. Default is \code{1e7}.}
 
-\item{n_floor}{Number of points generated for the surrounding floor.
-Default is \code{1e6}.}
+\item{nFloor}{Number of points generated for the surrounding floor. Default is \code{1e6}.}
 
-\item{prec}{Positive numeric value defining the lower and upper bounds of
-the truncated normal noise applied to panel coordinates. Noise is restricted
-to the interval \verb{[-prec, prec]}. Default is \code{0.5}.}
+\item{prec}{Positive numeric value defining the truncation limits of the noise applied
+to the panel coordinates. Default is \code{0.5}.}
 
-\item{sd_panel}{Numeric. Standard deviation of the truncated normal noise
-applied independently to the X, Y and Z coordinates of the panel points.
+\item{sdPanel}{Standard deviation of the truncated normal noise applied to the panel
+coordinates. Default is \code{0.2}.}
+
+\item{sdFloorZ}{Standard deviation of the vertical noise applied to the floor points.
 Default is \code{0.2}.}
 
-\item{sd_floor_z}{Numeric. Standard deviation of the vertical noise applied
-to the floor points. Default is \code{0.2}.}
+\item{marginXY}{Additional distance used to extend the simulated floor beyond the
+panel bounding box. Default is \code{20}.}
 
-\item{margin_xy}{Numeric. Additional XY distance used to extend the simulated
-floor beyond the panel bounding box. Default is \code{20}.}
+\item{gapZ}{Vertical distance between the lowest point of the panel and the mean
+height of the simulated floor. Default is \code{2}.}
 
-\item{gap_z}{Numeric. Vertical distance between the lowest point of the panel
-and the mean height of the simulated floor. Default is \code{2}.}
-
-\item{seed}{Integer used to initialize the random number generator and make
-the simulation reproducible. Default is \code{1}.}
+\item{seed}{Integer used to initialise the random number generator. Default is \code{1}.}
 }
 \value{
-A data frame with three numeric columns, \code{X}, \code{Y} and \code{Z},
-containing the simulated panel and floor points. The first \code{n_panel} rows
-correspond to panel points and the remaining \code{n_floor} rows correspond to
-floor points.
+A data frame with numeric columns \code{X}, \code{Y}, and \code{Z}. The first \code{nPanel} rows correspond
+to panel points and the remaining \code{nFloor} rows correspond to floor points.
 }
 \description{
-Generates a simulated 3D point cloud representing a steel panel and the
-surrounding floor, reproducing a typical acquisition scenario in which a
-3D scanner captures points belonging both to the inspected panel and to the
-supporting environment.
+Generates a simulated 3D point cloud representing a steel panel and its surrounding
+floor.
 }
 \details{
-Panel points are sampled from a theoretical \code{mesh3d} surface using
-\code{sampleMesh()} and perturbed with truncated normal noise. Floor points are
-generated in four external regions surrounding the panel in the XY plane
-and are placed below the panel with normally distributed vertical noise.
-Both sets of points are combined into a single point cloud.
+Panel points are sampled from a theoretical \code{mesh3d} surface using \code{\link[=sampleMesh]{sampleMesh()}}
+and perturbed with truncated normal noise. Floor points are generated in four regions
+surrounding the panel in the XY plane.
 
-The resulting data frame represents a simulated 3D scan containing points
-from both the steel panel and the surrounding floor.
+Setting \code{nFloor = 0} generates only points from the panel surface.
 }
 \examples{
 \dontrun{
 data("cad", package = "dimControl")
 
-mesh_teor <- preparePanelMesh(cad)
+meshTeor <- preparePanelMesh(cad)
 
 data <- simulatePanelFloorCloud(
-  mesh = mesh_teor,
-  n_panel = 1e7,
-  n_floor = 1e6,
+  mesh = meshTeor,
+  nPanel = 1e7,
+  nFloor = 1e6,
   seed = 1
 )
 
 dim(data)
 head(data)
 
-rgl::open3d()
+rgl::clear3d()
 rgl::points3d(data, col = "gray")
 rgl::decorate3d()
 }
 
 }
 \seealso{
-\code{preparePanelMesh()}, \code{sampleMesh()}
+\code{\link[=preparePanelMesh]{preparePanelMesh()}}, \code{\link[=sampleMesh]{sampleMesh()}}
 }

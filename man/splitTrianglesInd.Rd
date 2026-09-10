@@ -7,74 +7,56 @@
 splitTrianglesInd(mesh)
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object containing the mesh to analyze. It must include
-the \code{it} matrix, where each column represents a triangle defined by three
-vertex indices.}
+\item{mesh}{A \code{mesh3d} object containing a triangular mesh. The object must include
+the \code{it} matrix, where each column defines a triangle by three vertex indices.}
 }
 \value{
-A list where each element contains the indices of the triangles
-forming one connected component. Components are sorted from largest to
-smallest according to their number of triangles. If no triangles share an
-edge, each list element contains the index of a single triangle.
+A list where each element contains the indices of the triangles belonging to one
+connected component. Components are sorted from largest to smallest according to
+their number of triangles.
 }
 \description{
-Groups the triangles of a 3D mesh into independent subsets according to
-connectivity. Two triangles are considered connected when they share an edge,
-that is, two vertex indices. Each connected component is returned as a group
-of triangle indices belonging to the same mesh fragment.
+Splits the triangles of a 3D mesh into connected components. Two triangles are
+considered connected when they share an edge, that is, two vertex indices.
 }
 \details{
-The implementation generates the three edges of every triangle, encodes each
-undirected edge using a numeric key and identifies shared edges through a
-vectorized sorting operation. This avoids repeated pairwise intersection
-calculations and improves performance on large meshes.
+The three edges of each triangle are represented as ordered vertex pairs and encoded
+using numeric keys. Shared edges are identified by sorting these keys and are then
+used to construct a graph in which triangles are vertices. Connected components are
+obtained with \code{\link[igraph:components]{igraph::components()}}.
 
-The algorithm follows these steps:
-\enumerate{
-\item Checks that the mesh contains the \code{it} matrix.
-\item Generates the three edges of every triangle.
-\item Represents each edge as an ordered pair of vertex indices.
-\item Encodes each edge using a numeric key so that the same undirected edge
-receives the same value regardless of vertex order.
-\item Sorts the edge keys to identify triangles that share an edge.
-\item Builds an undirected graph in which triangles are vertices and shared
-edges define graph connections.
-\item Identifies the connected components using \code{igraph::components()}.
-\item Sorts the resulting components from largest to smallest.
-}
-
-Triangles that share only one vertex are not considered connected. The
-connectivity criterion therefore corresponds specifically to edge
-connectivity.
+Triangles sharing only one vertex are not considered connected.
 }
 \examples{
-require(igraph)
-
-# Create a mesh3d object with two disconnected triangles
-vb <- t(rbind(
+\dontrun{
+# Create a mesh with two disconnected components
+vertices <- t(rbind(
   c(0, 0, 0),
   c(1, 0, 0),
   c(0, 1, 0),
-  c(2, 0, 0),
+  c(1, 1, 0),
   c(3, 0, 0),
-  c(2, 1, 0)
+  c(4, 0, 0),
+  c(3, 1, 0)
 ))
 
-it <- t(rbind(
+triangles <- t(rbind(
   c(1, 2, 3),
-  c(4, 5, 6)
+  c(2, 4, 3),
+  c(5, 6, 7)
 ))
 
 mesh <- rgl::tmesh3d(
-  vertices = vb,
-  indices = it
+  vertices = vertices,
+  indices = triangles
 )
 
 # Split the mesh into connected triangle groups
 groups <- splitTrianglesInd(mesh)
-str(groups)
+groups
+}
 
 }
 \seealso{
-\code{igraph::graph()}, \code{igraph::components()}
+\code{\link[igraph:make_graph]{igraph::make_graph()}}, \code{\link[igraph:components]{igraph::components()}}
 }

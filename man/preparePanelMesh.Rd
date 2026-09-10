@@ -6,53 +6,49 @@
 \usage{
 preparePanelMesh(
   mesh,
-  lower_angle = 120,
-  horizontal_angle = 40,
-  boundary_strip = 10
+  lowerAngle = 120,
+  horizontalAngle = 40,
+  boundaryStrip = 10
 )
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object containing the CAD geometry of the steel panel.
-The mesh must contain a triangular \code{it} matrix.}
+\item{mesh}{A \code{mesh3d} object containing the CAD geometry of the panel. The mesh
+must contain a triangular \code{it} matrix.}
 
-\item{lower_angle}{Numeric. Angular threshold in degrees used to identify and
-remove the lower face of the panel. Default is \code{120}.}
+\item{lowerAngle}{Numeric. Angular threshold in degrees used to identify the lower
+face of the panel. Default is \code{120}.}
 
-\item{horizontal_angle}{Numeric. Maximum angle in degrees used to identify
-approximately horizontal faces. Default is \code{40}.}
+\item{horizontalAngle}{Numeric. Maximum angle in degrees used to identify approximately
+horizontal faces. Default is \code{40}.}
 
-\item{boundary_strip}{Numeric. Width of the strip, measured along the Y
-direction, used to identify the reference corner of the panel base.
-Default is \code{10}.}
+\item{boundaryStrip}{Numeric. Width of the strip along the Y direction used to identify
+the reference corner of the panel base. Default is \code{10}.}
 }
 \value{
-A \code{mesh3d} object containing the processed theoretical panel mesh,
-translated to the origin and ready for point cloud simulation.
+A processed \code{mesh3d} object translated to the origin and ready for point cloud simulation.
 }
 \description{
-Prepares a theoretical steel panel mesh from a CAD \code{mesh3d} object for use
-in point cloud simulation. The function removes the lower face of the panel,
-identifies the base surface, determines a reference corner from its boundary,
-translates the mesh to the origin and removes any remaining triangles below
-the Z = 0 plane.
+Prepares a theoretical steel panel mesh from a CAD \code{mesh3d} object for use in point
+cloud simulation. The function removes the lower face, identifies the panel base,
+translates the mesh to the origin, and removes triangles located below the Z = 0 plane.
 }
 \details{
-The resulting mesh can be passed directly to \code{simulatePanelFloorCloud()} to
-generate a simulated 3D point cloud representing a scanned steel panel.
+Face normals are used to remove the lower face and identify approximately horizontal
+components. The boundary of the base is extracted with \code{\link[=getBoundarySegments]{getBoundarySegments()}}, and
+a reference corner is used to translate the mesh to the origin.
 }
 \examples{
 \dontrun{
 data("cad", package = "dimControl")
 
-mesh_teor <- preparePanelMesh(cad)
+meshTeor <- preparePanelMesh(cad)
 
-rgl::open3d()
-rgl::shade3d(mesh_teor, col = "gray")
+rgl::clear3d()
+rgl::shade3d(meshTeor, col = "gray")
 rgl::decorate3d()
 }
 
 }
 \seealso{
-\code{simulatePanelFloorCloud()}, \code{getBoundarySegments()},
-\code{angleFromAxis()}
+\code{\link[=simulatePanelFloorCloud]{simulatePanelFloorCloud()}}, \code{\link[=getBoundarySegments]{getBoundarySegments()}}, \code{\link[=angleFromAxis]{angleFromAxis()}}
 }

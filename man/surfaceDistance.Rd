@@ -4,16 +4,41 @@
 \alias{surfaceDistance}
 \title{Calculate Distance over a 3D Surface}
 \usage{
-surfaceDistance(segmento)
+surfaceDistance(segment)
 }
 \arguments{
-\item{segmento}{A matrix or data frame with three columns (\code{x}, \code{y}, \code{z}) representing
-the coordinates of consecutive points in 3D space.}
+\item{segment}{A matrix or data frame with three columns representing the X, Y,
+and Z coordinates of consecutive points in 3D space.}
 }
 \value{
-A numeric value indicating the total distance traveled along the surface.
+A numeric value representing the total length of the 3D path.
 }
 \description{
 Computes the total length of a 3D path by summing the Euclidean distances between
-consecutive points. Useful for estimating the distance traveled over a 3D surface.
+consecutive points.
+}
+\details{
+The distance between two consecutive points is computed as:
+
+\deqn{
+d_i = \sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2 + (z_{i+1} - z_i)^2}
+}
+
+and the total path length is obtained by summing these distances.
+}
+\examples{
+\dontrun{
+segment <- matrix(
+  c(
+    0, 0, 0,
+    3, 4, 0,
+    3, 4, 5
+  ),
+  ncol = 3,
+  byrow = TRUE
+)
+
+surfaceDistance(segment)
+}
+
 }

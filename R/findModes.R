@@ -1,83 +1,109 @@
 #' Detect Modes in a Dataset
 #'
-#' Detects peaks (modes) in a numeric dataset `x` using kernel density estimation.
-#' For each mode, it determines the range along the X-axis where the density decreases
-#' toward the adjacent minima. The function can also plot the density and the detected modes.
+#' Detects modes in a numeric dataset using kernel density estimation. For each detected
+#' mode, the function determines the interval along the X-axis bounded by the adjacent
+#' decreases in density.
 #'
-#' @param x Numeric vector. The data for which modes will be calculated.
-#' @param bw  Numeric. Bandwidth for the density estimation. Default is `bw = 2`.
-#' @param Q1 Numeric between 0 and 1. Percentile of the density used to filter the
-#' most relevant peaks. Default is `Q1 = 0.95`.
-#' @param plot Logical. If `TRUE`, generates a plot of the density with detected modes.
+#' @param x A numeric vector containing the data.
+#' @param bw A numeric value specifying the bandwidth used for kernel density estimation.
+#' Default is `0.2`.
+#' @param q1 A numeric value between 0 and 1 specifying the density quantile used to
+#' retain the most relevant peaks. Default is `0.95`.
+#' @param plot Logical. If `TRUE`, plots the estimated density and the detected modes.
 #' Default is `TRUE`.
+#' @param showRanges Logical. If `TRUE`, draws vertical dashed lines marking the lower
+#' and upper limits of each detected mode. Default is `FALSE`.
 #'
-#' @returns A matrix with one row per detected mode and two columns (`min` and `max`)
-#' representing the X-axis range of each mode.
+#' @returns
+#' A matrix with one row per detected mode and two columns, `min` and `max`, containing
+#' the X-axis limits associated with each mode.
+#'
+#' @details
+#' The density of `x` is estimated using [stats::density()]. Local maxima are identified
+#' by comparing each density value with its immediate neighbours.
+#'
+#' Peaks are retained only when their density is greater than the quantile defined
+#' by `q1`. For each retained peak, the function searches in both directions until
+#' the density stops decreasing, defining the approximate interval associated with
+#' that mode.
+#'
+#' The number and location of detected modes depend strongly on the bandwidth `bw`: smaller
+#' values may detect more local peaks, whereas larger values produce a smoother density
+#' estimate.
+#'
+#' @seealso [stats::density()], [stats::quantile()]
 #'
 #' @examples
-#' set.seed(123) # Seed
-#' x <- c(
-#'   rnorm(200, mean = 2, sd = 0.3),
-#'   rnorm(5, mean = 3.5, sd = 0.1),
-#'   rnorm(200, mean = 5, sd = 0.3)
-#' )
+#' \dontrun{
+#' set.seed(123)
 #'
-#' # Compute and plot modes
-#' modes <- findModes(x, bw = 0.2, Q1 = 0.5, plot = TRUE)
+# x <- c(
+#   rnorm(200, mean = 2, sd = 0.3),
+#   rnorm(5, mean = 3.5, sd = 0.1),
+#   rnorm(200, mean = 5, sd = 0.3)
+# )
 #'
-#' # X-axis ranges for each mode
+#' # Detect and plot modes
+#' modes <- findModes(x, bw = 0.2, q1 = 0.5, plot = TRUE, showRanges = TRUE)
 #' modes
-#'
-#' @importFrom stats density quantile
-#' @importFrom graphics points
+#' }
 #'
 #' @export
-findModes <- function(x, bw = 2, Q1 = 0.95, plot = TRUE) {
+findModes <- function(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE) {
 
-  # Density of X
-  densX <- density(x, bw = bw)
+  # Estimate the density of x
+  densX <- stats::density(x, bw = bw)
+
   y <- densX$y
-  xvals <- densX$x
+  xVals <- densX$x
 
-  # Peak detection
-  peak_indices <- which(
+  # Identify local density maxima
+  peakIndices <- which(
     (y[1:(length(y) - 2)] < y[2:(length(y) - 1)]) &
     (y[2:(length(y) - 1)] > y[3:length(y)])) + 1
 
-  # Percentile Q1 to select the most relevant peaks
-  PQ1 <- quantile(y, Q1)
-  filtered_peaks <- peak_indices[y[peak_indices] > PQ1]
+  # Retain peaks above the selected density quantile
+  pQ1 <- stats::quantile(y, q1)
 
-  # Store modes
-  modes <- matrix(nrow = length(filtered_peaks), ncol = 2,
-                  dimnames = list(paste0("mode", seq_along(filtered_peaks)), c("min", "max")))
+  filteredPeaks <- peakIndices[y[peakIndices] > pQ1]
 
-  # Ranges of each mode
-  for (i in seq_along(filtered_peaks)) {
-    peak_index <- filtered_peaks[i]
+  # Initialize output matrix
+  modes <- matrix(nrow = length(filteredPeaks), ncol = 2,
+                  dimnames = list(paste0("mode", seq_along(filteredPeaks)), c("min", "max")))
 
-    start_descent <- peak_index
-    while (start_descent > 1 && y[start_descent] >= y[start_descent - 1]) {
-      start_descent <- start_descent - 1
+  # Determine the range associated with each mode
+  for (i in seq_along(filteredPeaks)) {
+    peakIndex <- filteredPeaks[i]
+
+    # Search toward the left density minimum
+    startDescent <- peakIndex
+
+    while (startDescent > 1 && y[startDescent] >= y[startDescent - 1]) {
+      startDescent <- startDescent - 1
     }
-    mode_start <- xvals[start_descent]
+    modeStart <- xVals[startDescent]
 
-    end_descent <- peak_index
-    while (end_descent < length(y) && y[end_descent] >= y[end_descent + 1]) {
-      end_descent <- end_descent + 1
+    # Search toward the right density minimum
+    endDescent <- peakIndex
+
+    while (endDescent < length(y) && y[endDescent] >= y[endDescent + 1]) {
+      endDescent <- endDescent + 1
     }
-    mode_end <- xvals[min(end_descent + 1, length(xvals))]
+    modeEnd <- xVals[min(endDescent + 1, length(xVals))]
 
-    modes[i, ] <- c(mode_start, mode_end)
+    modes[i, ] <- c(modeStart, modeEnd)
   }
 
+  # Plot density and detected modes
   if (plot) {
-    plot(densX, main = "", xlab = deparse(substitute(x)), ylab = "Density")
-    points(xvals[filtered_peaks], y[filtered_peaks], col = 6, pch = 19, cex = 0.7)
-    # Optional lines to mark ranges
-    # abline(v = modes[, 1], col = "blue", lty = 2)
-    # abline(v = modes[, 2], col = "red", lty = 2)
+    graphics::plot(densX, main = "", xlab = deparse(substitute(x)), ylab = "Density")
+    graphics::points(xVals[filteredPeaks], y[filteredPeaks], col = 6, pch = 19, cex = 0.7)
+
+    if (showRanges && nrow(modes) > 0) {
+      graphics::abline(v = modes[, "min"], col = "blue", lty = 2)
+      graphics::abline(v = modes[, "max"], col = "red", lty = 2)
+    }
   }
 
-  return(modes)
+  modes
 }

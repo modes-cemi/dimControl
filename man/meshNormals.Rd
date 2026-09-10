@@ -2,44 +2,39 @@
 % Please edit documentation in R/meshNormals.R
 \name{meshNormals}
 \alias{meshNormals}
-\title{Compute face normals of a triangular mesh}
+\title{Compute Face Normals of a Triangular Mesh}
 \usage{
 meshNormals(x)
 }
 \arguments{
-\item{x}{A \code{mesh3d} object with triangular topology.
-Must contain elements \code{vb} (vertices) and \code{it} (triangle indices).}
+\item{x}{A \code{mesh3d} object with triangular topology. Must contain elements \code{vb}
+(vertices) and \code{it} (triangle indices).}
 }
 \value{
-A 4 x ntri matrix containing the homogeneous normals of each triangle.
-Each column represents a unit normal vector, with the fourth row set to 1
-for homogeneous coordinates.
+A 4 x nTri matrix containing the homogeneous normals of each triangle.
+Each column represents a unit normal vector, with the fourth row set to 1.
 }
 \description{
-Computes unit normals for the triangles of a \code{mesh3d} object
-using cross products.
+Computes unit normals for the triangles of a \code{mesh3d} object using cross products.
 }
 \details{
-This function is primarily intended for teaching and comparison purposes.
-For general use, it is recommended to use \code{Rvcg::vcgFaceNormals()},
-which is more efficient and robust.
-
-For each triangle, the normal is computed as the cross product of two of its
-edges and then normalized to unit length. If the vertices are in homogeneous
-coordinates (fourth row not equal to 1), they are normalized before computing
-the normals.
+For each triangle, the normal is computed as the cross product of two of its edges
+and then normalized to unit length. If the vertices are in homogeneous coordinates,
+they are converted before computing the normals.
 }
 \examples{
+\dontrun{
 # Create a triangular mesh
 mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
-# Compute normals
-norm <- meshNormals(mesh)
+# Compute triangle normals
+normals <- meshNormals(mesh)
 
-# Display the first 5 normals
-norm[, 1:5]
+# Display the first five normals
+normals[, 1:5]
+}
 
 }
 \seealso{
-\code{\link[Rvcg]{vcgFaceNormals}}
+\code{\link[Rvcg:vcgFaceNormals]{Rvcg::vcgFaceNormals()}}, \code{\link[=addNormals]{addNormals()}}
 }

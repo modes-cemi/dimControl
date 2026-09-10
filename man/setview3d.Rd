@@ -7,8 +7,28 @@
 setView3d(view)
 }
 \arguments{
-\item{view}{A list obtained from \code{getview3d()}.}
+\item{view}{A list containing 3D view parameters, typically obtained from \code{\link[=getView3d]{getView3d()}}.}
+}
+\value{
+Invisibly returns the result of \code{\link[rgl:par3d]{rgl::par3d()}}.
 }
 \description{
-Applies a previously saved 3D view to the active \code{rgl} device.
+Applies previously saved 3D view parameters to the active \code{rgl} device. The view
+can be obtained using \code{\link[=getView3d]{getView3d()}}.
+}
+\examples{
+\dontrun{
+mesh <- rgl::icosahedron3d()
+rgl::shade3d(mesh, color = "lightgray")
+
+# Save the current view
+view <- getView3d()
+
+# Restore the saved view
+setView3d(view)
+}
+
+}
+\seealso{
+\code{\link[=getView3d]{getView3d()}}, \code{\link[rgl:par3d]{rgl::par3d()}}
 }

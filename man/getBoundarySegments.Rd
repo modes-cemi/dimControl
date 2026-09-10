@@ -9,46 +9,48 @@ getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
 \arguments{
 \item{mesh}{A \code{mesh3d} object representing the 3D mesh.}
 
-\item{malla}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the boundary segments;
-if \code{FALSE}, returns only the vertex indices forming the boundary edges. Default is \code{FALSE}.}
+\item{malla}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the boundary
+segments. If \code{FALSE}, returns a matrix with the corresponding vertex indices. Default
+is \code{FALSE}.}
 
-\item{simplify}{Logical. If \code{TRUE} and \code{malla = TRUE}, simplifies the resulting mesh
-using \code{cleanMesh3d()}. Default is \code{TRUE}.}
+\item{simplify}{Logical. If \code{TRUE} and \code{malla = TRUE}, simplifies the resulting
+boundary mesh using the internal mesh-cleaning routine. Default is \code{TRUE}.}
 }
 \value{
-If \code{malla = FALSE}, a matrix with the vertex indices forming the boundary edges.
-If \code{malla = TRUE}, a \code{mesh3d} object representing the boundary segments.
+If \code{malla = FALSE}, a two-row matrix containing the vertex indices of the boundary
+segments. If \code{malla = TRUE}, a \code{mesh3d} object containing the boundary segments.
 }
 \description{
-Identifies the unshared edges of a 3D mesh, i.e., edges belonging to only one face.
-These edges can be returned either as vertex indices or as a \code{mesh3d} object consisting
-of the corresponding segments.
+Identifies the unshared edges of a \code{mesh3d} object, i.e., edges belonging to only
+one face of the mesh.
 }
 \details{
-This function is an adaptation of \code{rgl::getBoundary3d()}. Unlike the original version,
-which detects boundary edges by finding duplicates in the edge list, this implementation
-uses a frequency table (\code{data.table}) to count how many times each edge appears in the mesh faces.
-Edges that appear only once are considered boundary edges. Additionally, the function
-allows returning either the vertex indices of the boundary edges or a \code{mesh3d} mesh
-of the segments, with an optional additional simplification.
+The function is adapted from \code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}. Edge endpoints are sorted
+to represent undirected edges, and their frequencies are counted. Edges appearing
+only once are identified as boundary edges.
 }
 \examples{
-# Extract the boundary of a cube and visualize it
-require(data.table)
-
+\dontrun{
 # Create a cube and remove two faces
-x <- rgl::cube3d(col = "lightblue")
-x$ib <- x$ib[, -(1:2)]
+mesh <- rgl::cube3d(color = "lightblue")
+mesh$ib <- mesh$ib[, -(1:2)]
 
-# Generate the boundary
-b <- getBoundarySegments(x, malla = TRUE)
+# Extract boundary segments
+boundary <- getBoundarySegments(mesh, malla = TRUE)
 
-# Visualize the mesh and its boundary
-rgl::open3d()
-rgl::shade3d(x, alpha = 0.2)
-rgl::shade3d(b, col = "red", lwd = 2)
+# Display mesh and boundary side by side
+rgl::clear3d()
+rgl::mfrow3d(1, 2)
+
+rgl::shade3d(mesh, color = "lightgray", alpha = 0.4)
+rgl::title3d("Mesh", level = 4)
+
+rgl::next3d()
+rgl::shade3d(boundary, color = "red", lwd = 2)
+rgl::title3d("Boundary", level = 4)
+}
 
 }
 \seealso{
-\code{rgl::getBoundary3d()}, \code{cleanMesh3d()}
+\code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}
 }

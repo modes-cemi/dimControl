@@ -2,39 +2,41 @@
 % Please edit documentation in R/addNormals.R
 \name{addNormals}
 \alias{addNormals}
-\title{Compute vertex normals by averaging triangle normals}
+\title{Compute Vertex Normals by Averaging Triangle Normals}
 \usage{
-addNormals(x, normals.tri)
+addNormals(x, normalsTri)
 }
 \arguments{
 \item{x}{A \code{mesh3d} object.}
 
-\item{normals.tri}{A 4 x ntri matrix of triangle normals.
-If not provided, they are computed internally using \code{meshNormals()}.}
+\item{normalsTri}{A 4 x nTri matrix of triangle normals. If not provided, they
+are computed internally using \code{meshNormals()}.}
 }
 \value{
-A \code{mesh3d} object with the \code{normals} field updated,
-containing the unit normals for each vertex.
+A \code{mesh3d} object with the \code{normals} field updated, containing the unit
+normals for each vertex.
 }
 \description{
-Computes the normals of the vertices of a triangular mesh
-by averaging the normals of the triangles.
+Computes the normals of the vertices of a triangular mesh by averaging the normals
+of the triangles.
 }
 \details{
-This function simply averages the normals of the triangles for each vertex.
-No weighting by area or angle is applied.
+This function simply averages the normals of the triangles for each vertex. No
+weighting by area or angle is applied.
 }
 \examples{
+\dontrun{
 # Create a triangular mesh
 mesh <- rgl::subdivision3d(rgl::icosahedron3d(), depth = 1)
 
-# Compute triangle normals (for more robustness, Rvcg::vcgFaceNormals() can be used)
-norm_tri <- meshNormals(mesh)
+# Compute triangle normals
+normTri <- meshNormals(mesh)
 
 # Compute vertex normals by averaging triangle normals
-mesh <- addNormals(mesh, norm_tri)
+mesh <- addNormals(mesh, normTri)
 
-# Show the first 5 vertex normals
+# Show the first five vertex normals
 mesh$normals[, 1:5]
+}
 
 }

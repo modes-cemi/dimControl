@@ -1,29 +1,28 @@
-#' Compute the Spatial Bounds (Bounding Box) of a 3D Mesh
+#' Compute the Bounding Box of a 3D Mesh
 #'
-#' Computes the minimum and maximum coordinates of the vertices of a 3D mesh, returning
-#' a matrix with the extreme values along the `X`, `Y`, and `Z` axes.
+#' Computes the minimum and maximum coordinates of the vertices of a 3D mesh, along
+#' the `X`, `Y`, and `Z` axes.
 #'
 #' @param x A `mesh3d` object containing the mesh vertices in the `vb` component.
 #'
 #' @returns
-#' A matrix with 3 rows and 2 columns containing the minimum and maximum coordinate
-#' values of the mesh vertices:
-#' - Each row corresponds to an axis (`X`, `Y`, `Z`).
-#' - The first column (`min`) contains the minimum values.
-#' - The second column (`max`) contains the maximum values.
+#' A 3 x 2 matrix with rows corresponding to the `X`, `Y`, and `Z` axes and columns
+#' `min` and `max`.
 #'
 #' @details
-#' Internally, the function converts homogeneous coordinates in `x$vb` to Euclidean
-#' coordinates using `rgl::asEuclidean2()`, and computes per-axis ranges using `apply(..., range)`.
+#' Homogeneous coordinates in `x$vb` are converted to Euclidean coordinates using
+#' [rgl::asEuclidean2()] before computing the coordinate ranges.
 #'
-#' @seealso `rgl::asEuclidean2()`
+#' @seealso [rgl::asEuclidean2()]
 #'
 #' @examples
+#' \dontrun{
 #' # Create a cubic mesh
 #' cube <- rgl::cube3d()
 #'
 #' # Compute its bounding box
 #' boundingBox(cube)
+#' }
 #'
 #' @export
 boundingBox <- function(x) {

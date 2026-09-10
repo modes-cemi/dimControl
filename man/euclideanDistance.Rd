@@ -8,20 +8,27 @@ euclideanDistance(h)
 }
 \arguments{
 \item{h}{A numeric vector containing the differences between the coordinates of
-two points (for example, \code{(x2 - x1, y2 - y1, z2 - z1)}).}
+two points, for example \code{c(x2 - x1, y2 - y1, z2 - z1)}.}
 }
 \value{
 A numeric value representing the Euclidean distance between the two points.
 }
 \description{
-Computes the linear (Euclidean) distance from a vector of differences between the
-coordinates of two points.
+Computes the Euclidean distance between two points from a vector containing the
+differences between their coordinates.
+}
+\details{
+The Euclidean distance is computed as:
+\deqn{d = \sqrt{\sum_i h_i^2}},
+where \eqn{h_i} represents the coordinate differences between the two points.
 }
 \examples{
+\dontrun{
 # Differences between two points in 3D
 h <- c(3 - 0, 4 - 0, 0 - 0)
 
 # Compute the Euclidean distance
 euclideanDistance(h)
+}
 
 }
