@@ -110,10 +110,10 @@ createMesh <- function(panel,
     stop("Argument 'resolNbin' must be a positive numeric vector of length 3")
 
   if (!is.logical(zeroBorder) || length(zeroBorder) != 1)
-    stop("Argument 'zero_border' must be TRUE or FALSE")
+    stop("Argument 'zeroBorder' must be TRUE or FALSE")
 
   if (coverageTol <= 0 || coverageTol > 1)
-    stop("Argument 'coverage_tol' must be greater than 0 and less than or equal to 1")
+    stop("Argument 'coverageTol' must be greater than 0 and less than or equal to 1")
 
   # Point cloud dimensions
   dimLen <- apply(panel, 2, function(x) diff(range(x)))
@@ -190,13 +190,13 @@ createMesh <- function(panel,
   levelBin <- levelFactor * truncValue
 
   # Binning coordinates
-  coorval <- npsp::coordvalues(bin)
+  coorVal <- npsp::coordvalues(bin)
 
   # Marching Cubes
   utils::capture.output({
 
     contours <- with(
-      coorval,
+      coorVal,
       misc3d::contour3d(
         bin$binw,
         level = levelBin,

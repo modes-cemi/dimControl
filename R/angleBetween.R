@@ -25,7 +25,7 @@
 #' @seealso [radDeg()]
 #'
 #' @examples
-##' \dontrun{
+#' \dontrun{
 #' a <- c(1, 0, 0)
 #' b <- c(0, 1, 0)
 #'

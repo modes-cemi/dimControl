@@ -4,10 +4,10 @@
 \alias{cleanBoundarySegments}
 \title{Clean and Reconnect Boundary Segments of a 3D Mesh}
 \usage{
-cleanBoundarySegments(iBorde, baseMesh, lengthProb = 0.98, minGroupSize = 20)
+cleanBoundarySegments(iBorder, baseMesh, lengthProb = 0.98, minGroupSize = 20)
 }
 \arguments{
-\item{iBorde}{A two-row matrix containing the boundary segment indices, where each
+\item{iBorder}{A two-row matrix containing the boundary segment indices, where each
 column defines a segment by the indices of its two vertices.}
 
 \item{baseMesh}{A \code{mesh3d} object containing the mesh geometry associated with the
@@ -73,11 +73,11 @@ baseMesh <- rgl::tmesh3d(
 )
 
 # Extract boundary segment indices
-iBorde <- getBoundarySegments(baseMesh)
+iBorder <- getBoundarySegments(baseMesh)
 
 # Clean the boundary segments
-cleanBorde <- cleanBoundarySegments(
-  iBorde,
+cleanBorder <- cleanBoundarySegments(
+  iBorder,
   baseMesh,
   lengthProb = 1,
   minGroupSize = 4
@@ -91,11 +91,11 @@ rgl::shade3d(baseMesh, color = "lightgray")
 rgl::title3d("Mesh", level = 8)
 
 rgl::next3d()
-rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorde))
+rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorder))
 rgl::title3d("Original boundary", level = 8)
 
 rgl::next3d()
-rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorde))
+rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorder))
 rgl::title3d("Cleaned boundary", level = 8)
 }
 

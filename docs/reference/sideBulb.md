@@ -96,5 +96,8 @@ bulbSide
 
 # Visualise the reinforcement components
 rgl::clear3d()
+for (i in seq_along(ref)) {
+  rgl::shade3d(ref[[i]], col = "lightgray")
+}
 } # }
 ```

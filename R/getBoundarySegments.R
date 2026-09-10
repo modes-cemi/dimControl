@@ -4,15 +4,15 @@
 #' one face of the mesh.
 #'
 #' @param mesh A `mesh3d` object representing the 3D mesh.
-#' @param malla Logical. If `TRUE`, returns a `mesh3d` object containing the boundary
+#' @param returnMesh Logical. If `TRUE`, returns a `mesh3d` object containing the boundary
 #' segments. If `FALSE`, returns a matrix with the corresponding vertex indices. Default
 #' is `FALSE`.
-#' @param simplify Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting
+#' @param simplify Logical. If `TRUE` and `returnMesh = TRUE`, simplifies the resulting
 #' boundary mesh using the internal mesh-cleaning routine. Default is `TRUE`.
 #'
 #' @returns
-#' If `malla = FALSE`, a two-row matrix containing the vertex indices of the boundary
-#' segments. If `malla = TRUE`, a `mesh3d` object containing the boundary segments.
+#' If `returnMesh = FALSE`, a two-row matrix containing the vertex indices of the boundary
+#' segments. If `returnMesh = TRUE`, a `mesh3d` object containing the boundary segments.
 #'
 #' @details
 #' The function is adapted from [rgl::getBoundary3d()]. Edge endpoints are sorted
@@ -28,7 +28,7 @@
 #' mesh$ib <- mesh$ib[, -(1:2)]
 #'
 #' # Extract boundary segments
-#' boundary <- getBoundarySegments(mesh, malla = TRUE)
+#' boundary <- getBoundarySegments(mesh, returnMesh = TRUE)
 #'
 #' # Display mesh and boundary side by side
 #' rgl::clear3d()
@@ -45,7 +45,7 @@
 #' @import data.table
 #'
 #' @export
-getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
+getBoundarySegments <- function(mesh, returnMesh = FALSE, simplify = TRUE) {
   if (!inherits(mesh, "mesh3d"))
     stop(deparse(substitute(mesh)), " is not a mesh3d object.")
   edges <- NULL
@@ -53,7 +53,9 @@ getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
     edges <- cbind(edges, mesh$it[1:2,],  mesh$it[2:3,], mesh$it[c(3,1),])
   if (length(mesh$ib))
     edges <- cbind(edges, mesh$ib[1:2,], mesh$ib[2:3,], mesh$ib[3:4,], mesh$ib[c(4,1),])
-  if (!ncol(edges)) return(list(edges))
+  if (is.null(edges) || ncol(edges) == 0) {
+    return(matrix(integer(0), nrow = 2))
+  }
 
   # Sort edge endpoints to represent undirected edges
   minV <- pmin(edges[1,], edges[2,])
@@ -75,7 +77,7 @@ getBoundarySegments <- function(mesh, malla = FALSE, simplify = TRUE) {
   boundary <- edges[, keep, drop = FALSE]
 
   # Return a mesh3d object if requested
-  if (malla) {
+  if (returnMesh) {
     result <- rgl::mesh3d(vertices = mesh$vb, segments = boundary)
     if (simplify)
       result <- cleanMesh3d(result)

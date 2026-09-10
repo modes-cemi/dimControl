@@ -4,7 +4,7 @@
 #' connections, long segments, and small connected components, reconnecting endpoints,
 #' and retaining the main connected boundary.
 #'
-#' @param iBorde A two-row matrix containing the boundary segment indices, where each
+#' @param iBorder A two-row matrix containing the boundary segment indices, where each
 #' column defines a segment by the indices of its two vertices.
 #' @param baseMesh A `mesh3d` object containing the mesh geometry associated with the
 #' boundary segments.
@@ -69,11 +69,11 @@
 #' )
 #'
 #' # Extract boundary segment indices
-#' iBorde <- getBoundarySegments(baseMesh)
+#' iBorder <- getBoundarySegments(baseMesh)
 #'
 #' # Clean the boundary segments
-#' cleanBorde <- cleanBoundarySegments(
-#'   iBorde,
+#' cleanBorder <- cleanBoundarySegments(
+#'   iBorder,
 #'   baseMesh,
 #'   lengthProb = 1,
 #'   minGroupSize = 4
@@ -87,44 +87,44 @@
 #' rgl::title3d("Mesh", level = 8)
 #'
 #' rgl::next3d()
-#' rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorde))
+#' rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorder))
 #' rgl::title3d("Original boundary", level = 8)
 #'
 #' rgl::next3d()
-#' rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorde))
+#' rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorder))
 #' rgl::title3d("Cleaned boundary", level = 8)
 #' }
 #'
 #' @export
-cleanBoundarySegments <- function(iBorde,
+cleanBoundarySegments <- function(iBorder,
                                   baseMesh,
                                   lengthProb = 0.98,
                                   minGroupSize = 20) {
 
   # Remove extra connections from vertices with degree greater than 2
-  count <- table(as.vector(iBorde))
+  count <- table(as.vector(iBorder))
   problematic <- as.integer(names(count[count > 2]))
 
   for (i in problematic) {
-    idxSegs <- which(iBorde[1, ] == i | iBorde[2, ] == i)
+    idxSegs <- which(iBorder[1, ] == i | iBorder[2, ] == i)
     nRemove <- length(idxSegs) - 2
 
     if (nRemove > 0) {
-      iBorde <- iBorde[, -tail(idxSegs, nRemove), drop = FALSE]
+      iBorder <- iBorder[, -tail(idxSegs, nRemove), drop = FALSE]
     }
   }
 
   # Remove long boundary segments
-  coords1 <- t(baseMesh$vb[1:2, iBorde[1, ]])
-  coords2 <- t(baseMesh$vb[1:2, iBorde[2, ]])
+  coords1 <- t(baseMesh$vb[1:2, iBorder[1, ]])
+  coords2 <- t(baseMesh$vb[1:2, iBorder[2, ]])
 
   lengths <- sqrt(rowSums((coords2 - coords1)^2))
   threshold <- stats::quantile(lengths, lengthProb)
 
-  iBorde <- iBorde[, lengths <= threshold, drop = FALSE]
+  iBorder <- iBorder[, lengths <= threshold, drop = FALSE]
 
   # Remove small connected groups of segments
-  n <- ncol(iBorde)
+  n <- ncol(iBorder)
   group <- rep(0, n)
   groupNum <- 0
 
@@ -140,8 +140,8 @@ cleanBoundarySegments <- function(iBorde,
       queue <- queue[-1]
 
       neighbors <- which(
-        iBorde[1, ] %in% iBorde[, current] |
-        iBorde[2, ] %in% iBorde[, current]
+        iBorder[1, ] %in% iBorder[, current] |
+        iBorder[2, ] %in% iBorder[, current]
       )
 
       newNeighbors <- neighbors[group[neighbors] == 0]
@@ -153,10 +153,10 @@ cleanBoundarySegments <- function(iBorde,
   validGroups <- which(table(group) >= minGroupSize)
   validSegments <- which(group %in% validGroups)
 
-  iBorde <- iBorde[, validSegments, drop = FALSE]
+  iBorder <- iBorder[, validSegments, drop = FALSE]
 
   # Reconnect disconnected boundary endpoints
-  count <- table(as.vector(iBorde))
+  count <- table(as.vector(iBorder))
   endPoints <- as.integer(names(count[count == 1]))
 
   newPairs <- list()
@@ -181,7 +181,7 @@ cleanBoundarySegments <- function(iBorde,
 
   if (length(newPairs) > 0) {
     newPairs <- do.call(rbind, newPairs)
-    iBorde <- cbind(iBorde, t(newPairs))
+    iBorder <- cbind(iBorder, t(newPairs))
   }
 
   # Keep only the main connected boundary
@@ -198,7 +198,7 @@ cleanBoundarySegments <- function(iBorde,
     iSegments[, keep, drop = FALSE]
   }
 
-  iBorde <- getMainBoundary(iBorde)
+  iBorder <- getMainBoundary(iBorder)
 
-  return(iBorde)
+  return(iBorder)
 }

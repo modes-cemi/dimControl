@@ -41,7 +41,7 @@ one face of the mesh.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getBoundarySegments</span><span class="op">(</span><span class="va">mesh</span>, malla <span class="op">=</span> <span class="cn">FALSE</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getBoundarySegments</span><span class="op">(</span><span class="va">mesh</span>, returnMesh <span class="op">=</span> <span class="cn">FALSE</span>, simplify <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -52,21 +52,21 @@ one face of the mesh.</p>
 <dd><p>A <code>mesh3d</code> object representing the 3D mesh.</p></dd>
 
 
-<dt id="arg-malla">malla<a class="anchor" aria-label="anchor" href="#arg-malla"></a></dt>
+<dt id="arg-returnmesh">returnMesh<a class="anchor" aria-label="anchor" href="#arg-returnmesh"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, returns a <code>mesh3d</code> object containing the boundary
 segments. If <code>FALSE</code>, returns a matrix with the corresponding vertex indices. Default
 is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-simplify">simplify<a class="anchor" aria-label="anchor" href="#arg-simplify"></a></dt>
-<dd><p>Logical. If <code>TRUE</code> and <code>malla = TRUE</code>, simplifies the resulting
+<dd><p>Logical. If <code>TRUE</code> and <code>returnMesh = TRUE</code>, simplifies the resulting
 boundary mesh using the internal mesh-cleaning routine. Default is <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If <code>malla = FALSE</code>, a two-row matrix containing the vertex indices of the boundary
-segments. If <code>malla = TRUE</code>, a <code>mesh3d</code> object containing the boundary segments.</p>
+    <p>If <code>returnMesh = FALSE</code>, a two-row matrix containing the vertex indices of the boundary
+segments. If <code>returnMesh = TRUE</code>, a <code>mesh3d</code> object containing the boundary segments.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -87,7 +87,7 @@ only once are identified as boundary edges.</p>
 <span class="r-in"><span><span class="va">mesh</span><span class="op">$</span><span class="va">ib</span> <span class="op">&lt;-</span> <span class="va">mesh</span><span class="op">$</span><span class="va">ib</span><span class="op">[</span>, <span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract boundary segments</span></span></span>
-<span class="r-in"><span><span class="va">boundary</span> <span class="op">&lt;-</span> <span class="fu">getBoundarySegments</span><span class="op">(</span><span class="va">mesh</span>, malla <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boundary</span> <span class="op">&lt;-</span> <span class="fu">getBoundarySegments</span><span class="op">(</span><span class="va">mesh</span>, returnMesh <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Display mesh and boundary side by side</span></span></span>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/scene.html" class="external-link">clear3d</a></span><span class="op">(</span><span class="op">)</span></span></span>

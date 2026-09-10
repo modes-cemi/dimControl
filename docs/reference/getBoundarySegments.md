@@ -6,7 +6,7 @@ belonging to only one face of the mesh.
 ## Usage
 
 ``` r
-getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
+getBoundarySegments(mesh, returnMesh = FALSE, simplify = TRUE)
 ```
 
 ## Arguments
@@ -15,7 +15,7 @@ getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
 
   A `mesh3d` object representing the 3D mesh.
 
-- malla:
+- returnMesh:
 
   Logical. If `TRUE`, returns a `mesh3d` object containing the boundary
   segments. If `FALSE`, returns a matrix with the corresponding vertex
@@ -23,15 +23,15 @@ getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
 
 - simplify:
 
-  Logical. If `TRUE` and `malla = TRUE`, simplifies the resulting
+  Logical. If `TRUE` and `returnMesh = TRUE`, simplifies the resulting
   boundary mesh using the internal mesh-cleaning routine. Default is
   `TRUE`.
 
 ## Value
 
-If `malla = FALSE`, a two-row matrix containing the vertex indices of
-the boundary segments. If `malla = TRUE`, a `mesh3d` object containing
-the boundary segments.
+If `returnMesh = FALSE`, a two-row matrix containing the vertex indices
+of the boundary segments. If `returnMesh = TRUE`, a `mesh3d` object
+containing the boundary segments.
 
 ## Details
 
@@ -54,7 +54,7 @@ mesh <- rgl::cube3d(color = "lightblue")
 mesh$ib <- mesh$ib[, -(1:2)]
 
 # Extract boundary segments
-boundary <- getBoundarySegments(mesh, malla = TRUE)
+boundary <- getBoundarySegments(mesh, returnMesh = TRUE)
 
 # Display mesh and boundary side by side
 rgl::clear3d()

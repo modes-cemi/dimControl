@@ -47,6 +47,11 @@ estimate.
 \dontrun{
 set.seed(123)
 
+x <- c(
+  rnorm(200, mean = 2, sd = 0.3),
+  rnorm(5, mean = 3.5, sd = 0.1),
+  rnorm(200, mean = 5, sd = 0.3)
+)
 
 # Detect and plot modes
 modes <- findModes(x, bw = 0.2, q1 = 0.5, plot = TRUE, showRanges = TRUE)

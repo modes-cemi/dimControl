@@ -86,7 +86,7 @@ preparePanelMesh <- function(mesh,
   # Extract base boundary
   boundaryMesh <- getBoundarySegments(
     baseMesh,
-    malla = TRUE,
+    returnMesh = TRUE,
     simplify = TRUE
   )
 
@@ -191,10 +191,10 @@ simulatePanelFloorCloud <- function(mesh,
     stop("Argument 'mesh' must be an object of class 'mesh3d'")
 
   if (nPanel <= 0)
-    stop("Argument 'n_panel' must be greater than 0")
+    stop("Argument 'nPanel' must be greater than 0")
 
   if (nFloor < 0)
-    stop("Argument 'n_floor' must be greater than or equal to 0")
+    stop("Argument 'nFloor' must be greater than or equal to 0")
 
   if (prec <= 0)
     stop("Argument 'prec' must be greater than 0")

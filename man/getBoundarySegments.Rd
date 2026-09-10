@@ -4,21 +4,21 @@
 \alias{getBoundarySegments}
 \title{Extract the Boundary of a 3D Mesh}
 \usage{
-getBoundarySegments(mesh, malla = FALSE, simplify = TRUE)
+getBoundarySegments(mesh, returnMesh = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{mesh}{A \code{mesh3d} object representing the 3D mesh.}
 
-\item{malla}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the boundary
+\item{returnMesh}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the boundary
 segments. If \code{FALSE}, returns a matrix with the corresponding vertex indices. Default
 is \code{FALSE}.}
 
-\item{simplify}{Logical. If \code{TRUE} and \code{malla = TRUE}, simplifies the resulting
+\item{simplify}{Logical. If \code{TRUE} and \code{returnMesh = TRUE}, simplifies the resulting
 boundary mesh using the internal mesh-cleaning routine. Default is \code{TRUE}.}
 }
 \value{
-If \code{malla = FALSE}, a two-row matrix containing the vertex indices of the boundary
-segments. If \code{malla = TRUE}, a \code{mesh3d} object containing the boundary segments.
+If \code{returnMesh = FALSE}, a two-row matrix containing the vertex indices of the boundary
+segments. If \code{returnMesh = TRUE}, a \code{mesh3d} object containing the boundary segments.
 }
 \description{
 Identifies the unshared edges of a \code{mesh3d} object, i.e., edges belonging to only
@@ -36,7 +36,7 @@ mesh <- rgl::cube3d(color = "lightblue")
 mesh$ib <- mesh$ib[, -(1:2)]
 
 # Extract boundary segments
-boundary <- getBoundarySegments(mesh, malla = TRUE)
+boundary <- getBoundarySegments(mesh, returnMesh = TRUE)
 
 # Display mesh and boundary side by side
 rgl::clear3d()

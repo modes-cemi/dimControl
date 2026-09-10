@@ -44,14 +44,14 @@ and retaining the main connected boundary.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cleanBoundarySegments</span><span class="op">(</span><span class="va">iBorde</span>, <span class="va">baseMesh</span>, lengthProb <span class="op">=</span> <span class="fl">0.98</span>, minGroupSize <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cleanBoundarySegments</span><span class="op">(</span><span class="va">iBorder</span>, <span class="va">baseMesh</span>, lengthProb <span class="op">=</span> <span class="fl">0.98</span>, minGroupSize <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-iborde">iBorde<a class="anchor" aria-label="anchor" href="#arg-iborde"></a></dt>
+<dl><dt id="arg-iborder">iBorder<a class="anchor" aria-label="anchor" href="#arg-iborder"></a></dt>
 <dd><p>A two-row matrix containing the boundary segment indices, where each
 column defines a segment by the indices of its two vertices.</p></dd>
 
@@ -128,11 +128,11 @@ is retained.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extract boundary segment indices</span></span></span>
-<span class="r-in"><span><span class="va">iBorde</span> <span class="op">&lt;-</span> <span class="fu"><a href="getBoundarySegments.html">getBoundarySegments</a></span><span class="op">(</span><span class="va">baseMesh</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">iBorder</span> <span class="op">&lt;-</span> <span class="fu"><a href="getBoundarySegments.html">getBoundarySegments</a></span><span class="op">(</span><span class="va">baseMesh</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Clean the boundary segments</span></span></span>
-<span class="r-in"><span><span class="va">cleanBorde</span> <span class="op">&lt;-</span> <span class="fu">cleanBoundarySegments</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">iBorde</span>,</span></span>
+<span class="r-in"><span><span class="va">cleanBorder</span> <span class="op">&lt;-</span> <span class="fu">cleanBoundarySegments</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">iBorder</span>,</span></span>
 <span class="r-in"><span>  <span class="va">baseMesh</span>,</span></span>
 <span class="r-in"><span>  lengthProb <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>  minGroupSize <span class="op">=</span> <span class="fl">4</span></span></span>
@@ -146,11 +146,11 @@ is retained.</p>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/axes3d.html" class="external-link">title3d</a></span><span class="op">(</span><span class="st">"Mesh"</span>, level <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mfrow3d.html" class="external-link">next3d</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/shade3d.html" class="external-link">shade3d</a></span><span class="op">(</span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="va">baseMesh</span><span class="op">$</span><span class="va">vb</span>, segments <span class="op">=</span> <span class="va">iBorde</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/shade3d.html" class="external-link">shade3d</a></span><span class="op">(</span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="va">baseMesh</span><span class="op">$</span><span class="va">vb</span>, segments <span class="op">=</span> <span class="va">iBorder</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/axes3d.html" class="external-link">title3d</a></span><span class="op">(</span><span class="st">"Original boundary"</span>, level <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mfrow3d.html" class="external-link">next3d</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/shade3d.html" class="external-link">shade3d</a></span><span class="op">(</span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="va">baseMesh</span><span class="op">$</span><span class="va">vb</span>, segments <span class="op">=</span> <span class="va">cleanBorde</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/shade3d.html" class="external-link">shade3d</a></span><span class="op">(</span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/mesh3d.html" class="external-link">mesh3d</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="va">baseMesh</span><span class="op">$</span><span class="va">vb</span>, segments <span class="op">=</span> <span class="va">cleanBorder</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">rgl</span><span class="fu">::</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/axes3d.html" class="external-link">title3d</a></span><span class="op">(</span><span class="st">"Cleaned boundary"</span>, level <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
