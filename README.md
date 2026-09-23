@@ -48,16 +48,17 @@ estaleiro do futuro”* (IN853C).
 
 ## Presentation
 
-Part of this work was presented at the *XI Xornadas de Usuarios de R en
-Galicia* (Santiago de Compostela, October 24, 2024).
+The development and application of `dimControl` have been presented at the following
+scientific meetings:
 
-**Authors:** Nataly Romarís-Lodeiro¹, Olamar Benavente-Fernández¹, Rubén
-Fernández-Casal², and Salvador Naya².\*
+* Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R.,
+  Naya-Fernández, S., & Tarrío-Saavedra, J. (2026, September 4).
+  *dimControl: un paquete de R para el procesamiento de geometrías 3D*.
+  SEIO 2026, Control dimensional, Santiago de Compostela, Spain.
 
-**Institutions:**  
-¹ Centro Mixto de Investigación UDC-Navantia, Universidade da Coruña.  
-² Grupo MODES, Departamento de Matemáticas, CITIC, Universidade da
-Coruña.
+* Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R., &
+  Naya, S. (2024, October 24). *Análisis de nubes de puntos masivas en R*.
+  XI Xornada de Usuarios de R en Galicia, A Coruña, Spain.
 
 ## References
 
