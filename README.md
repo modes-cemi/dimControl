@@ -48,8 +48,8 @@ estaleiro do futuro”* (IN853C).
 
 ## Presentation
 
-The development and application of `dimControl` have been presented at the following
-scientific meetings:
+`dimControl` and previous work related to 3D data processing in R have been presented
+on the following occasions:
 
 * Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R.,
   Naya-Fernández, S., & Tarrío-Saavedra, J. (2026, September 4).
