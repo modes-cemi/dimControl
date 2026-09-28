@@ -5,13 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Tools for Geometric Processing and Dimensional Analysis • dimControl</title>
+<title>Tools for 3D Geometric Processing and Dimensional Analysis • dimControl</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="Tools for Geometric Processing and Dimensional Analysis">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Tools for 3D Geometric Processing and Dimensional Analysis">
 <meta name="description" content="A collection of tools for geometric processing, reconstruction, and dimensional analysis of three-dimensional data. It includes functionality for point cloud and mesh processing, boundary extraction, angle estimation, component detection, and surface analysis.">
 <meta property="og:description" content="A collection of tools for geometric processing, reconstruction, and dimensional analysis of three-dimensional data. It includes functionality for point cloud and mesh processing, boundary extraction, angle estimation, component detection, and surface analysis.">
 </head>
@@ -19,7 +18,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">dimControl</a>
 
@@ -32,6 +31,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/dimControl.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -50,7 +50,6 @@
 <div class="section level1">
 <div class="page-header"><h1 id="dimcontrol">dimControl<a class="anchor" aria-label="anchor" href="#dimcontrol"></a>
 </h1></div>
-<p>🔗 <a href="https://modes-cemi.github.io/dimControl/">Visit the dimControl web documentation</a></p>
 <p>The dimControl package provides a set of tools for dimensional control and geometric analysis of steel panels.</p>
 <p>It is designed to be used together with packages such as rgl, misc3d, and Rvcg, offering complementary functions that support the processing and analysis of 3D data.</p>
 <p>These tools assist in different stages of the dimensional inspection workflow, such as:</p>
@@ -60,12 +59,13 @@
 <li>Separating components of the estimated mesh for individual evaluation.</li>
 <li>Computing angles to analyze the alignment between different components of the panel.</li>
 </ul>
+<p>🔗 <a href="https://modes-cemi.github.io/dimControl/">For more information see the package vignette</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of dimControl from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#install.packages("devtools")</span></span>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"modes-cemi/dimControl"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -76,11 +76,11 @@
 <div class="section level2">
 <h2 id="presentation">Presentation<a class="anchor" aria-label="anchor" href="#presentation"></a>
 </h2>
-<p>Part of this work was presented at the <em>XI Xornadas de Usuarios de R en Galicia</em> (Santiago de Compostela, October 24, 2024).</p>
-<p><strong>Authors:</strong> Nataly Romarís-Lodeiro¹, Olamar Benavente-Fernández¹, Rubén Fernández-Casal², and Salvador Naya².*</p>
-<p><strong>Institutions:</strong><br>
-¹ Centro Mixto de Investigación UDC-Navantia, Universidade da Coruña.<br>
-² Grupo MODES, Departamento de Matemáticas, CITIC, Universidade da Coruña.</p>
+<p><code>dimControl</code> and previous work related to 3D data processing in R have been presented on the following occasions:</p>
+<ul>
+<li><p>Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R., Naya-Fernández, S., &amp; Tarrío-Saavedra, J. (2026, September 4). <em>dimControl: un paquete de R para el procesamiento de geometrías 3D</em>. SEIO 2026, Control dimensional, Santiago de Compostela, Spain.</p></li>
+<li><p>Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R., &amp; Naya, S. (2024, October 24). <em>Análisis de nubes de puntos masivas en R</em>. XI Xornada de Usuarios de R en Galicia, A Coruña, Spain.</p></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -90,16 +90,27 @@
 <li><p>Bernardini F., Mittleman J., Rushmeier H., Silva C., Taubin G. (1999). The ball-pivoting algorithm for surface reconstruction. <em>IEEE transactions on visualization and computer graphics</em>, 5(4), 349-359.</p></li>
 <li><p>Duong T. (2022). <em>ks: Kernel Smoothing</em>. R package version 1.14.0, <a href="https://CRAN.R-project.org/package=ks" class="external-link uri">https://CRAN.R-project.org/package=ks</a>.</p></li>
 <li><p>Feng D., Tierney L. (2008). Computing and Displaying Isosurfaces in R. <em>Journal of Statistical Software</em>, 28, 1-24.</p></li>
-<li><p>Fernández-Casal R. (2024). <em>npsp: Nonparametric Spatial Statistics</em>. R package version 0.7-14. <a href="https://rubenfcasal.github.io/npsp" class="external-link uri">https://rubenfcasal.github.io/npsp</a>.</p></li>
+<li><p>Fernández-Casal R. (2024). <em>npsp: Nonparametric Spatial Statistics</em>. R package version 0.7-14. <a href="https://rubenfcasal.github.io/npsp/" class="external-link uri">https://rubenfcasal.github.io/npsp/</a>.</p></li>
 <li><p>Lafarge T., Pateiro-López B., Possolo A., Dunkers J. (2014). R Implementation of a Polyhedral Approximation to a 3D Set of Points Using the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>-Shape. <em>Journal of Statistical Software</em>, 56, 1-19.</p></li>
 <li><p>Lecigne B., Delagrange S., Messier C. (2018). Exploring trees in three dimensions: VoxR, a novel voxel-based R package dedicated to analysing the complex arrangement of tree crowns. <em>Annals of Botany</em>, 121, 589-601.</p></li>
 <li><p>Lorensen W.E., Cline H.E. (1987). Marching Cubes: A High Resolution 3D Surface Reconstruction Algorithm. <em>Computer Graphics</em>, 21(4), 163-169.</p></li>
 <li><p>Murdoch D., Adler D. (2023). <em>rgl: 3D Visualization Using OpenGL</em>. R package version 1.1.3, <a href="https://CRAN.R-project.org/package=rgl" class="external-link uri">https://CRAN.R-project.org/package=rgl</a>.</p></li>
 <li><p>Pateiro-López B., Rodríguez-Casal A. (2010). Generalizing the convex hull of a sample: the R package alphahull. <em>Journal of Statistical Software</em>, 34, 1-28.</p></li>
 <li><p>Roussel J.R., Auty D. (2023). <em>lidR: Airborne LiDAR Data Manipulation and Visualization for Forestry Applications</em>. R package version 3.1.0. <a href="https://cran.r-project.org/package=lidR" class="external-link uri">https://cran.r-project.org/package=lidR</a>.</p></li>
-<li><p>Roussel, J.R. (2024). <em>lasR: Fast and Pipeable Airborne LiDAR Data Tools</em>. R package version 0.10.2, <a href="https://r-lidar.github.io/lasR" class="external-link uri">https://r-lidar.github.io/lasR</a>.</p></li>
+<li><p>Roussel, J.R. (2024). <em>lasR: Fast and Pipeable Airborne LiDAR Data Tools</em>. R package version 0.10.2, <a href="https://r-lidar.github.io/lasR/" class="external-link uri">https://r-lidar.github.io/lasR/</a>.</p></li>
 <li><p>Schlager S. (2017). Morpho and Rvcg - Shape Analysis in R. En Zheng G., Li S., Szekely G. (Eds.), <em>Statistical Shape and Deformation Analysis</em>, pp. 217-256. Academic Press.</p></li>
 </ul>
+<!--
+devtools::install(build_vignettes = TRUE)
+pkgdown::build_site()
+pkgdown::build_reference()
+pkgdown::build_reference(lazy = FALSE)
+pkgdown::build_articles()
+devtools::check(cran = TRUE, remote = TRUE, manual = TRUE)
+# Avoid problems with "Onedrive - Universidade da Coruña"
+devtools::check(getwd())
+pkgdown::build_site(getwd())
+-->
 </div>
 </div>
 

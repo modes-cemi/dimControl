@@ -1,16 +1,16 @@
-#' Clean a 3D Mesh
+#' Clean a 3D mesh
 #'
 #' Removes non-finite or unused vertices from a `mesh3d` object and updates the corresponding
 #' mesh indices.
 #'
-#' @param mesh A `mesh3d` object representing the mesh to be cleaned.
-#' @param onlyFinite Logical. If `TRUE`, removes vertices with non-finite coordinates.
-#' Default is `TRUE`.
-#' @param allUsed Logical. If `TRUE`, removes vertices that are not referenced by any
-#' mesh element. Default is `TRUE`.
+#' @param mesh `mesh3d` object representing the mesh to be cleaned.
+#' @param onlyFinite Logical. If `TRUE`, vertices with non-finite coordinates are
+#' removed. Default is `TRUE`.
+#' @param allUsed Logical. If `TRUE`, vertices that are not referenced by any mesh
+#' element are removed. Default is `TRUE`.
 #'
 #' @returns
-#' A cleaned `mesh3d` object with updated vertex and mesh indices.
+#' `mesh3d` object with the retained vertices and updated mesh indices.
 #'
 #' @details
 #' This function is a simplified adaptation of the internal `cleanMesh3d()` function
@@ -18,17 +18,25 @@
 #' to remove non-finite or unused vertices and reindex the `ip`, `is`, `it`, and `ib`
 #' components.
 #'
+#' If `onlyFinite = TRUE`, vertices containing non-finite coordinates are removed.
+#' If `allUsed = TRUE`, vertices that are not referenced by any of the `ip`, `is`,
+#' `it`, or `ib` components are removed.
+#'
+#' Mesh elements that reference removed vertices are discarded, and the remaining vertex
+#' indices are updated to match the new vertex matrix.
+#'
 #' Unlike the original implementation, this version does not handle additional mesh
 #' attributes such as tags, texture coordinates, vertex attributes, or triangle rejoining.
 #'
 #' @references
-#' Murdoch, D., et al. \emph{rgl: 3D Visualization Using OpenGL}.
-#' R package. \url{https://CRAN.R-project.org/package=rgl}
+#' Murdoch, D., et al. \emph{rgl: 3D Visualization Using OpenGL}. R package.
+#' \url{https://CRAN.R-project.org/package=rgl}
 #'
 #' @examples
-#' \dontrun{
+#' library(rgl)
+#'
 #' # Create a cube mesh
-#' cube <- rgl::cube3d()
+#' cube <- cube3d()
 #'
 #' # Add an unreferenced vertex
 #' cube$vb <- cbind(cube$vb, c(10,10,10,1))
@@ -39,12 +47,10 @@
 #' # Compare the number of vertices
 #' ncol(cube$vb)
 #' ncol(cubeClean$vb)
-#' }
 #'
-#' @keywords internal
-#' @noRd
-#'
+#' @export
 cleanMesh3d <- function(mesh, onlyFinite = TRUE, allUsed = TRUE) {
+
   # Original number of vertices
   nOld <- ncol(mesh$vb)
 

@@ -1,4 +1,4 @@
-# Calculate Distance over a 3D Surface
+# Calculate distance over a 3D surface
 
 Computes the total length of a 3D path by summing the Euclidean
 distances between consecutive points.
@@ -13,12 +13,12 @@ surfaceDistance(segment)
 
 - segment:
 
-  A matrix or data frame with three columns representing the X, Y, and Z
-  coordinates of consecutive points in 3D space.
+  Numeric matrix or data frame with three columns representing the X, Y,
+  and Z coordinates of consecutive points in 3D space.
 
 ## Value
 
-A numeric value representing the total length of the 3D path.
+Numeric value representing the total length of the 3D path.
 
 ## Details
 
@@ -27,12 +27,12 @@ The distance between two consecutive points is computed as:
 \$\$ d_i = \sqrt{(x\_{i+1} - x_i)^2 + (y\_{i+1} - y_i)^2 + (z\_{i+1} -
 z_i)^2} \$\$
 
-and the total path length is obtained by summing these distances.
+The total path length is obtained by summing the distances between all
+consecutive points.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 segment <- matrix(
   c(
     0, 0, 0,
@@ -43,6 +43,7 @@ segment <- matrix(
   byrow = TRUE
 )
 
+# Compute the total path length
 surfaceDistance(segment)
-} # }
+#> [1] 10
 ```

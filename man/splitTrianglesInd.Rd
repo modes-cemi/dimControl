@@ -2,33 +2,35 @@
 % Please edit documentation in R/splitTrianglesInd.R
 \name{splitTrianglesInd}
 \alias{splitTrianglesInd}
-\title{Split a Mesh into Connected Triangle Groups}
+\title{Split a mesh into connected triangle groups}
 \usage{
 splitTrianglesInd(mesh)
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object containing a triangular mesh. The object must include
-the \code{it} matrix, where each column defines a triangle by three vertex indices.}
+\item{mesh}{\code{mesh3d} object containing a triangular mesh. It must include an \code{it}
+matrix with three rows, where each column defines a triangle by three vertex indices.}
 }
 \value{
-A list where each element contains the indices of the triangles belonging to one
-connected component. Components are sorted from largest to smallest according to
-their number of triangles.
+List of integer vectors, where each element contains the triangle indices belonging
+to one connected component. Components are sorted from largest to smallest according
+to their number of triangles.
 }
 \description{
 Splits the triangles of a 3D mesh into connected components. Two triangles are
-considered connected when they share an edge, that is, two vertex indices.
+considered connected when they share an edge, i.e., two vertex indices.
 }
 \details{
 The three edges of each triangle are represented as ordered vertex pairs and encoded
-using numeric keys. Shared edges are identified by sorting these keys and are then
-used to construct a graph in which triangles are vertices. Connected components are
-obtained with \code{\link[igraph:components]{igraph::components()}}.
+using numeric keys. Shared edges are identified by sorting these keys and are used
+to construct a graph in which triangles are represented as vertices. Connected components
+are then identified using \code{\link[igraph:components]{igraph::components()}}.
 
-Triangles sharing only one vertex are not considered connected.
+Triangles sharing only one vertex are not considered connected. Degenerate self-connections
+are discarded before constructing the graph.
 }
 \examples{
-\dontrun{
+library(rgl)
+
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),
@@ -46,7 +48,7 @@ triangles <- t(rbind(
   c(5, 6, 7)
 ))
 
-mesh <- rgl::tmesh3d(
+mesh <- tmesh3d(
   vertices = vertices,
   indices = triangles
 )
@@ -54,7 +56,6 @@ mesh <- rgl::tmesh3d(
 # Split the mesh into connected triangle groups
 groups <- splitTrianglesInd(mesh)
 groups
-}
 
 }
 \seealso{

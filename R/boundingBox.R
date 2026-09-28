@@ -1,6 +1,6 @@
-#' Compute the Bounding Box of a 3D Mesh
+#' Compute the bounding box of a 3D mesh
 #'
-#' Computes the minimum and maximum coordinates of the vertices of a 3D mesh, along
+#' Computes the minimum and maximum coordinates of the vertices of a 3D mesh along
 #' the `X`, `Y`, and `Z` axes.
 #'
 #' @param x A `mesh3d` object containing the mesh vertices in the `vb` component.
@@ -16,16 +16,19 @@
 #' @seealso [rgl::asEuclidean2()]
 #'
 #' @examples
-#' \dontrun{
+#' library(rgl)
+#'
 #' # Create a cubic mesh
-#' cube <- rgl::cube3d()
+#' cube <- cube3d()
 #'
 #' # Compute its bounding box
 #' boundingBox(cube)
-#' }
 #'
 #' @export
 boundingBox <- function(x) {
+
+  if (!requireNamespace("rgl", quietly = TRUE)) stop("package 'rgl' is required")
+
   t(matrix(
     apply(rgl::asEuclidean2(x$vb), 1, range),
     nrow = 2,

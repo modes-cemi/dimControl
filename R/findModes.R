@@ -1,40 +1,39 @@
-#' Detect Modes in a Dataset
+#' Detect modes in a dataset
 #'
-#' Detects modes in a numeric dataset using kernel density estimation. For each detected
-#' mode, the function determines the interval along the X-axis bounded by the adjacent
-#' decreases in density.
+#' Detects modes in a numeric dataset using kernel density estimation and determines
+#' an approximate interval associated with each detected mode.
 #'
-#' @param x A numeric vector containing the data.
-#' @param bw A numeric value specifying the bandwidth used for kernel density estimation.
+#' @param x Numeric vector containing the data.
+#' @param bw Numeric value specifying the bandwidth used for kernel density estimation.
 #' Default is `0.2`.
-#' @param q1 A numeric value between 0 and 1 specifying the density quantile used to
+#' @param q1 Numeric value between 0 and 1 specifying the density quantile used to
 #' retain the most relevant peaks. Default is `0.95`.
-#' @param plot Logical. If `TRUE`, plots the estimated density and the detected modes.
+#' @param plot Logical. If `TRUE`, the estimated density and detected modes are plotted.
 #' Default is `TRUE`.
-#' @param showRanges Logical. If `TRUE`, draws vertical dashed lines marking the lower
-#' and upper limits of each detected mode. Default is `FALSE`.
+#' @param showRanges Logical. If `TRUE`, vertical dashed lines indicating the lower
+#' and upper limits associated with each detected mode are added to the plot. Default
+#' is `FALSE`.
 #'
 #' @returns
-#' A matrix with one row per detected mode and two columns, `min` and `max`, containing
-#' the X-axis limits associated with each mode.
+#' Numeric matrix with one row per detected mode and two columns, `min` and `max`,
+#' containing the X-axis limits associated with each mode.
 #'
 #' @details
 #' The density of `x` is estimated using [stats::density()]. Local maxima are identified
 #' by comparing each density value with its immediate neighbours.
 #'
-#' Peaks are retained only when their density is greater than the quantile defined
-#' by `q1`. For each retained peak, the function searches in both directions until
-#' the density stops decreasing, defining the approximate interval associated with
-#' that mode.
+#' Peaks are retained only when their estimated density is greater than the quantile
+#' specified by `q1`. For each retained peak, the function searches toward both sides
+#' while the density decreases away from the peak, defining an approximate interval
+#' associated with the mode.
 #'
-#' The number and location of detected modes depend strongly on the bandwidth `bw`: smaller
+#' The number and location of detected modes depend on the bandwidth `bw`. Smaller
 #' values may detect more local peaks, whereas larger values produce a smoother density
 #' estimate.
 #'
 #' @seealso [stats::density()], [stats::quantile()]
 #'
 #' @examples
-#' \dontrun{
 #' set.seed(123)
 #'
 #' x <- c(
@@ -44,9 +43,8 @@
 #' )
 #'
 #' # Detect and plot modes
-#' modes <- findModes(x, bw = 0.2, q1 = 0.5, plot = TRUE, showRanges = TRUE)
+#' modes <- findModes(x, bw = 0.2, q1 = 0.5, showRanges = TRUE)
 #' modes
-#' }
 #'
 #' @export
 findModes <- function(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE) {
@@ -69,7 +67,8 @@ findModes <- function(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE) {
 
   # Initialize output matrix
   modes <- matrix(nrow = length(filteredPeaks), ncol = 2,
-                  dimnames = list(paste0("mode", seq_along(filteredPeaks)), c("min", "max")))
+                  dimnames = list(paste0("mode", seq_along(filteredPeaks)),
+                                  c("min", "max")))
 
   # Determine the range associated with each mode
   for (i in seq_along(filteredPeaks)) {
@@ -81,6 +80,7 @@ findModes <- function(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE) {
     while (startDescent > 1 && y[startDescent] >= y[startDescent - 1]) {
       startDescent <- startDescent - 1
     }
+
     modeStart <- xVals[startDescent]
 
     # Search toward the right density minimum
@@ -89,6 +89,7 @@ findModes <- function(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE) {
     while (endDescent < length(y) && y[endDescent] >= y[endDescent + 1]) {
       endDescent <- endDescent + 1
     }
+
     modeEnd <- xVals[min(endDescent + 1, length(xVals))]
 
     modes[i, ] <- c(modeStart, modeEnd)

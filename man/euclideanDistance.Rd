@@ -2,16 +2,16 @@
 % Please edit documentation in R/euclideanDistance.R
 \name{euclideanDistance}
 \alias{euclideanDistance}
-\title{Compute the Euclidean Distance Between Two Points}
+\title{Compute the Euclidean distance between two points}
 \usage{
 euclideanDistance(h)
 }
 \arguments{
-\item{h}{A numeric vector containing the differences between the coordinates of
-two points, for example \code{c(x2 - x1, y2 - y1, z2 - z1)}.}
+\item{h}{Numeric vector containing the differences between the coordinates of two
+points, for example \code{c(x2 - x1, y2 - y1, z2 - z1)}.}
 }
 \value{
-A numeric value representing the Euclidean distance between the two points.
+Numeric value representing the Euclidean distance between the two points.
 }
 \description{
 Computes the Euclidean distance between two points from a vector containing the
@@ -19,16 +19,16 @@ differences between their coordinates.
 }
 \details{
 The Euclidean distance is computed as:
+
 \deqn{d = \sqrt{\sum_i h_i^2}},
-where \eqn{h_i} represents the coordinate differences between the two points.
+
+where \eqn{h_i} represents the coordinate difference along dimension \eqn{i}.
 }
 \examples{
-\dontrun{
 # Differences between two points in 3D
 h <- c(3 - 0, 4 - 0, 0 - 0)
 
 # Compute the Euclidean distance
 euclideanDistance(h)
-}
 
 }

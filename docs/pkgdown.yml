@@ -1,8 +1,9 @@
 pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
-articles: {}
-last_built: 2026-09-10T13:13Z
+articles:
+  dimControl: dimControl.html
+last_built: 2026-09-28T11:17Z
 urls:
   reference: https://modes-cemi.github.io/dimControl/reference
   article: https://modes-cemi.github.io/dimControl/articles

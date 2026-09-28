@@ -1,7 +1,7 @@
-# Compute the Bounding Box of a 3D Mesh
+# Compute the bounding box of a 3D mesh
 
 Computes the minimum and maximum coordinates of the vertices of a 3D
-mesh, along the `X`, `Y`, and `Z` axes.
+mesh along the `X`, `Y`, and `Z` axes.
 
 ## Usage
 
@@ -34,11 +34,15 @@ before computing the coordinate ranges.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+library(rgl)
+
 # Create a cubic mesh
-cube <- rgl::cube3d()
+cube <- cube3d()
 
 # Compute its bounding box
 boundingBox(cube)
-} # }
+#>   min max
+#> X  -1   1
+#> Y  -1   1
+#> Z  -1   1
 ```

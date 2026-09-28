@@ -1,8 +1,5 @@
 # dimControl
 
-🔗 [Visit the dimControl web
-documentation](https://modes-cemi.github.io/dimControl/)
-
 The dimControl package provides a set of tools for dimensional control
 and geometric analysis of steel panels.
 
@@ -21,13 +18,16 @@ workflow, such as:
 - Computing angles to analyze the alignment between different components
   of the panel.
 
+🔗 [For more information see the package
+vignette](https://modes-cemi.github.io/dimControl/)
+
 ## Installation
 
 You can install the development version of dimControl from
 [GitHub](https://github.com/) with:
 
 ``` r
-#install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github("modes-cemi/dimControl")
 ```
 
@@ -40,16 +40,17 @@ estaleiro do futuro”* (IN853C).
 
 ## Presentation
 
-Part of this work was presented at the *XI Xornadas de Usuarios de R en
-Galicia* (Santiago de Compostela, October 24, 2024).
+`dimControl` and previous work related to 3D data processing in R have
+been presented on the following occasions:
 
-**Authors:** Nataly Romarís-Lodeiro¹, Olamar Benavente-Fernández¹, Rubén
-Fernández-Casal², and Salvador Naya².\*
+- Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R.,
+  Naya-Fernández, S., & Tarrío-Saavedra, J. (2026, September 4).
+  *dimControl: un paquete de R para el procesamiento de geometrías 3D*.
+  SEIO 2026, Control dimensional, Santiago de Compostela, Spain.
 
-**Institutions:**  
-¹ Centro Mixto de Investigación UDC-Navantia, Universidade da Coruña.  
-² Grupo MODES, Departamento de Matemáticas, CITIC, Universidade da
-Coruña.
+- Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R., &
+  Naya, S. (2024, October 24). *Análisis de nubes de puntos masivas en
+  R*. XI Xornada de Usuarios de R en Galicia, A Coruña, Spain.
 
 ## References
 
@@ -67,7 +68,7 @@ Coruña.
   *Journal of Statistical Software*, 28, 1-24.
 
 - Fernández-Casal R. (2024). *npsp: Nonparametric Spatial Statistics*. R
-  package version 0.7-14. <https://rubenfcasal.github.io/npsp>.
+  package version 0.7-14. <https://rubenfcasal.github.io/npsp/>.
 
 - Lafarge T., Pateiro-López B., Possolo A., Dunkers J. (2014). R
   Implementation of a Polyhedral Approximation to a 3D Set of Points
@@ -94,7 +95,7 @@ Coruña.
   <https://cran.r-project.org/package=lidR>.
 
 - Roussel, J.R. (2024). *lasR: Fast and Pipeable Airborne LiDAR Data
-  Tools*. R package version 0.10.2, <https://r-lidar.github.io/lasR>.
+  Tools*. R package version 0.10.2, <https://r-lidar.github.io/lasR/>.
 
 - Schlager S. (2017). Morpho and Rvcg - Shape Analysis in R. En Zheng
   G., Li S., Szekely G. (Eds.), *Statistical Shape and Deformation

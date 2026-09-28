@@ -1,15 +1,33 @@
-#' CAD Object of a Steel Panel
+#' CAD model of a steel panel
 #'
-#' A portion of the theoretical CAD model of a steel panel, represented as a `mesh3d`
-#' object.
+#' Portion of the theoretical CAD model of a steel panel, represented as a `mesh3d`
+#' object. The model provides the reference geometry of the panel and can be used for
+#' geometric comparison with estimated meshes or for point cloud simulation.
 #'
-#' @format A `mesh3d` object with the following components:
+#' @format
+#' `mesh3d` object with the following components:
 #' \describe{
-#'   \item{vb}{A 4 x 267 matrix containing vertex coordinates in homogeneous form.}
-#'   \item{it}{A 3 x 343 matrix containing triangle indices.}
-#'   \item{normals}{A 4 x 267 matrix containing vertex normals.}
+#'   \item{vb}{Numeric 4 x 210 matrix containing vertex coordinates in homogeneous form.}
+#'   \item{it}{Integer 3 x 256 matrix containing triangle indices.}
 #' }
 #'
-#' @source Theoretical CAD model of a steel panel.
+#' @details
+#' The mesh contains 210 vertices and 256 triangular faces.
+#'
+#' @examples
+#' library(rgl)
+#'
+#' data("cad", package = "dimControl")
+#'
+#' # Show the structure
+#' str(cad)
+#'
+#' # Represent the CAD model
+#' open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
+#' shade3d(cad, col = "gray")
+#' decorate3d()
+#'
+#' @source
+#' Theoretical CAD model of a steel panel.
 #'
 "cad"

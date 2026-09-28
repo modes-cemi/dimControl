@@ -2,18 +2,18 @@
 % Please edit documentation in R/sampleMesh.R
 \name{sampleMesh}
 \alias{sampleMesh}
-\title{Sample Points over a Triangular Mesh}
+\title{Sample points over a triangular mesh}
 \usage{
 sampleMesh(mesh, n, shuffle = FALSE)
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object containing a triangular mesh. It must include:
+\item{mesh}{\code{mesh3d} object containing a triangular mesh with the following components:
 \itemize{
-\item \code{vb}: a 3 x N or 4 x N matrix containing the vertex coordinates.
-\item \code{it}: a 3 x M matrix containing the vertex indices of each triangle.
+\item \code{vb}: 3 x N or 4 x N matrix containing vertex coordinates.
+\item \code{it}: 3 x M matrix containing triangle indices.
 }}
 
-\item{n}{A positive integer specifying the total number of points to generate.}
+\item{n}{Positive integer specifying the total number of points to generate.}
 
 \item{shuffle}{Logical. If \code{TRUE}, randomly shuffles the order of the generated
 points. Default is \code{FALSE}.}
@@ -28,29 +28,31 @@ The number of points assigned to each triangle is proportional to its area.
 }
 \details{
 The surface area of each triangle is obtained using \code{\link[Rvcg:vcgArea]{Rvcg::vcgArea()}}. The number
-of points assigned to each triangle is then generated from a multinomial distribution
+of points assigned to each triangle is generated from a multinomial distribution
 with probabilities proportional to triangle area.
 
 Points within each triangle are generated uniformly using barycentric coordinates.
 
-If \code{mesh$vb} contains homogeneous coordinates, the vertices are converted to Cartesian
-coordinates by dividing the first three coordinates by the homogeneous coordinate.
+Vertex coordinates are converted to Euclidean coordinates using \code{\link[rgl:matrices]{rgl::asEuclidean2()}}.
 }
 \examples{
-\dontrun{
-# Create a triangular sphere
-mesh <- Rvcg::vcgSphere(1, subdiv = 1)
+library(rgl)
+library(Rvcg)
 
-rgl::wire3d(mesh)
+# Create a triangular sphere
+mesh <- vcgSphere(1, subdiv = 1)
+
+# Represent the triangular mesh
+open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
+wire3d(mesh)
 
 # Sample points over the mesh
 points <- sampleMesh(mesh, 10000, shuffle = TRUE)
 
-# Display sampled points
-rgl::points3d(t(points), col = "red", size = 2)
-}
+# Represent the sampled points
+points3d(t(points), col = "red", size = 2)
 
 }
 \seealso{
-\code{\link[Rvcg:vcgArea]{Rvcg::vcgArea()}}, \code{\link[rgl:primitives]{rgl::points3d()}}
+\code{\link[Rvcg:vcgArea]{Rvcg::vcgArea()}}, \code{\link[rgl:matrices]{rgl::asEuclidean2()}}, \code{\link[rgl:primitives]{rgl::points3d()}}
 }

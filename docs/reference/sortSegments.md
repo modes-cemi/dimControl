@@ -1,7 +1,7 @@
-# Reorder Connected Edge Segments
+# Reorder connected edge segments
 
-Reorders boundary segments so that the end vertex of each segment
-matches the start vertex of the next one.
+Reorders edge segments so that the end vertex of each segment matches
+the start vertex of the next segment.
 
 ## Usage
 
@@ -13,26 +13,30 @@ sortSegments(edges)
 
 - edges:
 
-  A matrix with 2 rows and N columns, where each column represents a
-  segment defined by the indices of its two endpoint vertices.
+  Integer 2 x n matrix containing the edge segments, where each column
+  defines a segment by the indices of its two endpoint vertices.
 
 ## Value
 
-A matrix containing the reordered segments. Segment orientation is
-reversed when necessary to preserve connectivity. If no connected
-segment can be found, the sequence stops at the first gap.
+Integer 2 x n matrix containing the reordered segments. Segment
+orientation is reversed when necessary to preserve connectivity. If no
+connected segment can be found, only the connected sequence preceding
+the first gap is returned.
 
 ## Details
 
 The first segment in `edges` is used as the starting segment. At each
-step, the function searches for an unused segment sharing the current
-endpoint. If the matching vertex is the second endpoint of the candidate
-segment, its orientation is reversed.
+step, the function searches among the unused segments for one sharing
+the endpoint of the current segment.
+
+If the matching vertex corresponds to the second endpoint of the
+selected segment, its orientation is reversed. The process continues
+until all connected segments have been ordered or no additional
+connected segment can be found.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 edges <- matrix(
   c(
     1, 2,
@@ -43,6 +47,9 @@ edges <- matrix(
   nrow = 2
 )
 
+# Reorder connected segments
 sortSegments(edges)
-} # }
+#>      [,1] [,2] [,3] [,4]
+#> [1,]    1    2    3    4
+#> [2,]    2    3    4    5
 ```

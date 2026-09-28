@@ -1,8 +1,7 @@
-# Detect Modes in a Dataset
+# Detect modes in a dataset
 
-Detects modes in a numeric dataset using kernel density estimation. For
-each detected mode, the function determines the interval along the
-X-axis bounded by the adjacent decreases in density.
+Detects modes in a numeric dataset using kernel density estimation and
+determines an approximate interval associated with each detected mode.
 
 ## Usage
 
@@ -14,31 +13,32 @@ findModes(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE)
 
 - x:
 
-  A numeric vector containing the data.
+  Numeric vector containing the data.
 
 - bw:
 
-  A numeric value specifying the bandwidth used for kernel density
+  Numeric value specifying the bandwidth used for kernel density
   estimation. Default is `0.2`.
 
 - q1:
 
-  A numeric value between 0 and 1 specifying the density quantile used
-  to retain the most relevant peaks. Default is `0.95`.
+  Numeric value between 0 and 1 specifying the density quantile used to
+  retain the most relevant peaks. Default is `0.95`.
 
 - plot:
 
-  Logical. If `TRUE`, plots the estimated density and the detected
-  modes. Default is `TRUE`.
+  Logical. If `TRUE`, the estimated density and detected modes are
+  plotted. Default is `TRUE`.
 
 - showRanges:
 
-  Logical. If `TRUE`, draws vertical dashed lines marking the lower and
-  upper limits of each detected mode. Default is `FALSE`.
+  Logical. If `TRUE`, vertical dashed lines indicating the lower and
+  upper limits associated with each detected mode are added to the plot.
+  Default is `FALSE`.
 
 ## Value
 
-A matrix with one row per detected mode and two columns, `min` and
+Numeric matrix with one row per detected mode and two columns, `min` and
 `max`, containing the X-axis limits associated with each mode.
 
 ## Details
@@ -48,14 +48,14 @@ The density of `x` is estimated using
 are identified by comparing each density value with its immediate
 neighbours.
 
-Peaks are retained only when their density is greater than the quantile
-defined by `q1`. For each retained peak, the function searches in both
-directions until the density stops decreasing, defining the approximate
-interval associated with that mode.
+Peaks are retained only when their estimated density is greater than the
+quantile specified by `q1`. For each retained peak, the function
+searches toward both sides while the density decreases away from the
+peak, defining an approximate interval associated with the mode.
 
-The number and location of detected modes depend strongly on the
-bandwidth `bw`: smaller values may detect more local peaks, whereas
-larger values produce a smoother density estimate.
+The number and location of detected modes depend on the bandwidth `bw`.
+Smaller values may detect more local peaks, whereas larger values
+produce a smoother density estimate.
 
 ## See also
 
@@ -65,7 +65,6 @@ larger values produce a smoother density estimate.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 set.seed(123)
 
 x <- c(
@@ -75,7 +74,10 @@ x <- c(
 )
 
 # Detect and plot modes
-modes <- findModes(x, bw = 0.2, q1 = 0.5, plot = TRUE, showRanges = TRUE)
+modes <- findModes(x, bw = 0.2, q1 = 0.5, showRanges = TRUE)
+
 modes
-} # }
+#>             min      max
+#> mode1 0.7072493 3.156928
+#> mode2 3.9328437 6.371437
 ```

@@ -1,23 +1,26 @@
-#' Reorder Connected Edge Segments
+#' Reorder connected edge segments
 #'
-#' Reorders boundary segments so that the end vertex of each segment matches the start
-#' vertex of the next one.
+#' Reorders edge segments so that the end vertex of each segment matches the start
+#' vertex of the next segment.
 #'
-#' @param edges A matrix with 2 rows and N columns, where each column represents a
-#' segment defined by the indices of its two endpoint vertices.
+#' @param edges Integer 2 x n matrix containing the edge segments, where each column
+#' defines a segment by the indices of its two endpoint vertices.
 #'
 #' @returns
-#' A matrix containing the reordered segments. Segment orientation is reversed when
-#' necessary to preserve connectivity. If no connected segment can be found, the sequence
-#' stops at the first gap.
+#' Integer 2 x n matrix containing the reordered segments. Segment orientation is
+#' reversed when necessary to preserve connectivity. If no connected segment can be
+#' found, only the connected sequence preceding the first gap is returned.
 #'
 #' @details
 #' The first segment in `edges` is used as the starting segment. At each step, the
-#' function searches for an unused segment sharing the current endpoint. If the matching
-#' vertex is the second endpoint of the candidate segment, its orientation is reversed.
+#' function searches among the unused segments for one sharing the endpoint of the
+#' current segment.
+#'
+#' If the matching vertex corresponds to the second endpoint of the selected segment,
+#' its orientation is reversed. The process continues until all connected segments
+#' have been ordered or no additional connected segment can be found.
 #'
 #' @examples
-#' \dontrun{
 #' edges <- matrix(
 #'   c(
 #'     1, 2,
@@ -28,14 +31,22 @@
 #'   nrow = 2
 #' )
 #'
+#' # Reorder connected segments
 #' sortSegments(edges)
-#' }
 #'
 #' @export
 sortSegments <- function(edges) {
 
+  # Validate the edge matrix
+  if (!is.matrix(edges) || nrow(edges) != 2)
+    stop("Argument 'edges' must be a matrix with two rows")
+
   # Total number of segments
   nEdges <- ncol(edges)
+
+  # Return an empty matrix if there are no segments
+  if (nEdges == 0)
+    return(edges)
 
   # Store the segment sequence
   segmentOrder <- integer(nEdges)
@@ -47,7 +58,7 @@ sortSegments <- function(edges) {
     endVertex <- edges[2, segmentOrder[i]]
 
     # Find unused segments connected to the current endpoint
-    candidates <- setdiff(which(edges[1, ] == endVertex | edges[2, ] == endVertex), segmentOrder[1:i])
+    candidates <- setdiff(which(edges[1, ] == endVertex | edges[2, ] == endVertex), segmentOrder[seq_len(i)])
 
     # Stop if no connected segment is found
     if (length(candidates) == 0) break

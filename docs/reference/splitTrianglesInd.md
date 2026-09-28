@@ -1,7 +1,7 @@
-# Split a Mesh into Connected Triangle Groups
+# Split a mesh into connected triangle groups
 
 Splits the triangles of a 3D mesh into connected components. Two
-triangles are considered connected when they share an edge, that is, two
+triangles are considered connected when they share an edge, i.e., two
 vertex indices.
 
 ## Usage
@@ -14,25 +14,26 @@ splitTrianglesInd(mesh)
 
 - mesh:
 
-  A `mesh3d` object containing a triangular mesh. The object must
-  include the `it` matrix, where each column defines a triangle by three
+  `mesh3d` object containing a triangular mesh. It must include an `it`
+  matrix with three rows, where each column defines a triangle by three
   vertex indices.
 
 ## Value
 
-A list where each element contains the indices of the triangles
-belonging to one connected component. Components are sorted from largest
-to smallest according to their number of triangles.
+List of integer vectors, where each element contains the triangle
+indices belonging to one connected component. Components are sorted from
+largest to smallest according to their number of triangles.
 
 ## Details
 
 The three edges of each triangle are represented as ordered vertex pairs
 and encoded using numeric keys. Shared edges are identified by sorting
-these keys and are then used to construct a graph in which triangles are
-vertices. Connected components are obtained with
+these keys and are used to construct a graph in which triangles are
+represented as vertices. Connected components are then identified using
 [`igraph::components()`](https://r.igraph.org/reference/components.html).
 
 Triangles sharing only one vertex are not considered connected.
+Degenerate self-connections are discarded before constructing the graph.
 
 ## See also
 
@@ -42,7 +43,8 @@ Triangles sharing only one vertex are not considered connected.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+library(rgl)
+
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),
@@ -60,7 +62,7 @@ triangles <- t(rbind(
   c(5, 6, 7)
 ))
 
-mesh <- rgl::tmesh3d(
+mesh <- tmesh3d(
   vertices = vertices,
   indices = triangles
 )
@@ -68,5 +70,10 @@ mesh <- rgl::tmesh3d(
 # Split the mesh into connected triangle groups
 groups <- splitTrianglesInd(mesh)
 groups
-} # }
+#> $`1`
+#> [1] 1 2
+#> 
+#> $`2`
+#> [1] 3
+#> 
 ```

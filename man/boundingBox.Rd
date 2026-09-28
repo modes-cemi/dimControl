@@ -2,7 +2,7 @@
 % Please edit documentation in R/boundingBox.R
 \name{boundingBox}
 \alias{boundingBox}
-\title{Compute the Bounding Box of a 3D Mesh}
+\title{Compute the bounding box of a 3D mesh}
 \usage{
 boundingBox(x)
 }
@@ -14,7 +14,7 @@ A 3 x 2 matrix with rows corresponding to the \code{X}, \code{Y}, and \code{Z} a
 \code{min} and \code{max}.
 }
 \description{
-Computes the minimum and maximum coordinates of the vertices of a 3D mesh, along
+Computes the minimum and maximum coordinates of the vertices of a 3D mesh along
 the \code{X}, \code{Y}, and \code{Z} axes.
 }
 \details{
@@ -22,13 +22,13 @@ Homogeneous coordinates in \code{x$vb} are converted to Euclidean coordinates us
 \code{\link[rgl:matrices]{rgl::asEuclidean2()}} before computing the coordinate ranges.
 }
 \examples{
-\dontrun{
+library(rgl)
+
 # Create a cubic mesh
-cube <- rgl::cube3d()
+cube <- cube3d()
 
 # Compute its bounding box
 boundingBox(cube)
-}
 
 }
 \seealso{

@@ -2,39 +2,63 @@
 % Please edit documentation in R/cleanBoundarySegments.R
 \name{cleanBoundarySegments}
 \alias{cleanBoundarySegments}
-\title{Clean and Reconnect Boundary Segments of a 3D Mesh}
+\title{Clean and reconnect boundary segments of a 3D mesh}
 \usage{
-cleanBoundarySegments(iBorder, baseMesh, lengthProb = 0.98, minGroupSize = 20)
+cleanBoundarySegments(
+  iBorder,
+  baseMesh,
+  intersection = NULL,
+  lengthProb = 0.98,
+  minGroupSize = 10
+)
 }
 \arguments{
-\item{iBorder}{A two-row matrix containing the boundary segment indices, where each
-column defines a segment by the indices of its two vertices.}
+\item{iBorder}{Integer 2 x n matrix containing the boundary segment indices, where
+each column defines a segment by the indices of its two vertices.}
 
-\item{baseMesh}{A \code{mesh3d} object containing the mesh geometry associated with the
+\item{baseMesh}{\code{mesh3d} object containing the mesh geometry associated with the
 boundary segments.}
 
-\item{lengthProb}{A numeric value between 0 and 1 defining the quantile used to
-remove abnormally long boundary segments. Default is \code{0.98}.}
+\item{intersection}{Integer vector or list of integer vectors containing vertex
+indices associated with intersections to be removed from the boundary. Segments
+whose two endpoints belong to these vertices are removed. Default is \code{NULL}.}
 
-\item{minGroupSize}{Minimum number of segments required for a connected component
-to be retained. Default is \code{20}.}
+\item{lengthProb}{Numeric value between 0 and 1 defining the quantile used to remove
+unusually long boundary segments. Default is \code{0.98}.}
+
+\item{minGroupSize}{Integer. Minimum number of segments required for a connected
+group to be retained. Default is \code{10}.}
 }
 \value{
-A two-row matrix containing the cleaned and reconnected boundary segments.
+Integer 2 x n matrix containing the cleaned and reconnected boundary segments.
 }
 \description{
-Cleans boundary segments extracted from a \code{mesh3d} object by removing redundant
-connections, long segments, and small connected components, reconnecting endpoints,
-and retaining the main connected boundary.
+Cleans boundary segments extracted from a \code{mesh3d} object by optionally removing
+segments associated with specified intersection vertices, removing redundant connections,
+long segments, and small connected groups, and reconnecting disconnected boundary
+endpoints.
 }
 \details{
-Vertices with more than two incident boundary segments are simplified, unusually
-long segments and small connected components are removed, disconnected endpoints
-are paired by nearest-neighbor distance, and only the largest connected boundary
-is retained.
+Boundary segments are processed in several steps. If \code{intersection} is provided,
+segments whose two endpoints belong to the specified intersection vertices are
+removed first. This can be used, for example, to remove boundary segments associated
+with intersections between different mesh components.
+
+Vertices incident to more than two boundary segments are then simplified by retaining
+only two connections. Segments whose length exceeds the quantile specified by \code{lengthProb}
+are removed, followed by connected groups containing fewer than \code{minGroupSize} segments.
+
+Finally, vertices incident to a single remaining boundary segment are identified
+as disconnected endpoints. These endpoints are paired according to their nearest
+neighbor in the XY plane, and the corresponding connecting segments are added to
+the boundary.
+
+The indices supplied through \code{iBorder} and \code{intersection} must refer to the vertex
+indexing of \code{baseMesh}.
 }
 \examples{
-\dontrun{
+library(rgl)
+
 # Create a rectangular mesh with a triangular hole
 vertices <- matrix(
   c(
@@ -66,38 +90,29 @@ triangles <- matrix(
 )
 
 # Create the mesh
-baseMesh <- rgl::tmesh3d(
-  vertices = t(vertices),
-  indices = t(triangles),
-  homogeneous = FALSE
-)
+baseMesh <- tmesh3d(vertices = t(vertices), indices = t(triangles),
+                    homogeneous = FALSE)
 
 # Extract boundary segment indices
 iBorder <- getBoundarySegments(baseMesh)
 
 # Clean the boundary segments
-cleanBorder <- cleanBoundarySegments(
-  iBorder,
-  baseMesh,
-  lengthProb = 1,
-  minGroupSize = 4
-)
+cleanBorder <- cleanBoundarySegments(iBorder, baseMesh, minGroupSize = 4)
 
-# Display the original mesh and boundaries
-rgl::clear3d()
-rgl::mfrow3d(1, 3)
+# Represent the original mesh and boundaries
+open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
+mfrow3d(1, 3)
 
-rgl::shade3d(baseMesh, color = "lightgray")
-rgl::title3d("Mesh", level = 8)
+shade3d(baseMesh, color = "lightgray")
+title3d("Mesh", line = 8, level = 2)
 
-rgl::next3d()
-rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = iBorder))
-rgl::title3d("Original boundary", level = 8)
+next3d()
+shade3d(mesh3d(vertices = baseMesh$vb, segments = iBorder))
+title3d("Original boundary", line = 8, level = 2)
 
-rgl::next3d()
-rgl::shade3d(rgl::mesh3d(vertices = baseMesh$vb, segments = cleanBorder))
-rgl::title3d("Cleaned boundary", level = 8)
-}
+next3d()
+shade3d(mesh3d(vertices = baseMesh$vb, segments = cleanBorder))
+title3d("Cleaned boundary", line = 8, level = 2)
 
 }
 \seealso{

@@ -1,5 +1,5 @@
 Package: dimControl
-Title: Tools for Geometric Processing and Dimensional Analysis
+Title: Tools for 3D Geometric Processing and Dimensional Analysis
 Version: 0.1.1
 Authors@R: c(
       person("Nataly", "Romaris", , "nataly.romaris@udc.es", role = c("aut", "cre")),
@@ -17,24 +17,27 @@ Depends:
     R (>= 3.5),
     graphics
 Imports:
-    data.table,
     rgl,
+    data.table,
     Rvcg,
     igraph,
     misc3d,
     npsp,
     FNN,
+    truncnorm,
     stats
 Suggests:
-    knitr
+    legendplot,
+    knitr,
+    rmarkdown
 License: GPL (>= 2)
 URL: https://github.com/modes-cemi/dimControl,
      https://modes-cemi.github.io/dimControl/
 BugReports: https://github.com/modes-cemi/dimControl/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 LazyData: true
 LazyDataCompression: xz
-
-
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.2

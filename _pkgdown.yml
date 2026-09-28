@@ -1,62 +1,62 @@
 url: https://modes-cemi.github.io/dimControl/
 
 template:
-  mathjax: true
   bootstrap: 5
+  bootswatch: flatly
+  mathjax: true
+
+news:
+  cran_dates: false
+
+figures:
+  fig.width: 7
+  fig.height: 5
+  other.parameters:
+    rgl:
+      fig.width: 6
+      fig.height: 4
+      fig.asp: 1
 
 reference:
+  - title: "Segmentation and Classification"
+    desc: >
+      Functions for segmentation, classification and identification of
+      geometric components in 3D data.
+    contents:
+    - findModes
+    - sideBulb
+    - splitTrianglesInd
+    - filterMeshComponents
+  - title: "Mesh Reconstruction and Processing"
+    desc: >
+      Functions for reconstructing and processing triangular meshes.
+    contents:
+    - createMesh
+    - getBoundarySegments
+    - cleanBoundarySegments
+    - sortSegments
+    - boundingBox
+    - addNormals2
+    - cleanMesh3d
+  - title: "Measurement and Comparison"
+    desc: >
+      Functions for geometric measurements, distances and angular
+      comparisons.
+    contents:
+    - euclideanDistance
+    - surfaceDistance
+    - angleAxis
+    - angle
+  - title: "Simulation and Data"
+    desc: >
+      Functions and data used to prepare theoretical geometries and generate
+      simulated 3D point clouds.
+    contents:
+    - cad
+    - simulateCloud
+    - simulateFloor
+    - sampleMesh
 
-- title: "Segmentation and Classification"
-  desc: >
-    Functions for segmentation, classification and identification of
-    geometric components in 3D data.
-  contents:
-  - findModes
-  - sideBulb
-  - splitTrianglesInd
-  - filterMeshComponents
 
-- title: "Mesh Reconstruction and Processing"
-  desc: >
-    Functions for reconstructing and processing triangular meshes.
-  contents:
-  - createMesh
-  - getBoundarySegments
-  - cleanBoundarySegments
-  - sortSegments
-  - boundingBox
-  - meshNormals
-  - addNormals
-
-- title: "Measurement and Comparison"
-  desc: >
-    Functions for geometric measurements, distances and angular
-    comparisons.
-  contents:
-  - euclideanDistance
-  - surfaceDistance
-  - angleBetween
-  - angleFromAxis
-  - angleFromVectors
-
-- title: "Simulation and Data"
-  desc: >
-    Functions and data used to prepare theoretical geometries and generate
-    simulated 3D point clouds.
-  contents:
-  - cad
-  - preparePanelMesh
-  - simulatePanelFloorCloud
-  - sampleMesh
-
-- title: "Utilities"
-  desc: >
-    Auxiliary functions used throughout the geometric processing workflow.
-  contents:
-  - radDeg
-  - xProd
-  - getView3d
-  - setView3d
-  - pan3d
 
 

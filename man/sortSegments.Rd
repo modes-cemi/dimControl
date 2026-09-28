@@ -2,30 +2,33 @@
 % Please edit documentation in R/sortSegments.R
 \name{sortSegments}
 \alias{sortSegments}
-\title{Reorder Connected Edge Segments}
+\title{Reorder connected edge segments}
 \usage{
 sortSegments(edges)
 }
 \arguments{
-\item{edges}{A matrix with 2 rows and N columns, where each column represents a
-segment defined by the indices of its two endpoint vertices.}
+\item{edges}{Integer 2 x n matrix containing the edge segments, where each column
+defines a segment by the indices of its two endpoint vertices.}
 }
 \value{
-A matrix containing the reordered segments. Segment orientation is reversed when
-necessary to preserve connectivity. If no connected segment can be found, the sequence
-stops at the first gap.
+Integer 2 x n matrix containing the reordered segments. Segment orientation is
+reversed when necessary to preserve connectivity. If no connected segment can be
+found, only the connected sequence preceding the first gap is returned.
 }
 \description{
-Reorders boundary segments so that the end vertex of each segment matches the start
-vertex of the next one.
+Reorders edge segments so that the end vertex of each segment matches the start
+vertex of the next segment.
 }
 \details{
 The first segment in \code{edges} is used as the starting segment. At each step, the
-function searches for an unused segment sharing the current endpoint. If the matching
-vertex is the second endpoint of the candidate segment, its orientation is reversed.
+function searches among the unused segments for one sharing the endpoint of the
+current segment.
+
+If the matching vertex corresponds to the second endpoint of the selected segment,
+its orientation is reversed. The process continues until all connected segments
+have been ordered or no additional connected segment can be found.
 }
 \examples{
-\dontrun{
 edges <- matrix(
   c(
     1, 2,
@@ -36,7 +39,7 @@ edges <- matrix(
   nrow = 2
 )
 
+# Reorder connected segments
 sortSegments(edges)
-}
 
 }

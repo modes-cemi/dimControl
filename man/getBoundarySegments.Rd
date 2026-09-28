@@ -2,55 +2,63 @@
 % Please edit documentation in R/getBoundarySegments.R
 \name{getBoundarySegments}
 \alias{getBoundarySegments}
-\title{Extract the Boundary of a 3D Mesh}
+\title{Extract the boundary of a 3D mesh}
 \usage{
 getBoundarySegments(mesh, returnMesh = FALSE, simplify = TRUE)
 }
 \arguments{
-\item{mesh}{A \code{mesh3d} object representing the 3D mesh.}
+\item{mesh}{\code{mesh3d} object representing the 3D mesh.}
 
-\item{returnMesh}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the boundary
-segments. If \code{FALSE}, returns a matrix with the corresponding vertex indices. Default
-is \code{FALSE}.}
+\item{returnMesh}{Logical. If \code{TRUE}, returns a \code{mesh3d} object containing the
+boundary segments. If \code{FALSE}, returns a matrix containing the corresponding vertex
+indices. Default is \code{FALSE}.}
 
-\item{simplify}{Logical. If \code{TRUE} and \code{returnMesh = TRUE}, simplifies the resulting
-boundary mesh using the internal mesh-cleaning routine. Default is \code{TRUE}.}
+\item{simplify}{Logical. If \code{TRUE} and \code{returnMesh = TRUE}, removes unused vertices
+from the resulting boundary mesh using \code{\link[=cleanMesh3d]{cleanMesh3d()}}. Default is \code{TRUE}.}
 }
 \value{
-If \code{returnMesh = FALSE}, a two-row matrix containing the vertex indices of the boundary
-segments. If \code{returnMesh = TRUE}, a \code{mesh3d} object containing the boundary segments.
+Integer 2 x n matrix containing the vertex indices of the boundary segments if
+\code{returnMesh = FALSE}; otherwise, a \code{mesh3d} object containing the boundary segments.
 }
 \description{
 Identifies the unshared edges of a \code{mesh3d} object, i.e., edges belonging to only
 one face of the mesh.
 }
 \details{
-The function is adapted from \code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}. Edge endpoints are sorted
-to represent undirected edges, and their frequencies are counted. Edges appearing
-only once are identified as boundary edges.
+The function is adapted from \code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}. Edges are extracted from the
+faces of the input mesh. Both triangular (\code{it}) and quadrilateral (\code{ib}) faces are
+supported.
+
+The vertex indices of each edge are sorted so that edges are treated as undirected.
+Their frequencies are then counted, and edges appearing only once are identified
+as boundary edges.
+
+If \code{returnMesh = TRUE}, the boundary edges are returned as segments of a \code{mesh3d}
+object. If \code{simplify = TRUE}, unused vertices are removed from the resulting mesh
+using \code{\link[=cleanMesh3d]{cleanMesh3d()}}.
 }
 \examples{
-\dontrun{
+library(rgl)
+
 # Create a cube and remove two faces
-mesh <- rgl::cube3d(color = "lightblue")
+mesh <- cube3d(color = "lightblue")
 mesh$ib <- mesh$ib[, -(1:2)]
 
 # Extract boundary segments
 boundary <- getBoundarySegments(mesh, returnMesh = TRUE)
 
-# Display mesh and boundary side by side
-rgl::clear3d()
-rgl::mfrow3d(1, 2)
+# Represent mesh and boundary side by side
+open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
+mfrow3d(1, 2)
 
-rgl::shade3d(mesh, color = "lightgray", alpha = 0.4)
-rgl::title3d("Mesh", level = 4)
+shade3d(mesh, color = "lightgray", alpha = 0.4)
+title3d("Mesh", level = 4)
 
-rgl::next3d()
-rgl::shade3d(boundary, color = "red", lwd = 2)
-rgl::title3d("Boundary", level = 4)
-}
+next3d()
+shade3d(boundary, color = "red", lwd = 2)
+title3d("Boundary", level = 4)
 
 }
 \seealso{
-\code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}
+\code{\link[rgl:getBoundary3d]{rgl::getBoundary3d()}}, \code{\link[=cleanMesh3d]{cleanMesh3d()}}
 }

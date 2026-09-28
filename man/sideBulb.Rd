@@ -2,65 +2,67 @@
 % Please edit documentation in R/sideBulb.R
 \name{sideBulb}
 \alias{sideBulb}
-\title{Determine the Orientation of a Reinforcement Bulb}
+\title{Determine the orientation of a reinforcement bulb}
 \usage{
 sideBulb(ref)
 }
 \arguments{
-\item{ref}{A \code{mesh3d} object representing the reinforcement. It must contain the
-\code{vb} matrix with the vertex coordinates.}
+\item{ref}{\code{mesh3d} object containing one or more reinforcements. It must contain
+the \code{vb} matrix with the vertex coordinates.}
 }
 \value{
-A logical value:
-\itemize{
-\item \code{TRUE} if the bulb protrudes to the left.
-\item \code{FALSE} if the bulb protrudes to the right.
-}
+Logical value. \code{TRUE} if the bulb protrudes to the left and \code{FALSE} if the bulb
+protrudes to the right.
 }
 \description{
 Determines whether the bulb of a reinforcement is oriented to the left or right
 based on the vertex coordinates of a \code{mesh3d} object.
 }
 \details{
-The reinforcement is divided into two regions using the midpoint of the observed
-Z range:
+The mesh is divided into two regions using the midpoint of the observed Z range:
 
 \deqn{z_{mid} = \frac{z_{min} + z_{max}}{2}}
 
 Vertices above this value are considered part of the upper region containing the
 bulb, while the remaining vertices define the lower region.
 
-The minimum X coordinate of both regions is then compared. If the upper region extends
-farther toward smaller X values than the lower region, the bulb is classified as
-left-oriented.
+The minimum X coordinate of both regions is then compared. If the upper region
+extends farther toward smaller X values than the lower region, the bulb is classified
+as left-oriented.
+
+When \code{ref} contains multiple reinforcements, the result describes their overall
+orientation according to the vertex coordinates contained in the mesh. To obtain
+the orientation of each reinforcement separately, the mesh should first be split
+into its connected components and \code{sideBulb()} applied to each component.
 }
 \examples{
-\dontrun{
-# Load and prepare the theoretical CAD model
+library(rgl)
+library(Rvcg)
+
+# Load the theoretical CAD mesh containing the reinforcements
 data("cad", package = "dimControl")
-meshTeor <- preparePanelMesh(cad)
 
 # Compute face normals and barycentres
-normals <- Rvcg::vcgFaceNormals(meshTeor)
-bary <- Rvcg::vcgBary(meshTeor)
+normals <- vcgFaceNormals(cad)
+bary <- vcgBary(cad)
 
 # Compute triangle orientation angles
-angleZ <- angleFromAxis(normals, 3)
-angleX <- angleFromAxis(normals, 1, negDir = TRUE)
+angleZ <- angleAxis(normals, 3)
+angleX <- angleAxis(normals, 1, negative = TRUE)
 
 # Classify mesh triangles according to their orientation
 isHorizontal <- angleZ < 40
 isVertical <- angleX < 60 | angleX > 120
 
-# Use orientation and height to identify the panel base
+# Identify the panel base
 isBase <- isHorizontal & bary[, 3] < 20
 
-# Use orientation and height to identify the reinforcements
+# Identify triangles belonging to the reinforcements
 isReinforcement <- !isBase & (isVertical | isHorizontal) & bary[, 3] > 20
 
-# Extract the reinforcement mesh
-meshRef <- meshTeor
-meshRef$it <- meshTeor$it[, isReinforcement, drop = FALSE]
+# Extract the reinforcements from the panel mesh
+meshRef <- cad
+meshRef$it <- cad$it[, isReinforcement, drop = FALSE]
 meshRef$tags <- NULL
 meshRef <- cleanMesh3d(meshRef)
 
@@ -82,16 +84,16 @@ for (i in seq_len(nRef)) {
   ref[[i]] <- cleanMesh3d(ref[[i]])
 }
 
-# Determine bulb orientation
+# Determine the bulb orientation of each reinforcement
 # TRUE = left, FALSE = right
 bulbSide <- sapply(ref, sideBulb)
 bulbSide
 
-# Visualise the reinforcement components
-rgl::clear3d()
+# Represent the reinforcement components
+open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
 for (i in seq_along(ref)) {
-  rgl::shade3d(ref[[i]], col = "lightgray")
+  shade3d(ref[[i]], col = "lightgray")
 }
-}
+rglwidget()
 
 }

@@ -6,47 +6,45 @@ Functions for segmentation, classification and identification of
 geometric components in 3D data.
 
 - [`findModes()`](https://modes-cemi.github.io/dimControl/reference/findModes.md)
-  : Detect Modes in a Dataset
+  : Detect modes in a dataset
 - [`sideBulb()`](https://modes-cemi.github.io/dimControl/reference/sideBulb.md)
-  : Determine the Orientation of a Reinforcement Bulb
+  : Determine the orientation of a reinforcement bulb
 - [`splitTrianglesInd()`](https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.md)
-  : Split a Mesh into Connected Triangle Groups
+  : Split a mesh into connected triangle groups
 - [`filterMeshComponents()`](https://modes-cemi.github.io/dimControl/reference/filterMeshComponents.md)
-  : Filter Mesh Components by Minimum Size
+  : Filter mesh components by minimum size
 
 ## Mesh Reconstruction and Processing
 
 Functions for reconstructing and processing triangular meshes.
 
 - [`createMesh()`](https://modes-cemi.github.io/dimControl/reference/createMesh.md)
-  : Reconstruct a Triangular Mesh from a 3D Point Cloud
+  : Reconstruct a triangular mesh from a 3D point cloud
 - [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md)
-  : Extract the Boundary of a 3D Mesh
+  : Extract the boundary of a 3D mesh
 - [`cleanBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.md)
-  : Clean and Reconnect Boundary Segments of a 3D Mesh
+  : Clean and reconnect boundary segments of a 3D mesh
 - [`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)
-  : Reorder Connected Edge Segments
+  : Reorder connected edge segments
 - [`boundingBox()`](https://modes-cemi.github.io/dimControl/reference/boundingBox.md)
-  : Compute the Bounding Box of a 3D Mesh
-- [`meshNormals()`](https://modes-cemi.github.io/dimControl/reference/meshNormals.md)
-  : Compute Face Normals of a Triangular Mesh
-- [`addNormals()`](https://modes-cemi.github.io/dimControl/reference/addNormals.md)
-  : Compute Vertex Normals by Averaging Triangle Normals
+  : Compute the bounding box of a 3D mesh
+- [`addNormals2()`](https://modes-cemi.github.io/dimControl/reference/addNormals2.md)
+  : Compute vertex normals by averaging triangle normals
+- [`cleanMesh3d()`](https://modes-cemi.github.io/dimControl/reference/cleanMesh3d.md)
+  : Clean a 3D mesh
 
 ## Measurement and Comparison
 
 Functions for geometric measurements, distances and angular comparisons.
 
 - [`euclideanDistance()`](https://modes-cemi.github.io/dimControl/reference/euclideanDistance.md)
-  : Compute the Euclidean Distance Between Two Points
+  : Compute the Euclidean distance between two points
 - [`surfaceDistance()`](https://modes-cemi.github.io/dimControl/reference/surfaceDistance.md)
-  : Calculate Distance over a 3D Surface
-- [`angleBetween()`](https://modes-cemi.github.io/dimControl/reference/angleBetween.md)
-  : Angle Between Two Vectors
-- [`angleFromAxis()`](https://modes-cemi.github.io/dimControl/reference/angleFromAxis.md)
-  : Directional Angle from an Axis
-- [`angleFromVectors()`](https://modes-cemi.github.io/dimControl/reference/angleFromVectors.md)
-  : Angles Between Vectors and Reference Vectors
+  : Calculate distance over a 3D surface
+- [`angleAxis()`](https://modes-cemi.github.io/dimControl/reference/angleAxis.md)
+  : Directional angle relative to an axis
+- [`angle()`](https://modes-cemi.github.io/dimControl/reference/angle.md)
+  : Angles between vectors
 
 ## Simulation and Data
 
@@ -54,25 +52,10 @@ Functions and data used to prepare theoretical geometries and generate
 simulated 3D point clouds.
 
 - [`cad`](https://modes-cemi.github.io/dimControl/reference/cad.md) :
-  CAD Object of a Steel Panel
-- [`preparePanelMesh()`](https://modes-cemi.github.io/dimControl/reference/preparePanelMesh.md)
-  : Prepare a Theoretical Panel Mesh for Point Cloud Simulation
-- [`simulatePanelFloorCloud()`](https://modes-cemi.github.io/dimControl/reference/simulatePanelFloorCloud.md)
-  : Simulate a Steel Panel and Floor Point Cloud
+  CAD model of a steel panel
+- [`simulateCloud()`](https://modes-cemi.github.io/dimControl/reference/simulateCloud.md)
+  : Simulate 3D point cloud
+- [`simulateFloor()`](https://modes-cemi.github.io/dimControl/reference/simulateFloor.md)
+  : Simulate floor point cloud
 - [`sampleMesh()`](https://modes-cemi.github.io/dimControl/reference/sampleMesh.md)
-  : Sample Points over a Triangular Mesh
-
-## Utilities
-
-Auxiliary functions used throughout the geometric processing workflow.
-
-- [`radDeg()`](https://modes-cemi.github.io/dimControl/reference/radDeg.md)
-  : Conversion from Radians to Degrees
-- [`xProd()`](https://modes-cemi.github.io/dimControl/reference/xProd.md)
-  : 3D Cross Product
-- [`getView3d()`](https://modes-cemi.github.io/dimControl/reference/getView3d.md)
-  : Get the Current 3D View
-- [`setView3d()`](https://modes-cemi.github.io/dimControl/reference/setView3d.md)
-  : Set a 3D View
-- [`pan3d()`](https://modes-cemi.github.io/dimControl/reference/pan3d.md)
-  : Interactive 3D View Panning
+  : Sample points over a triangular mesh
