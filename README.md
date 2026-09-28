@@ -27,7 +27,7 @@ workflow, such as:
   of the panel.
 
 🔗 [For more information see the package
-vignette](https://modes-cemi.github.io/dimControl/)
+vignette](https://modes-cemi.github.io/dimControl/articles/dimControl.html)
 
 ## Installation
 
@@ -48,8 +48,8 @@ estaleiro do futuro”* (IN853C).
 
 ## Presentation
 
-`dimControl` and previous work related to 3D data processing in R have been
-presented on the following occasions:
+`dimControl` and previous work related to 3D data processing in R have
+been presented on the following occasions:
 
 - Romarís-Lodeiro, N., Benavente-Fernández, O., Fernández-Casal, R.,
   Naya-Fernández, S., & Tarrío-Saavedra, J. (2026, September 4).
