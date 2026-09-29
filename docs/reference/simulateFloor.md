@@ -6,7 +6,7 @@ point cloud.
 ## Usage
 
 ``` r
-simulateFloor(object, n, gap, margin, rgen = .rtnormDefault, ...)
+simulateFloor(object, n, gap, margin, rgen = .rtnorm, ...)
 ```
 
 ## Arguments
@@ -33,7 +33,7 @@ simulateFloor(object, n, gap, margin, rgen = .rtnormDefault, ...)
 - rgen:
 
   Random number generator used to perturb the floor height. By default,
-  a truncated normal distribution is used.
+  an internally implemented truncated normal distribution is used.
 
 - ...:
 
@@ -56,3 +56,6 @@ this reference height.
 By default, the noise follows a truncated normal distribution with mean
 0, standard deviation 0.2, and lower and upper bounds of -0.5 and 0.5,
 respectively.
+
+Alternative random number generators can be supplied through `rgen`,
+with their parameters passed through `...`.

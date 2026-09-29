@@ -1,9 +1,3 @@
-
-
-# simulateCloud(mesh, n, rgen = rtnorm, nfloor = 0, zfloor, mfloor, ... )
-# ... parámetros adicionales de rgen
-
-
 #' Simulate floor point cloud
 #'
 #' Simulates a floor point cloud around the bounding box of a 3D object point cloud.
@@ -16,7 +10,7 @@
 #' @param margin Positive numeric value specifying the width of the floor region around
 #' the object in the X and Y directions.
 #' @param rgen Random number generator used to perturb the floor height. By default,
-#' a truncated normal distribution is used.
+#' an internally implemented truncated normal distribution is used.
 #' @param ... Additional arguments passed to `rgen`.
 #'
 #' @returns
@@ -33,12 +27,15 @@
 #' By default, the noise follows a truncated normal distribution with mean 0, standard
 #' deviation 0.2, and lower and upper bounds of -0.5 and 0.5, respectively.
 #'
+#' Alternative random number generators can be supplied through `rgen`, with their
+#' parameters passed through `...`.
+#'
 #' @export
 simulateFloor <- function(object,
                           n,
                           gap,
                           margin,
-                          rgen = .rtnormDefault,
+                          rgen = .rtnorm,
                           ...) {
 
   # Validate input arguments
@@ -120,7 +117,7 @@ simulateFloor <- function(object,
 #' @param mesh `mesh3d` object representing the surface from which points are sampled.
 #' @param n Number of points to sample from `mesh`.
 #' @param rgen Random number generator used to generate measurement noise. By default,
-#' a truncated normal distribution is used.
+#' an internally implemented truncated normal distribution is used.
 #' @param floor Optional list specifying the floor simulation parameters. It must contain
 #' `n`, the number of floor points, and may contain `gap` and `margin`. If `NULL`, no
 #' floor is generated. Default is `NULL`.
@@ -137,6 +134,9 @@ simulateFloor <- function(object,
 #' By default, the measurement noise follows a truncated normal distribution with
 #' mean 0, standard deviation 0.2, and lower and upper bounds of -0.5 and 0.5, respectively.
 #'
+#' Alternative random number generators can be supplied through `rgen`, with their
+#' parameters passed through `...`.
+#'
 #' If `floor` is not `NULL`, a floor point cloud is generated using [simulateFloor()].
 #' The list element `n` specifies the number of floor points. If `gap` or `margin` are
 #' not supplied, values of 2 and 20, respectively, are used.
@@ -149,6 +149,7 @@ simulateFloor <- function(object,
 #'
 #' data("cad", package = "dimControl")
 #'
+#' set.seed(1)
 #' data <- simulateCloud(mesh = cad, n = 1e5, floor = list(n = 5e3, gap = 2,
 #'                       margin = 20))
 #' head(data)
@@ -160,7 +161,7 @@ simulateFloor <- function(object,
 #' @export
 simulateCloud <- function(mesh,
                           n,
-                          rgen = .rtnormDefault,
+                          rgen = .rtnorm,
                           floor = NULL,
                           ...) {
 

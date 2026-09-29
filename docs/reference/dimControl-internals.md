@@ -12,6 +12,9 @@ column has unit Euclidean length.
 `.sampleTriangle()` generates uniformly distributed points inside a
 triangle using barycentric coordinates.
 
-`.rtnormDefault()` generates random values from a truncated normal
-distribution using the default parameters employed by
-[`simulateCloud()`](https://modes-cemi.github.io/dimControl/reference/simulateCloud.md).
+`.rtnorm()` generates random values from a truncated normal
+distribution.
+
+`.qtri()` computes quantiles of a triangular distribution.
+
+`.rtri()` generates random values from a triangular distribution.

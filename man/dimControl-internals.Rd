@@ -5,6 +5,9 @@
 \alias{.radDeg}
 \alias{.normalize}
 \alias{.sampleTriangle}
+\alias{.rtnorm}
+\alias{.qtri}
+\alias{.rtri}
 \title{Internal functions}
 \description{
 Supporting functions used internally by \code{dimControl}.
@@ -18,7 +21,10 @@ unit Euclidean length.
 \code{.sampleTriangle()} generates uniformly distributed points inside a triangle using
 barycentric coordinates.
 
-\code{.rtnormDefault()} generates random values from a truncated normal distribution
-using the default parameters employed by \code{simulateCloud()}.
+\code{.rtnorm()} generates random values from a truncated normal distribution.
+
+\code{.qtri()} computes quantiles of a triangular distribution.
+
+\code{.rtri()} generates random values from a triangular distribution.
 }
 \keyword{internal}
