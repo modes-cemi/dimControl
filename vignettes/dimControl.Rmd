@@ -90,6 +90,7 @@ geometry using `simulateCloud()`. The simulated data contain points representing
 the object and the supporting floor, reproducing a simplified 3D scanning scenario.
 
 ```{r simulate-cloud}
+set.seed(123)
 cloud <- simulateCloud(mesh = cad, n = 1e5, floor = list(n = 5e3, gap = 2, margin = 20))
 head(cloud)
 ```
@@ -125,7 +126,7 @@ whereas floor points are shown in red.
  
 ```{r show-segmentation}
 # Represent the simulated point cloud
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 points3d(cloud[component == "object", ], lit = TRUE, color = "darkgray")
 points3d(cloud[component == "floor", ], lit = TRUE, color = "red")
 ```
@@ -157,7 +158,7 @@ The resulting triangular mesh represents the reconstructed surface of the object
 
 ```{r show-reconstructed-mesh-code, eval=FALSE}
 # Represent the reconstructed object surface
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 shade3d(mesh, col = "lightgray")
 ```
 
@@ -312,7 +313,7 @@ classified structural components are represented together below.
 
 ```{r show-object-components-code, eval=FALSE}
 # Represent the object base and reinforcements
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 
 # Represent the object base
 shade3d(baseMesh, col = "lightgray")
@@ -398,7 +399,7 @@ The classified surfaces of all reinforcements are represented together below.
 
 ```{r show-reinforcement-surfaces-code, eval=FALSE}
 # Represent the classified reinforcement surfaces
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 for (i in seq_len(nReinforcements)) {
   shade3d(reinforcementFlatMesh[[i]], col = "blue", lit = FALSE)
   shade3d(bulbUpperMesh[[i]], col = "red", lit = FALSE)
@@ -437,8 +438,7 @@ boundaryRaw <- getBoundarySegments(mesh = baseMesh, returnMesh = FALSE,
 
 # Clean and reconnect the boundary segments
 boundaryClean <- cleanBoundarySegments(iBorder = boundaryRaw, baseMesh = baseMesh, 
-                                       intersection = baseReinforcementIntersection,
-                                       minGroupSize = 10)
+                                       intersection = baseReinforcementIntersection)
 
 # Order the cleaned segments along the boundary
 boundary <- sortSegments(edges = boundaryClean)
@@ -511,7 +511,7 @@ boundary with the detected corners, and the final boundary divided into four sec
 
 ```{r show-base-boundary-code, eval=FALSE}
 # Represent the original boundary, the detected corners, and the segmented boundary
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 mfrow3d(1, 3)
 
 # Represent the original boundary

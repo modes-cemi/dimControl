@@ -19,7 +19,7 @@ workflow, such as:
   of the panel.
 
 🔗 [For more information see the package
-vignette](https://modes-cemi.github.io/dimControl/)
+vignette](https://modes-cemi.github.io/dimControl/articles/dimControl.html)
 
 ## Installation
 

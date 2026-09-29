@@ -85,15 +85,16 @@ The simulated data contain points representing both the object and the
 supporting floor, reproducing a simplified 3D scanning scenario.
 
 ``` r
+set.seed(123)
 cloud <- simulateCloud(mesh = cad, n = 1e5, floor = list(n = 5e3, gap = 2, margin = 20))
 head(cloud)
-##             X         Y           Z
-## [1,] 271.7688 387.33436  0.08435697
-## [2,] 559.3825  51.09175 -0.17118605
-## [3,] 309.1777 403.99632  0.14385935
-## [4,] 742.7905  76.85745 -0.22750826
-## [5,] 214.5271  64.92773  0.08406763
-## [6,] 246.0084 187.80060  0.06170818
+##              X         Y          Z
+## [1,] 743.45131  50.67982 -0.1079367
+## [2,]  58.17573 103.12809 -0.1192354
+## [3,] 366.43056 254.24224  0.1561133
+## [4,] 494.15466  55.54415 -0.1174476
+## [5,] 209.28973 417.40063  0.1412351
+## [6,] 456.75260  27.79125  0.1263349
 ```
 
 ## Separating object and floor points
@@ -123,9 +124,9 @@ modesZ <- findModes(x = cloud[, 3], bw = 0.01, q1 = 0.97)
 ``` r
 modesZ
 ##             min        max
-## mode1 -3.028603  -1.204758
-## mode2 -1.407408   1.024386
-## mode3 99.106720 100.525266
+## mode1 -3.029054  -1.205146
+## mode2 -1.407802   2.037357
+## mode3 98.299167 100.528388
 ```
 
 ``` r
@@ -143,7 +144,7 @@ points are shown in dark gray, whereas floor points are shown in red.
 
 ``` r
 # Represent the simulated point cloud
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 points3d(cloud[component == "object", ], lit = TRUE, color = "darkgray")
 points3d(cloud[component == "floor", ], lit = TRUE, color = "red")
 ```
@@ -179,7 +180,7 @@ the object.
 
 ``` r
 # Represent the reconstructed object surface
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 shade3d(mesh, col = "lightgray")
 ```
 
@@ -327,7 +328,7 @@ components are represented together below.
 
 ``` r
 # Represent the object base and reinforcements
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 
 # Represent the object base
 shade3d(baseMesh, col = "lightgray")
@@ -416,7 +417,7 @@ below.
 
 ``` r
 # Represent the classified reinforcement surfaces
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 for (i in seq_len(nReinforcements)) {
   shade3d(reinforcementFlatMesh[[i]], col = "blue", lit = FALSE)
   shade3d(bulbUpperMesh[[i]], col = "red", lit = FALSE)
@@ -458,8 +459,7 @@ boundaryRaw <- getBoundarySegments(mesh = baseMesh, returnMesh = FALSE,
 
 # Clean and reconnect the boundary segments
 boundaryClean <- cleanBoundarySegments(iBorder = boundaryRaw, baseMesh = baseMesh, 
-                                       intersection = baseReinforcementIntersection,
-                                       minGroupSize = 10)
+                                       intersection = baseReinforcementIntersection)
 
 # Order the cleaned segments along the boundary
 boundary <- sortSegments(edges = boundaryClean)
@@ -536,7 +536,7 @@ the final boundary divided into four sections.
 
 ``` r
 # Represent the original boundary, the detected corners, and the segmented boundary
-# Use `open3d()` or `legendplot::new3d()` to open a new device
+# Use `open3d()` or `new3d()` to open a new device
 mfrow3d(1, 3)
 
 # Represent the original boundary
