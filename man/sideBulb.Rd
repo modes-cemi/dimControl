@@ -36,9 +36,6 @@ the orientation of each reinforcement separately, the mesh should first be split
 into its connected components and \code{sideBulb()} applied to each component.
 }
 \examples{
-library(rgl)
-library(Rvcg)
-
 # Load the theoretical CAD mesh containing the reinforcements
 data("cad", package = "dimControl")
 

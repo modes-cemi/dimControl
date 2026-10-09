@@ -58,9 +58,6 @@ Vertex coordinates are converted to Euclidean coordinates using
 ## Examples
 
 ``` r
-library(rgl)
-library(Rvcg)
-
 # Create a triangular sphere
 mesh <- vcgSphere(1, subdiv = 1)
 

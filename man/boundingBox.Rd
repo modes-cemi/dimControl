@@ -22,8 +22,6 @@ Homogeneous coordinates in \code{x$vb} are converted to Euclidean coordinates us
 \code{\link[rgl:matrices]{rgl::asEuclidean2()}} before computing the coordinate ranges.
 }
 \examples{
-library(rgl)
-
 # Create a cubic mesh
 cube <- cube3d()
 

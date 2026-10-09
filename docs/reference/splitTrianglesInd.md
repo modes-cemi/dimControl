@@ -43,8 +43,6 @@ Degenerate self-connections are discarded before constructing the graph.
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),

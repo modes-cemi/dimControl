@@ -35,6 +35,7 @@ reference:
     - getBoundarySegments
     - cleanBoundarySegments
     - sortSegments
+    - detectCorners
     - boundingBox
     - addNormals2
     - cleanMesh3d
@@ -56,6 +57,10 @@ reference:
     - simulateCloud
     - simulateFloor
     - sampleMesh
+  - title: "Probability distributions"
+    contents:
+      - Triangular
+      - TruncatedNormal
 
 
 

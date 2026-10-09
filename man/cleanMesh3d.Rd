@@ -39,8 +39,6 @@ Unlike the original implementation, this version does not handle additional mesh
 attributes such as tags, texture coordinates, vertex attributes, or triangle rejoining.
 }
 \examples{
-library(rgl)
-
 # Create a cube mesh
 cube <- cube3d()
 

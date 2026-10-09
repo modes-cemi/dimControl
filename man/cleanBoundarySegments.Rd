@@ -57,8 +57,6 @@ The indices supplied through \code{iBorder} and \code{intersection} must refer t
 indexing of \code{baseMesh}.
 }
 \examples{
-library(rgl)
-
 # Create a rectangular mesh with a triangular hole
 vertices <- matrix(
   c(

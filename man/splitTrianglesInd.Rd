@@ -29,8 +29,6 @@ Triangles sharing only one vertex are not considered connected. Degenerate self-
 are discarded before constructing the graph.
 }
 \examples{
-library(rgl)
-
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),

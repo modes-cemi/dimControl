@@ -4,44 +4,66 @@
 \alias{findModes}
 \title{Detect modes in a dataset}
 \usage{
-findModes(x, bw = 0.2, q1 = 0.95, plot = TRUE, showRanges = FALSE)
+findModes(
+  x,
+  bw = "nrd0",
+  adjust = 1,
+  q1 = 0.95,
+  plot = TRUE,
+  showRanges = FALSE
+)
 }
 \arguments{
 \item{x}{Numeric vector containing the data.}
 
-\item{bw}{Numeric value specifying the bandwidth used for kernel density estimation.
-Default is \code{0.2}.}
+\item{bw}{Bandwidth used for kernel density estimation. By default, \code{"nrd0"}
+selects the bandwidth automatically. A positive numeric value or another
+method supported by \code{\link[stats:density]{stats::density()}} can also be supplied.}
 
-\item{q1}{Numeric value between 0 and 1 specifying the density quantile used to
-retain the most relevant peaks. Default is \code{0.95}.}
+\item{adjust}{Positive numeric factor used to adjust the bandwidth. Values
+greater than 1 increase smoothing, whereas values below 1 decrease smoothing.
+Default is \code{1}.}
 
-\item{plot}{Logical. If \code{TRUE}, the estimated density and detected modes are plotted.
-Default is \code{TRUE}.}
+\item{q1}{Numeric value between 0 and 1 specifying the density quantile used
+to retain the most relevant peaks. Default is \code{0.95}.}
 
-\item{showRanges}{Logical. If \code{TRUE}, vertical dashed lines indicating the lower
-and upper limits associated with each detected mode are added to the plot. Default
-is \code{FALSE}.}
+\item{plot}{Logical. If \code{TRUE}, the estimated density and detected modes are
+plotted. Default is \code{TRUE}.}
+
+\item{showRanges}{Logical. If \code{TRUE}, vertical dashed lines indicating the left
+and right endpoints associated with each detected mode are added to the plot.
+Default is \code{FALSE}.}
 }
 \value{
-Numeric matrix with one row per detected mode and two columns, \code{min} and \code{max},
-containing the X-axis limits associated with each mode.
+Numeric matrix with one row per detected mode and three columns: \code{left}, \code{mode},
+and \code{right}. The \code{left} and \code{right} columns contain the endpoints of the
+approximate interval associated with each mode, while \code{mode} contains the
+location of the corresponding local maximum of the estimated density.
 }
 \description{
-Detects modes in a numeric dataset using kernel density estimation and determines
-an approximate interval associated with each detected mode.
+Detects modes in a numeric dataset using kernel density estimation and
+determines an approximate interval associated with each detected mode.
 }
 \details{
-The density of \code{x} is estimated using \code{\link[stats:density]{stats::density()}}. Local maxima are identified
-by comparing each density value with its immediate neighbours.
+The density of \code{x} is estimated using \code{\link[stats:density]{stats::density()}}. By default, the
+bandwidth is selected automatically using the \code{"nrd0"} method. The \code{adjust}
+parameter allows the bandwidth to be increased or decreased without changing
+the selection method.
 
-Peaks are retained only when their estimated density is greater than the quantile
-specified by \code{q1}. For each retained peak, the function searches toward both sides
-while the density decreases away from the peak, defining an approximate interval
-associated with the mode.
+Local maxima are identified by comparing each density value with its immediate
+neighbours.
 
-The number and location of detected modes depend on the bandwidth \code{bw}. Smaller
-values may detect more local peaks, whereas larger values produce a smoother density
-estimate.
+Peaks are retained only when their estimated density is greater than the
+quantile specified by \code{q1}. For each retained peak, the function searches
+toward both sides while the density decreases away from the peak, defining
+an approximate interval associated with the mode.
+
+The location of each detected mode corresponds to the X coordinate of the
+local maximum of the estimated density.
+
+The number and location of detected modes depend on the bandwidth. Smaller
+bandwidths may detect more local peaks, whereas larger bandwidths produce
+smoother density estimates and may merge nearby modes.
 }
 \examples{
 set.seed(123)
@@ -52,9 +74,18 @@ x <- c(
   rnorm(200, mean = 5, sd = 0.3)
 )
 
-# Detect and plot modes
-modes <- findModes(x, bw = 0.2, q1 = 0.5, showRanges = TRUE)
+# Detect modes using automatic bandwidth selection
+modes <- findModes(x, q1 = 0.5, showRanges = TRUE)
 modes
+
+# Increase the smoothing
+findModes(x, adjust = 1.5, q1 = 0.5)
+
+# Decrease the smoothing
+findModes(x, adjust = 0.5, q1 = 0.5)
+
+# Specify a fixed bandwidth
+findModes(x, bw = 0.2, q1 = 0.5)
 
 }
 \seealso{

@@ -41,8 +41,6 @@
 #' @seealso [getBoundarySegments()]
 #'
 #' @examples
-#' library(rgl)
-#'
 #' # Create a rectangular mesh with a triangular hole
 #' vertices <- matrix(
 #'   c(

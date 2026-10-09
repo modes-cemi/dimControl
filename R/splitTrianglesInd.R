@@ -23,8 +23,6 @@
 #' @seealso [igraph::make_graph()], [igraph::components()]
 #'
 #' @examples
-#' library(rgl)
-#'
 #' # Create a mesh with two disconnected components
 #' vertices <- t(rbind(
 #'   c(0, 0, 0),

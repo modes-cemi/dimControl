@@ -20,30 +20,35 @@ cleaned, ordered, and segmented.
 
 The workflow therefore covers:
 
-- Simulation and segmentation of a 3D point cloud.
+- Simulation and preprocessing of a 3D point cloud.
 - Reconstruction of a surface from a point cloud.
 - Identification and classification of geometric components.
 - Extraction, cleaning, and segmentation of boundaries.
 
 ``` r
 library(dimControl)
+## Loading required package: Rvcg
 ## dimControl: Tools for 3D Geometric Processing and Dimensional Analysis,
 ##   version 0.1.1.
-##   Developed by the MODES-CEMI group.
+##   Developed by the MODES-CEMI research group.
 ##   Type `help(package = "dimControl")` for an overview
 ##   or visit https://modes-cemi.github.io/dimControl/.
 ```
 
-The 3D visualizations in this vignette are generated using the
-[`rgl`](https://dmurdoch.github.io/rgl/), together with the
-[`legendplot`](https://rubenfcasal.github.io/legendplot/) to add legends
-to the graphical representations.
+The [`rgl`](https://dmurdoch.github.io/rgl/) package is used for
+interactive 3D visualizations, while
+[`Rvcg`](https://cran.r-project.org/package=Rvcg) package provides tools
+for processing triangular meshes, including the computation of face
+normals and barycentres.
+
+Additionally, the
+[`legendplot`](https://rubenfcasal.github.io/legendplot/) package
+provides complementary tools for 3D visualization, including functions
+for managing the 3D display, adjusting viewpoints, and adding legends to
+graphical representations.
 
 ``` r
-library(rgl)
 library(legendplot)
-library(Rvcg)
-library(FNN)
 ```
 
 The
@@ -84,9 +89,15 @@ the reference geometry using
 The simulated data contain points representing both the object and the
 supporting floor, reproducing a simplified 3D scanning scenario.
 
+Point clouds can be very large. We have worked with point clouds
+containing more than 100 million points. However, a smaller point cloud
+is used in this example to reduce memory requirements and computational
+time, particularly during package checks.
+
 ``` r
 set.seed(123)
-cloud <- simulateCloud(mesh = cad, n = 1e5, floor = list(n = 5e3, gap = 2, margin = 20))
+cloud <- simulateCloud(mesh = cad, n = 1e5, rgen = rtnorm, mean = 0, sd = 0.2,
+                       a = -0.5, b = 0.5, floor = list(n = 5e3, gap = 2, margin = 20))
 head(cloud)
 ##              X         Y          Z
 ## [1,] 743.45131  50.67982 -0.1079367
@@ -97,23 +108,23 @@ head(cloud)
 ## [6,] 456.75260  27.79125  0.1263349
 ```
 
-## Separating object and floor points
+## Point cloud preprocessing
 
-In dimensional inspection based on 3D scanning, the acquired point cloud
-may contain both the object of interest and surrounding elements, such
-as the supporting floor. Separating these components is therefore an
-important preprocessing step before surface reconstruction and
-dimensional analysis.
+The simulated point cloud contains both object and floor points. Before
+surface reconstruction, the point cloud is preprocessed to isolate the
+points belonging to the object.
 
-When the object and the floor occupy different levels along the vertical
-coordinate, their separation can be approached by analysing the
-distribution of the Z coordinate. The
+### Separating object and floor points
+
+When the object and unwanted elements of the surrounding environment
+occupy different ranges along a coordinate axis, they can be separated
+by analyzing the distribution of that coordinate. The
 [`findModes()`](https://modes-cemi.github.io/dimControl/reference/findModes.md)
-function identifies modes and valleys in this distribution and can be
-used to determine a suitable threshold between both components.
+function identifies modes and valleys in this distribution, which can be
+used to determine a threshold for separating the components.
 
-In the present vignette, this approach is illustrated using the
-simulated point cloud.
+In this example, the Z coordinate is used to separate the object from
+the supporting floor.
 
 ``` r
 modesZ <- findModes(x = cloud[, 3], bw = 0.01, q1 = 0.97)
@@ -123,14 +134,17 @@ modesZ <- findModes(x = cloud[, 3], bw = 0.01, q1 = 0.97)
 
 ``` r
 modesZ
-##             min        max
-## mode1 -3.029054  -1.205146
-## mode2 -1.407802   2.037357
-## mode3 98.299167 100.528388
+##            left        mode      right
+## mode1 -3.029054 -2.42108463  -1.205146
+## mode2 -1.407802  0.01079267   2.037357
+## mode3 98.299167 99.92041839 100.528388
 ```
 
+The selected threshold is then used to classify each point as belonging
+to either the object or the floor.
+
 ``` r
-component <- factor(cloud[, 3] > modesZ[1, 2], levels = c(FALSE, TRUE),
+component <- factor(cloud[, 3] > modesZ[1, "right"], levels = c(FALSE, TRUE),
                     labels = c("floor", "object"))
 table(component)
 ## component
@@ -139,40 +153,39 @@ table(component)
 ```
 
 The resulting factor identifies the component associated with each point
-in `cloud`. The segmented point cloud is represented below. Object
-points are shown in dark gray, whereas floor points are shown in red.
+in `cloud`. The segmented point cloud is represented below, with object
+points shown in green and floor points in red.
 
 ``` r
-# Represent the simulated point cloud
-# Use `open3d()` or `new3d()` to open a new device
-points3d(cloud[component == "object", ], lit = TRUE, color = "darkgray")
-points3d(cloud[component == "floor", ], lit = TRUE, color = "red")
+# Represent the segmented point cloud with a categorical legend
+fplot3d(levels(component))
+points3d(cloud, lit = TRUE, col = fcolor(component), alpha = 0.1)
 ```
 
-The visualization shows the separation between the simulated object and
-the supporting floor. The object points are retained for the subsequent
-surface reconstruction.
+![](dimControl_files/figure-html/show-segmentation-1.png)
 
-## Reconstructing the panel surface
+The object points are retained for the subsequent surface
+reconstruction.
+
+## Reconstructing the object surface
 
 After separating the object from the supporting floor, the object point
 cloud is used to reconstruct a continuous triangular surface. The
 [`createMesh()`](https://modes-cemi.github.io/dimControl/reference/createMesh.md)
-function performs linear binning of the point cloud and subsequently
-extracts the surface using the Marching Cubes algorithm.
+function performs linear binning of the point cloud and generates a
+isosurface using the Marching Cubes algorithm.
 
-In this example, the reference CAD model is provided through the
-`meshCad` argument. Its dimensions are used as a reference for the
-spatial coverage of the reconstructed surface. In addition,
-`zeroBorder = TRUE` adds zero-valued layers at the boundaries of the
-binning grid in the X and Z directions. These layers facilitate the
-closure of the isosurface during the Marching Cubes reconstruction.
+In this example, the reference CAD model is provided through the `cad`
+argument. Its dimensions are used as a reference for the spatial
+coverage of the reconstructed surface. In addition, `addBorder = TRUE`
+adds zero-valued layers at the boundaries of the binning grid in the X
+and Z directions. These layers facilitate the closure of the isosurface
+during the Marching Cubes reconstruction.
 
 ``` r
 object <- cloud[component == "object", ]
-objectMesh <- createMesh(cloud = object, resolNbin = c(8, 8, 4), kFactor = 1e-2,
-                        truncFactor = 3, meshCad = cad, zeroBorder = TRUE)
-mesh <- objectMesh$mesh
+mesh <- createMesh(cloud = object, rBin = c(8, 8, 4), lowTol = 1e-2, trunc = 3, 
+                   cad = cad, addBorder = TRUE)
 ```
 
 The resulting triangular mesh represents the reconstructed surface of
@@ -184,7 +197,7 @@ the object.
 shade3d(mesh, col = "lightgray")
 ```
 
-![](reconstructed-mesh.png)
+![](dimControl_files/figure-html/show-reconstructed-mesh-1.png)
 
 ## Classification of object components
 
@@ -194,57 +207,87 @@ under study. In this example, the object contains a base and several
 reinforcements, which are identified according to the orientation and
 spatial distribution of the triangular faces.
 
-Face normals and barycentres are first computed for each triangle. The
-orientation of each face is characterized by the angles between its
-normal vector and the X and Z axes.
+Face normals and barycentres are first computed for each triangle.
 
 ``` r
 # Compute face normals and barycentres
 normals <- vcgFaceNormals(mesh)
 bary <- vcgBary(mesh)
-
-# Compute angles relative to the X and Z axes
-angleX <- angleAxis(v = normals, dim = 1, negative = TRUE)
-angleZ <- angleAxis(v = normals, dim = 3)
-
-# Angular tolerances
-tolAngleX <- 60
-tolAngleZ <- 40
-
-# Identify vertical and horizontal faces
-isVertical <- angleX < tolAngleX | angleX > (180 - tolAngleX)
-isHorizontal <- angleZ < tolAngleZ
-
-# Identify faces belonging to the object base
-tolZ <- 5
-isBase <- isHorizontal & bary[, 3] < tolZ
 ```
 
-The orientation-based classification can be represented directly on the
-reconstructed mesh. The following representations show how the angular
-criteria identify approximately vertical faces, approximately horizontal
-faces, and the faces associated with the object base.
+### Identification of vertical faces
+
+The orientation of each face relative to the X axis is characterized by
+the angle between its normal vector and this axis. Vertical faces are
+identified using an angular tolerance.
+
+``` r
+# Compute angles relative to the X axis
+angleX <- angleAxis(v = normals, dim = 1, negative = TRUE)
+
+# Angular tolerance
+tolAngleX <- 60
+
+# Identify vertical faces
+isVertical <- angleX < tolAngleX | angleX > (180 - tolAngleX)
+```
+
+The resulting classification is shown below.
 
 ``` r
 # Represent vertical faces
 fshade3d(mesh, as.factor(isVertical), lit = FALSE)
 ```
 
-![](vertical-faces.png)
+![](dimControl_files/figure-html/show-vertical-faces-1.png)
+
+### Identification of horizontal faces
+
+The orientation of each face relative to the Z axis is characterized by
+the angle between its normal vector and this axis. Horizontal faces are
+identified using a corresponding angular tolerance.
+
+``` r
+# Compute angles relative to the Z axis
+angleZ <- angleAxis(v = normals, dim = 3)
+
+# Angular tolerance
+tolAngleZ <- 40
+
+# Identify horizontal faces
+isHorizontal <- angleZ < tolAngleZ
+```
+
+The resulting classification is shown below.
 
 ``` r
 # Represent horizontal faces
 fshade3d(mesh, as.factor(isHorizontal), lit = FALSE)
 ```
 
-![](horizontal-faces.png)
+![](dimControl_files/figure-html/show-horizontal-faces-1.png)
+
+### Identification of the object base
+
+The object base is identified by selecting horizontal faces whose
+barycentres lie below a specified Z threshold.
+
+``` r
+# Identify faces belonging to the object base
+tolZ <- 5
+isBase <- isHorizontal & bary[, 3] < tolZ
+```
+
+The faces satisfying both conditions are represented below.
 
 ``` r
 # Represent object-base faces
 fshade3d(mesh, as.factor(isBase), lit = FALSE)
 ```
 
-![](base-faces.png)
+![](dimControl_files/figure-html/show-base-faces-1.png)
+
+### Identification of reinforcements
 
 The reinforcements are identified from the spatial distribution of the
 barycentres of approximately vertical faces along the X direction. The
@@ -266,19 +309,21 @@ nReinforcements
 ## [1] 2
 ```
 
-A separate mesh is then extracted for each reinforcement. Connected
-triangle components are identified with
-[`splitTrianglesInd()`](https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.md),
-and small isolated components are removed with
-[`filterMeshComponents()`](https://modes-cemi.github.io/dimControl/reference/filterMeshComponents.md).
+A separate mesh is then extracted for each reinforcement. Since the
+selected triangles may form disconnected components,
+[`splitTrianglesInd()`](https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.md)
+is used to identify connected groups of triangles. The
+[`filterMeshComponents()`](https://modes-cemi.github.io/dimControl/reference/filterMeshComponents.md)
+function is then applied to remove small isolated components, retaining
+the relevant geometry of each reinforcement.
 
 ``` r
 reinforcementMesh <- vector("list", nReinforcements)
 reinforcementInd <- vector("list", nReinforcements)
 for (i in seq_len(nReinforcements)) {
   # Select triangles within the X range of the current reinforcement
-  ind <- bary[, 1] > modesX[i, 1] & bary[, 1] < modesX[i, 2] & 
-        (isVertical | bary[, 3] > tolZ)
+  ind <- bary[, 1] > modesX[i, "left"] & bary[, 1] < modesX[i, "right"] &
+         (isVertical | bary[, 3] > tolZ)
 
   # Create the candidate reinforcement mesh
   candidateMesh <- mesh
@@ -288,16 +333,18 @@ for (i in seq_len(nReinforcements)) {
   components <- splitTrianglesInd(mesh = candidateMesh)
 
   # Remove small disconnected components
-  filtered <- filterMeshComponents(mesh = candidateMesh, comps = components, 
+  filtered <- filterMeshComponents(mesh = candidateMesh, comps = components,
                                    minSize = 1000)
-  
+
   # Store triangle indices in the original mesh
   reinforcementInd[[i]] <- which(ind)[filtered$triIdx]
-  
+
   # Store the filtered reinforcement mesh
   reinforcementMesh[[i]] <- filtered$mesh
 }
 ```
+
+### Extraction of the object base
 
 The object base is extracted using the same connected-component
 filtering procedure.
@@ -320,11 +367,14 @@ baseMesh <- filtered$mesh
 baseInd <- which(isBase)[filtered$triIdx]
 ```
 
+### Representation of the classified components
+
 The resulting `baseMesh` object contains the object base, while
 `reinforcementMesh` contains the individual reinforcements. The vectors
 `baseInd` and `reinforcementInd` retain their corresponding triangle
-indices in the original reconstructed mesh. The classified structural
-components are represented together below.
+indices in the original reconstructed mesh.
+
+The classified structural components are represented together below.
 
 ``` r
 # Represent the object base and reinforcements
@@ -339,7 +389,7 @@ for (i in seq_len(nReinforcements)) {
 }
 ```
 
-![](object-components.png)
+![](dimControl_files/figure-html/show-object-components-1.png)
 
 ## Classification of reinforcement surfaces
 
@@ -419,147 +469,311 @@ below.
 # Represent the classified reinforcement surfaces
 # Use `open3d()` or `new3d()` to open a new device
 for (i in seq_len(nReinforcements)) {
-  shade3d(reinforcementFlatMesh[[i]], col = "blue", lit = FALSE)
+  shade3d(reinforcementFlatMesh[[i]], col = "darkgreen", lit = FALSE)
   shade3d(bulbUpperMesh[[i]], col = "red", lit = FALSE)
 }
 ```
 
-![](reinforcement-surfaces.png)
+![](dimControl_files/figure-html/show-reinforcement-surfaces-1.png)
 
 ## Extraction of the object base boundary
 
-The boundary of the object base provides geometric information that can
-be used for subsequent dimensional analysis, including the
-identification of its corners and the determination of the corresponding
-base dimensions.
+The boundary of the object base provides geometric information for
+subsequent dimensional analysis. In this section, the boundary is
+identified, cleaned, and ordered to facilitate the identification of its
+corners and the segmentation of the contour into its four sides.
 
-Boundary edges are first extracted from `baseMesh` using
+### Extraction of the original boundary
+
+The original boundary of `baseMesh` is identified using
 [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md).
-Before cleaning the boundary, the vertices shared by the base and each
-reinforcement are identified from their triangle indices in the
-reconstructed mesh. These intersection vertices are provided to
-[`cleanBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.md)
-to remove the corresponding boundary segments and reconnect the
-resulting gaps. Finally,
-[`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)
-is used to arrange the boundary segments into a continuous sequence
-along the object contour.
+In this example, setting `returnMesh = FALSE` returns a matrix
+containing the vertex indices defining each boundary edge. These edges
+include those associated with the intersections between the base and the
+reinforcements.
 
 ``` r
-# Identify indices of vertices shared by the base and each reinforcement
+# Extract the original boundary vertex indices
+iBoundary <- getBoundarySegments(mesh = baseMesh, returnMesh = FALSE, simplify = FALSE)
+```
+
+The original boundary is represented below by connecting the
+corresponding pairs of vertices in `baseMesh`.
+
+``` r
+# Represent the original boundary
+shade3d(baseMesh, col = "lightgray", alpha = 0.4)
+shade3d(mesh3d(vertices = baseMesh$vb, segments = iBoundary), col = "red")
+```
+
+![](dimControl_files/figure-html/show-original-base-boundary-1.png)
+
+### Cleaning and ordering the boundary
+
+Before cleaning the boundary, the vertices shared by the base and each
+reinforcement are identified from their triangle indices in the
+reconstructed mesh. These intersection vertices are then provided to
+[`cleanBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.md),
+which removes segments associated with the reinforcements, eliminates
+internal noise and irregular connections, and reconnects the resulting
+gaps to obtain a clean, closed boundary.
+
+``` r
+# Identify vertex indices shared by the base and each reinforcement
 baseReinforcementIntersection <- vector("list", nReinforcements)
 for (i in seq_len(nReinforcements)) {
   baseReinforcementIntersection[[i]] <- intersect(
     mesh$it[, baseInd], mesh$it[, reinforcementInd[[i]]])
 }
 
-# Extract the original boundary segments
-boundaryRaw <- getBoundarySegments(mesh = baseMesh, returnMesh = FALSE, 
-                                   simplify = FALSE)
-
 # Clean and reconnect the boundary segments
-boundaryClean <- cleanBoundarySegments(iBorder = boundaryRaw, baseMesh = baseMesh, 
-                                       intersection = baseReinforcementIntersection)
-
-# Order the cleaned segments along the boundary
-boundary <- sortSegments(edges = boundaryClean)
+iBoundary <- cleanBoundarySegments(iBorder = iBoundary, baseMesh = baseMesh,
+                                   intersection = baseReinforcementIntersection)
 ```
 
-The resulting `boundary` matrix contains the boundary segments cleaned
-and ordered according to their connectivity. Having a cleaned and
-ordered boundary facilitates the identification of different sections of
-the object contour, since the position of each segment within the
-sequence can be used to define and extract the corresponding contour
-sections.
-
-In this example, the object base is approximately rectangular and
-aligned with the X and Y axes. Therefore, its four corners can be
-identified from the extreme combinations of the X and Y coordinates.
-Corner A corresponds to low X and Y coordinates, B to high X and low Y,
-C to high X and Y, and D to low X and high Y.
+The cleaned boundary is represented below.
 
 ``` r
-# Obtain the ordered boundary vertex indices in baseMesh
-boundaryVertices <- c(boundary[1, 1], boundary[2, ])
-
-# Extract their XY coordinates
-boundaryXY <- t(baseMesh$vb[1:2, boundaryVertices])
-
-# Obtain the XY coordinate limits
-minX <- min(boundaryXY[, 1])
-maxX <- max(boundaryXY[, 1])
-minY <- min(boundaryXY[, 2])
-maxY <- max(boundaryXY[, 2])
-
-# Identify the four corners of the rectangular object base
-corners <- rbind(
-  A = c(minX, minY),
-  B = c(maxX, minY),
-  C = c(maxX, maxY),
-  D = c(minX, maxY)
-)
-
-# Find the positions of the four corners along the ordered boundary
-cornerPos <- get.knnx(boundaryXY, corners, k = 1)$nn.index[, 1]
-
-# Obtain the corresponding vertex indices in baseMesh
-cornerVertices <- boundaryVertices[cornerPos]
+# Represent the cleaned boundary
+shade3d(baseMesh, col = "lightgray", alpha = 0.4)
+shade3d(mesh3d(vertices = baseMesh$vb, segments = iBoundary), col = "red")
 ```
 
-The vector `cornerPos` contains the positions of the four detected
-corners within the ordered boundary sequence, whereas `cornerVertices`
-contains their corresponding vertex indices in `baseMesh`. The corner
-positions can therefore be used to divide the ordered boundary into the
-four sides of the object base.
+![](dimControl_files/figure-html/show-clean-base-boundary-1.png)
+
+The cleaned boundary edges are subsequently ordered using
+[`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md),
+which arranges them into a continuous sequence according to their
+connectivity. This ordering facilitates the identification of the base
+corners and the segmentation of the contour into its four sides.
 
 ``` r
-# Order the corner positions along the boundary
-cornerPos <- sort(cornerPos)
-n <- ncol(boundary)
+# Order the cleaned boundary edges
+iBoundary <- sortSegments(edges = iBoundary)
+```
 
-# Define the four boundary sections
+### Identification of the base corners
+
+In this example, the base is approximately rectangular and aligned with
+the X and Y axes. The four corners are identified using the
+[`detectCorners()`](https://modes-cemi.github.io/dimControl/reference/detectCorners.md)
+function from dimControl.
+
+This function computes the convex hull of the boundary vertices and
+defines four reference corners using the minimum and maximum X and Y
+coordinates. The closest convex hull vertex to each reference corner is
+then selected using Euclidean distance. The resulting corners are
+labelled A (bottom-left), B (bottom-right), C (top-right), and D
+(top-left).
+
+``` r
+# Extract the ordered boundary vertex indices
+iBoundaryVertices <- iBoundary[1, ]
+
+# Extract the XY coordinates of the boundary vertices
+boundaryXY <- t(baseMesh$vb[1:2, iBoundaryVertices])
+
+# Identify the four corners
+iCorner <- detectCorners(boundaryXY)
+
+# Extract the corresponding mesh vertex indices
+iCornerVertices <- iBoundaryVertices[iCorner]
+```
+
+The vector `iCorner` contains the indices of the four identified corners
+in the ordered boundary sequence, whereas `iCornerVertices` contains
+their corresponding vertex indices in `baseMesh`.
+
+The identified corners are represented below on the cleaned and ordered
+boundary.
+
+``` r
+# Represent the cleaned and ordered boundary with the identified corners
+shade3d(baseMesh, col = "lightgray", alpha = 0.4)
+shade3d(mesh3d(vertices = baseMesh$vb, segments = iBoundary), col = "red")
+points3d(t(baseMesh$vb[1:3, iCornerVertices]), size = 8)
+```
+
+![](dimControl_files/figure-html/show-base-corners-1.png)
+
+### Segmentation of the base boundary
+
+Once the corners have been identified, their indices in the ordered
+boundary sequence are used to divide the contour into its four sides.
+Each side consists of consecutive boundary edges between two adjacent
+corners, including the side connecting the last corner to the first.
+
+``` r
+# Order the corner positions without modifying their labels
+iCornerOrdered <- sort(iCorner)
+n <- ncol(iBoundary)
+
+# Identify the boundary edge indices for each side
 sideLimits <- list(
-  cornerPos[1]:(cornerPos[2] - 1),
-  cornerPos[2]:(cornerPos[3] - 1),
-  cornerPos[3]:(cornerPos[4] - 1),
-  c(cornerPos[4]:n, seq_len(cornerPos[1] - 1))
+  iCornerOrdered[1]:(iCornerOrdered[2] - 1),
+  iCornerOrdered[2]:(iCornerOrdered[3] - 1),
+  iCornerOrdered[3]:(iCornerOrdered[4] - 1),
+  c(iCornerOrdered[4]:n, seq_len(iCornerOrdered[1] - 1))
 )
 
-# Extract the four boundary sections
-boundarySides <- lapply(sideLimits, function(ind) boundary[, ind])
+# Extract the vertex indices defining the edges of each side
+boundarySides <- lapply(sideLimits, function(ind) iBoundary[, ind])
 ```
 
-The three representations below illustrate the boundary processing. From
-left to right, they show the original boundary extracted from the base
-mesh, the cleaned and ordered boundary with the detected corners, and
-the final boundary divided into four sections.
+The four sides of the base boundary are represented below in different
+colors.
 
 ``` r
-# Represent the original boundary, the detected corners, and the segmented boundary
-# Use `open3d()` or `new3d()` to open a new device
-mfrow3d(1, 3)
-
-# Represent the original boundary
+# Represent the four sides of the base boundary
 shade3d(baseMesh, col = "lightgray", alpha = 0.4)
-shade3d(mesh3d(vertices = baseMesh$vb, segments = boundaryRaw), col = "red")
 
-# Represent the cleaned and ordered boundary with the detected corners
-next3d()
-shade3d(baseMesh, col = "lightgray", alpha = 0.4)
-shade3d(mesh3d(vertices = baseMesh$vb, segments = boundary), col = "red")
-points3d(t(baseMesh$vb[1:3, cornerVertices]), size = 8)
-
-# Represent the four segmented boundary sections
-next3d()
-shade3d(baseMesh, col = "lightgray", alpha = 0.4)
 color <- c("red", "blue", "green", "orange")
 for (i in seq_len(4)) {
-  shade3d(mesh3d(vertices = baseMesh$vb, segments = boundarySides[[i]]), 
-               col = color[i], lwd = 2)
-  }
+  shade3d(mesh3d(vertices = baseMesh$vb, segments = boundarySides[[i]]),
+                 col = color[i], lwd = 4)
+}
 ```
 
-![](base-boundary.png)
+![](dimControl_files/figure-html/show-segmented-base-boundary-1.png)
+
+## Dimensional inspection results
+
+The reconstructed mesh can be used to evaluate the dimensions of the
+base against the reference CAD model. In this example, the nominal CAD
+dimensions are known, and all coordinates and lengths are expressed in
+millimetres (mm).
+
+### Corner coordinate comparison
+
+The coordinates of the four identified corners are compared with their
+nominal positions in the CAD model. The differences are calculated as
+the reconstructed mesh coordinates minus the CAD coordinates.
+
+``` r
+# Extract mesh corner coordinates
+coord <- baseMesh$vb[1:3, iCornerVertices]
+rownames(coord) <- c("X", "Y", "Z")
+colnames(coord) <- names(iCorner)
+
+# Define nominal CAD coordinates
+cornerCAD <- rbind(
+  X = c(A = 0, B = 900, C = 900, D = 0),
+  Y = c(A = 0, B = 0, C = 500, D = 500),
+  Z = c(A = 0, B = 0, C = 0, D = 0)
+)
+
+# Compare CAD and mesh coordinates
+cornerTable <- data.frame(
+  Corner = colnames(coord),
+  X_CAD = cornerCAD["X", ],
+  Y_CAD = cornerCAD["Y", ],
+  Z_CAD = cornerCAD["Z", ],
+  X_Mesh = coord["X", ],
+  Y_Mesh = coord["Y", ],
+  Z_Mesh = coord["Z", ],
+  DX = coord["X", ] - cornerCAD["X", ],
+  DY = coord["Y", ] - cornerCAD["Y", ],
+  DZ = coord["Z", ] - cornerCAD["Z", ],
+  row.names = NULL
+)
+
+knitr::kable(cornerTable, digits = 3, caption = "Comparison of CAD and mesh corner coordinates (mm).")
+```
+
+| Corner | X_CAD | Y_CAD | Z_CAD |  X_Mesh |  Y_Mesh | Z_Mesh |     DX |     DY |    DZ |
+|:-------|------:|------:|------:|--------:|--------:|-------:|-------:|-------:|------:|
+| A      |     0 |     0 |     0 |  -0.346 |  -0.476 |  3.708 | -0.346 | -0.476 | 3.708 |
+| B      |   900 |     0 |     0 | 900.301 |  -0.476 |  3.708 |  0.301 | -0.476 | 3.708 |
+| C      |   900 |   500 |     0 | 900.301 | 500.323 |  3.708 |  0.301 |  0.323 | 3.708 |
+| D      |     0 |   500 |     0 |  -0.346 | 500.323 |  3.708 | -0.346 |  0.323 | 3.708 |
+
+Comparison of CAD and mesh corner coordinates (mm).
+
+The reconstructed base is approximately 3.708 mm above the CAD plane (Z
+= 0). This difference may be caused by the reconstruction process. The
+mesh has not been shifted or aligned with the CAD model.
+
+``` r
+# Corner deviations 
+cornerDeviations <- cornerTable[, c("Corner", "DX", "DY", "DZ")]
+
+# Plot corner coordinate deviations
+ggplot2::ggplot(
+  tidyr::pivot_longer(cornerDeviations, DX:DZ),
+  ggplot2::aes(x = Corner, y = value, fill = name)
+) +
+  ggplot2::geom_col(position = "dodge") +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::scale_fill_manual(values = c("steelblue", "orange", "seagreen")) +
+  ggplot2::labs(
+    title = "Corner coordinate deviations",
+    x = "Corner",
+    y = "Deviation (mm)",
+    fill = "Coordinate"
+  ) +
+  ggplot2::theme_minimal()
+```
+
+![](dimControl_files/figure-html/plot-corner-deviations-1.png)
+
+### Base dimensions
+
+The lengths of the four sides are calculated as the Euclidean distances
+between adjacent corners using
+[`euclideanDistance()`](https://modes-cemi.github.io/dimControl/reference/euclideanDistance.md).
+These lengths are compared with the known nominal CAD dimensions.
+
+``` r
+# Calculate the side lengths
+AB <- euclideanDistance(coord[, "B"] - coord[, "A"])
+BC <- euclideanDistance(coord[, "C"] - coord[, "B"])
+CD <- euclideanDistance(coord[, "D"] - coord[, "C"])
+DA <- euclideanDistance(coord[, "A"] - coord[, "D"])
+
+# Compare mesh and CAD dimensions
+baseDimensions <- data.frame(
+  Side = c("AB", "BC", "CD", "DA"),
+  Mesh = c(AB, BC, CD, DA),
+  CAD = c(900, 500, 900, 500),
+  Difference = c(AB, BC, CD, DA) - c(900, 500, 900, 500)
+)
+
+knitr::kable(baseDimensions, digits = 3,
+  col.names = c("Side", "Mesh (mm)", "CAD (mm)", "Difference (mm)"),
+  caption = "Comparison of mesh and nominal CAD dimensions."
+)
+```
+
+| Side | Mesh (mm) | CAD (mm) | Difference (mm) |
+|:-----|----------:|---------:|----------------:|
+| AB   |   900.647 |      900 |           0.647 |
+| BC   |   500.800 |      500 |           0.800 |
+| CD   |   900.647 |      900 |           0.647 |
+| DA   |   500.800 |      500 |           0.800 |
+
+Comparison of mesh and nominal CAD dimensions.
+
+Positive differences indicate dimensions larger than the nominal CAD
+values, whereas negative differences indicate smaller dimensions.
+
+``` r
+# Plot side length deviations
+ggplot2::ggplot(baseDimensions,
+                ggplot2::aes(x = Side, y = Difference)) +
+  ggplot2::geom_col(fill = "steelblue", width = 0.6) +
+  ggplot2::geom_text(
+    ggplot2::aes(label = sprintf("%+.3f", Difference)),
+    vjust = -0.5
+  ) +
+  ggplot2::labs(
+    title = "Side length deviations from the CAD model",
+    x = "Side",
+    y = "Length deviation (mm)"
+  ) +
+  ggplot2::theme_minimal()
+```
+
+![](dimControl_files/figure-html/plot-dimensional-deviations-1.png)
 
 ## Further help
 

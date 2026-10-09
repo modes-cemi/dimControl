@@ -38,8 +38,6 @@ object. If \code{simplify = TRUE}, unused vertices are removed from the resultin
 using \code{\link[=cleanMesh3d]{cleanMesh3d()}}.
 }
 \examples{
-library(rgl)
-
 # Create a cube and remove two faces
 mesh <- cube3d(color = "lightblue")
 mesh$ib <- mesh$ib[, -(1:2)]

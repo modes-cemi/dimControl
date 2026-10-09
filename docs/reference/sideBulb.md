@@ -45,9 +45,6 @@ mesh should first be split into its connected components and
 ## Examples
 
 ``` r
-library(rgl)
-library(Rvcg)
-
 # Load the theoretical CAD mesh containing the reinforcements
 data("cad", package = "dimControl")
 

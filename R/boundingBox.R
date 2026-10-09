@@ -16,8 +16,6 @@
 #' @seealso [rgl::asEuclidean2()]
 #'
 #' @examples
-#' library(rgl)
-#'
 #' # Create a cubic mesh
 #' cube <- cube3d()
 #'

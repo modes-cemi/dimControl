@@ -58,8 +58,6 @@ the resulting mesh using
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a cube and remove two faces
 mesh <- cube3d(color = "lightblue")
 mesh$ib <- mesh$ib[, -(1:2)]

@@ -12,6 +12,8 @@
 <url><loc>https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/cleanMesh3d.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/createMesh.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/detectCorners.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/dimControl-imports.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/dimControl-internals.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/dimControl-package.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/euclideanDistance.html</loc></url>
@@ -23,9 +25,10 @@
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sideBulb.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/simulateCloud.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/simulateFloor.html</loc></url>
-<url><loc>https://modes-cemi.github.io/dimControl/reference/simulatePanelFloorCloud.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/sortSegments.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.html</loc></url>
 <url><loc>https://modes-cemi.github.io/dimControl/reference/surfaceDistance.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/Triangular.html</loc></url>
+<url><loc>https://modes-cemi.github.io/dimControl/reference/TruncatedNormal.html</loc></url>
 </urlset>
 

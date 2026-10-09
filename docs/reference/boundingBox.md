@@ -34,8 +34,6 @@ before computing the coordinate ranges.
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a cubic mesh
 cube <- cube3d()
 

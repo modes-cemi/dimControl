@@ -11,10 +11,3 @@ column has unit Euclidean length.
 
 `.sampleTriangle()` generates uniformly distributed points inside a
 triangle using barycentric coordinates.
-
-`.rtnorm()` generates random values from a truncated normal
-distribution.
-
-`.qtri()` computes quantiles of a triangular distribution.
-
-`.rtri()` generates random values from a triangular distribution.

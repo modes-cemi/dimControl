@@ -39,9 +39,6 @@ each incident triangle contributes equally, with no weighting by triangle area o
 vertex angle.
 }
 \examples{
-library(rgl)
-library(Rvcg)
-
 # Create a triangular mesh
 mesh <- subdivision3d(icosahedron3d(), depth = 1)
 

@@ -33,8 +33,6 @@
 #' \url{https://CRAN.R-project.org/package=rgl}
 #'
 #' @examples
-#' library(rgl)
-#'
 #' # Create a cube mesh
 #' cube <- cube3d()
 #'

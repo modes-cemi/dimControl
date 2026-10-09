@@ -26,8 +26,6 @@ geometric comparison with estimated meshes or for point cloud simulation.
 The mesh contains 210 vertices and 256 triangular faces.
 }
 \examples{
-library(rgl)
-
 data("cad", package = "dimControl")
 
 # Show the structure

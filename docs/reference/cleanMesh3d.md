@@ -55,8 +55,6 @@ Murdoch, D., et al. *rgl: 3D Visualization Using OpenGL*. R package.
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a cube mesh
 cube <- cube3d()
 

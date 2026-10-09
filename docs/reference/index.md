@@ -26,6 +26,8 @@ Functions for reconstructing and processing triangular meshes.
   : Clean and reconnect boundary segments of a 3D mesh
 - [`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)
   : Reorder connected edge segments
+- [`detectCorners()`](https://modes-cemi.github.io/dimControl/reference/detectCorners.md)
+  : Detect the corners of a rectangular boundary
 - [`boundingBox()`](https://modes-cemi.github.io/dimControl/reference/boundingBox.md)
   : Compute the bounding box of a 3D mesh
 - [`addNormals2()`](https://modes-cemi.github.io/dimControl/reference/addNormals2.md)
@@ -59,3 +61,14 @@ simulated 3D point clouds.
   : Simulate floor point cloud
 - [`sampleMesh()`](https://modes-cemi.github.io/dimControl/reference/sampleMesh.md)
   : Sample points over a triangular mesh
+
+## Probability distributions
+
+- [`dtri()`](https://modes-cemi.github.io/dimControl/reference/Triangular.md)
+  [`qtri()`](https://modes-cemi.github.io/dimControl/reference/Triangular.md)
+  [`rtri()`](https://modes-cemi.github.io/dimControl/reference/Triangular.md)
+  : Triangular distribution
+- [`dtnorm()`](https://modes-cemi.github.io/dimControl/reference/TruncatedNormal.md)
+  [`qtnorm()`](https://modes-cemi.github.io/dimControl/reference/TruncatedNormal.md)
+  [`rtnorm()`](https://modes-cemi.github.io/dimControl/reference/TruncatedNormal.md)
+  : Truncated normal distribution

@@ -36,9 +36,6 @@ Points within each triangle are generated uniformly using barycentric coordinate
 Vertex coordinates are converted to Euclidean coordinates using \code{\link[rgl:matrices]{rgl::asEuclidean2()}}.
 }
 \examples{
-library(rgl)
-library(Rvcg)
-
 # Create a triangular sphere
 mesh <- vcgSphere(1, subdiv = 1)
 

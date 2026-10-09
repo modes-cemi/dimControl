@@ -53,9 +53,6 @@ no weighting by triangle area or vertex angle.
 ## Examples
 
 ``` r
-library(rgl)
-library(Rvcg)
-
 # Create a triangular mesh
 mesh <- subdivision3d(icosahedron3d(), depth = 1)
 

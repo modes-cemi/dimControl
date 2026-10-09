@@ -93,8 +93,6 @@ rendering mesh is displayed using
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),

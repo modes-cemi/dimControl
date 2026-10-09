@@ -63,8 +63,6 @@ If \code{plot = TRUE}, component coloring is enabled automatically and the rende
 mesh is displayed using \code{\link[rgl:shade3d]{rgl::shade3d()}}.
 }
 \examples{
-library(rgl)
-
 # Create a mesh with two disconnected components
 vertices <- t(rbind(
   c(0, 0, 0),

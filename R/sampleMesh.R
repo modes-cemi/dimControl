@@ -28,9 +28,6 @@
 #' @seealso [Rvcg::vcgArea()], [rgl::asEuclidean2()], [rgl::points3d()]
 #'
 #' @examples
-#' library(rgl)
-#' library(Rvcg)
-#'
 #' # Create a triangular sphere
 #' mesh <- vcgSphere(1, subdiv = 1)
 #'

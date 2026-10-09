@@ -79,8 +79,6 @@ the vertex indexing of `baseMesh`.
 ## Examples
 
 ``` r
-library(rgl)
-
 # Create a rectangular mesh with a triangular hole
 vertices <- matrix(
   c(

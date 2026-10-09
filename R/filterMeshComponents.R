@@ -45,8 +45,6 @@
 #' @seealso [splitTrianglesInd()], [rgl::shade3d()]
 #'
 #' @examples
-#' library(rgl)
-#'
 #' # Create a mesh with two disconnected components
 #' vertices <- t(rbind(
 #'   c(0, 0, 0),

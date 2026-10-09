@@ -85,14 +85,11 @@ vertex angle.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmurdoch/rgl" class="external-link">rgl</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zarquon42b/Rvcg" class="external-link">Rvcg</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create a triangular mesh</span></span></span>
-<span class="r-in"><span><span class="va">mesh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/subdivision3d.html" class="external-link">subdivision3d</a></span><span class="op">(</span><span class="fu"><a href="https://dmurdoch.github.io/rgl/dev/reference/cube3d.html" class="external-link">icosahedron3d</a></span><span class="op">(</span><span class="op">)</span>, depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a triangular mesh</span></span></span>
+<span class="r-in"><span><span class="va">mesh</span> <span class="op">&lt;-</span> <span class="fu">subdivision3d</span><span class="op">(</span><span class="fu">icosahedron3d</span><span class="op">(</span><span class="op">)</span>, depth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute face normals</span></span></span>
-<span class="r-in"><span><span class="va">normTri</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rvcg/man/vcgFaceNormals.html" class="external-link">vcgFaceNormals</a></span><span class="op">(</span><span class="va">mesh</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">normTri</span> <span class="op">&lt;-</span> <span class="fu">vcgFaceNormals</span><span class="op">(</span><span class="va">mesh</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute vertex normals from the supplied face normals</span></span></span>
 <span class="r-in"><span><span class="va">mesh</span> <span class="op">&lt;-</span> <span class="fu">addNormals2</span><span class="op">(</span><span class="va">mesh</span>, <span class="va">normTri</span><span class="op">)</span></span></span>
