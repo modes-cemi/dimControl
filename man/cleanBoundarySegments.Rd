@@ -4,13 +4,7 @@
 \alias{cleanBoundarySegments}
 \title{Clean and reconnect boundary segments of a 3D mesh}
 \usage{
-cleanBoundarySegments(
-  iBorder,
-  baseMesh,
-  intersection = NULL,
-  lengthProb = 0.98,
-  minGroupSize = 10
-)
+cleanBoundarySegments(iBorder, baseMesh, lengthProb = 0.98, minGroupSize = 10)
 }
 \arguments{
 \item{iBorder}{Integer 2 x n matrix containing the boundary segment indices, where
@@ -18,10 +12,6 @@ each column defines a segment by the indices of its two vertices.}
 
 \item{baseMesh}{\code{mesh3d} object containing the mesh geometry associated with the
 boundary segments.}
-
-\item{intersection}{Integer vector or list of integer vectors containing vertex
-indices associated with intersections to be removed from the boundary. Segments
-whose two endpoints belong to these vertices are removed. Default is \code{NULL}.}
 
 \item{lengthProb}{Numeric value between 0 and 1 defining the quantile used to remove
 unusually long boundary segments. Default is \code{0.98}.}
@@ -33,28 +23,20 @@ group to be retained. Default is \code{10}.}
 Integer 2 x n matrix containing the cleaned and reconnected boundary segments.
 }
 \description{
-Cleans boundary segments extracted from a \code{mesh3d} object by optionally removing
-segments associated with specified intersection vertices, removing redundant connections,
-long segments, and small connected groups, and reconnecting disconnected boundary
-endpoints.
+Cleans boundary segments extracted from a \code{mesh3d} object by removing redundant
+connections, unusually long segments, and small connected groups, and reconnecting
+disconnected boundary endpoints.
 }
 \details{
-Boundary segments are processed in several steps. If \code{intersection} is provided,
-segments whose two endpoints belong to the specified intersection vertices are
-removed first. This can be used, for example, to remove boundary segments associated
-with intersections between different mesh components.
-
-Vertices incident to more than two boundary segments are then simplified by retaining
-only two connections. Segments whose length exceeds the quantile specified by \code{lengthProb}
-are removed, followed by connected groups containing fewer than \code{minGroupSize} segments.
+Vertices incident to more than two boundary segments are simplified by retaining
+only two connections. Segments whose length exceeds the quantile specified by
+\code{lengthProb} are then removed, followed by connected groups containing fewer
+than \code{minGroupSize} segments.
 
 Finally, vertices incident to a single remaining boundary segment are identified
 as disconnected endpoints. These endpoints are paired according to their nearest
-neighbor in the XY plane, and the corresponding connecting segments are added to
-the boundary.
-
-The indices supplied through \code{iBorder} and \code{intersection} must refer to the vertex
-indexing of \code{baseMesh}.
+neighbour in the XY plane, and the corresponding connecting segments are added
+to the boundary.
 }
 \examples{
 # Create a rectangular mesh with a triangular hole

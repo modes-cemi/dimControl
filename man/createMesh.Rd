@@ -6,8 +6,8 @@
 \usage{
 createMesh(
   cloud,
-  rBin = c(4, 4, 2),
-  cad = NULL,
+  resBin = c(4, 4, 2),
+  refDim = NULL,
   addBorder = FALSE,
   lowTol = NULL,
   trunc = 3.5,
@@ -19,18 +19,18 @@ createMesh(
 \item{cloud}{Numeric matrix or data frame with three columns containing the X,
 Y, and Z coordinates of the point cloud.}
 
-\item{rBin}{Numeric vector of length three defining the approximate binning
+\item{resBin}{Numeric vector of length three defining the approximate binning
 resolution in the X, Y, and Z directions. Default is \code{c(4, 4, 2)}.}
 
-\item{cad}{\code{mesh3d} object used as a reference for the spatial coverage of
-the reconstructed surface. Default is \code{NULL}, in which case the dimensions of
-the point cloud are used.}
+\item{refDim}{Optional numeric vector of length three specifying the reference
+dimensions in the X, Y, and Z directions. If \code{NULL}, the dimensions are estimated
+from the point cloud. Default is \code{NULL}.}
 
 \item{addBorder}{Logical. If \code{TRUE}, adds a zero-valued layer around the X and
 Z limits before surface extraction. Default is \code{FALSE}.}
 
 \item{lowTol}{Numeric value used to determine the tolerance for removing
-low-density nodes. If \code{NULL}, it is selected automatically according to \code{rBin}.
+low-density nodes. If \code{NULL}, it is selected automatically according to \code{resBin}.
 Default is \code{NULL}.}
 
 \item{trunc}{Numeric value used to truncate high-density node weights. Default
@@ -59,25 +59,32 @@ When \code{addBorder = TRUE}, one zero-valued layer is added on both sides of th
 and Z directions to facilitate surface closure.
 
 If several disconnected surfaces are generated, they are ordered by number of
-triangles and progressively merged. Components are added until the dimensions
-of the reconstructed surface reach at least \code{coverageTol} times the reference
-dimensions. If \code{cad = NULL}, the point-cloud dimensions are used as the
-reference; otherwise, the dimensions of \code{cad} are used.
+triangles and progressively merged. Components are added until the bounding box
+of the reconstructed surface reaches at least \code{coverageTol} times the reference
+dimensions in all three directions.
 
-The resulting surface is converted to a triangular \code{mesh3d} object using
-\code{\link[rgl:mesh3d]{rgl::tmesh3d()}}.
+The reference dimensions can be provided directly through \code{refDim}. If \code{refDim = NULL},
+they are estimated from the coordinate ranges of the point cloud. Spatial coverage
+refers to the bounding-box dimensions, not to the percentage of reconstructed
+surface area.
+
+The resulting surface is converted to a triangular \code{mesh3d} object using \code{\link[rgl:mesh3d]{rgl::tmesh3d()}}.
 }
 \examples{
 # Load the theoretical CAD model
 data("cad", package = "dimControl")
 
-# Simulate object points without floor points
+# Simulate object points without surrounding environment points
 object <- simulateCloud(mesh = cad, n = 1e5, rgen = rtnorm, mean = 0, sd = 0.2,
                         a = -0.5, b = 0.5)
 
-# Reconstruct the mesh from the object point cloud
-mesh <- createMesh(cloud = object, rBin = c(12, 12, 6), addBorder = TRUE,
+# Reconstruct the mesh using dimensions estimated from the point cloud
+mesh <- createMesh(cloud = object, resBin = c(12, 12, 6), addBorder = TRUE,
                    lowTol = 0.01, trunc = 1.5, level = 0.99)
+
+# Alternatively, provide the reference dimensions directly
+# mesh <- createMesh(cloud = object, resBin = c(12, 12, 6), refDim = c(900, 500, 100),
+#                    addBorder = TRUE, lowTol = 0.01, trunc = 1.5, level = 0.99)
 
 # Represent point cloud and reconstructed mesh side by side
 # open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
@@ -92,6 +99,5 @@ mesh <- createMesh(cloud = object, rBin = c(12, 12, 6), addBorder = TRUE,
 
 }
 \seealso{
-\code{\link[npsp:binning]{npsp::binning()}}, \code{\link[npsp:coordvalues]{npsp::coordvalues()}}, \code{\link[misc3d:contour3d]{misc3d::contour3d()}},
-\code{\link[rgl:mesh3d]{rgl::tmesh3d()}}
+\code{\link[npsp:binning]{npsp::binning()}}, \code{\link[npsp:coordvalues]{npsp::coordvalues()}}, \code{\link[misc3d:contour3d]{misc3d::contour3d()}}, \code{\link[rgl:mesh3d]{rgl::tmesh3d()}}
 }

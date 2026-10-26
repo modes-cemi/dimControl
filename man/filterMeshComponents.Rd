@@ -2,107 +2,32 @@
 % Please edit documentation in R/filterMeshComponents.R
 \name{filterMeshComponents}
 \alias{filterMeshComponents}
-\title{Filter mesh components by minimum size}
+\title{Filter connected triangle components by minimum size}
 \usage{
-filterMeshComponents(
-  mesh,
-  comps,
-  minSize = 1000,
-  color = FALSE,
-  plot = FALSE,
-  palette = grDevices::rainbow
-)
+filterMeshComponents(comps, minSize = 1000)
 }
 \arguments{
-\item{mesh}{\code{mesh3d} object containing a triangular mesh. It must include an \code{it}
-matrix with three rows, where each column represents a triangle.}
+\item{comps}{List of integer vectors containing triangle indices, typically
+returned by \code{\link[=splitTrianglesInd]{splitTrianglesInd()}}.}
 
-\item{comps}{List of integer vectors containing the triangle indices of each connected
-component, typically returned by \code{\link[=splitTrianglesInd]{splitTrianglesInd()}}.}
-
-\item{minSize}{Numeric value specifying the minimum number of triangles required
-for a component to be retained. Default is \code{1000}. If \code{NULL}, all components are retained.}
-
-\item{color}{Logical. If \code{TRUE}, an additional rendering mesh is created with a
-distinct color assigned to each retained component. Default is \code{FALSE}. It is automatically
-set to \code{TRUE} when \code{plot = TRUE}.}
-
-\item{plot}{Logical. If \code{TRUE}, the retained components are displayed using \code{\link[rgl:shade3d]{rgl::shade3d()}}.
-Default is \code{FALSE}.}
-
-\item{palette}{Function receiving the number of retained components and returning
-the corresponding colors. Default is \code{\link[grDevices:palettes]{grDevices::rainbow()}}.}
+\item{minSize}{Minimum number of triangles required to retain a component. If
+\code{NULL}, all components are retained. Default is \code{1000}.}
 }
 \value{
-List containing:
-\itemize{
-\item \code{mesh}: \code{mesh3d} object containing the retained triangles.
-\item \code{triIdx}: integer vector containing the triangle-column indices retained
-from the input \code{mesh$it}.
-\item \code{compId}: integer vector containing the original component index associated
-with each retained triangle.
-\item \code{render}: \code{NULL} unless \code{color = TRUE} or \code{plot = TRUE}; otherwise, a list
-containing the rendering mesh and its per-vertex color vector.
-}
+Integer vector containing the indices of the retained triangles.
 }
 \description{
-Filters the connected components of a triangular mesh according to their number
-of triangles and rebuilds the mesh using only the retained components.
-}
-\details{
-Components are retained when their number of triangles is greater than or equal
-to \code{minSize}. If \code{minSize = NULL}, all components are retained. The original vertex
-indices and the \code{mesh$vb} matrix are preserved in the filtered mesh.
-
-When coloring is requested, the vertices of each retained triangle are duplicated
-so that each component can be displayed with an independent color. The resulting
-mesh stored in \code{render$mesh} is intended only for visualization and does not preserve
-the original vertex indexing.
-
-If \code{plot = TRUE}, component coloring is enabled automatically and the rendering
-mesh is displayed using \code{\link[rgl:shade3d]{rgl::shade3d()}}.
+Selects connected components according to their number of triangles, returning
+only the indices of the retained triangles.
 }
 \examples{
-# Create a mesh with two disconnected components
-vertices <- t(rbind(
-  c(0, 0, 0),
-  c(1, 0, 0),
-  c(0, 1, 0),
-  c(1, 1, 0),
-  c(3, 0, 0),
-  c(4, 0, 0),
-  c(3, 1, 0)
-))
+# Three connected components containing 5, 2 and 4 triangles
+components <- list(1:5, 6:7, 8:11)
 
-triangles <- t(rbind(
-  c(1, 2, 3),
-  c(2, 4, 3),
-  c(5, 6, 7)
-))
+# Retain components with at least 4 triangles
+filtered <- filterMeshComponents(comps = components, minSize = 4)
 
-mesh <- tmesh3d(
-  vertices = vertices,
-  indices = triangles
-)
+# Show retained triangle indices
+filtered
 
-# Identify connected components
-components <- splitTrianglesInd(mesh)
-
-# Retain components with at least two triangles
-result <- filterMeshComponents(mesh = mesh, comps = components, minSize = 2, color = TRUE)
-
-# Represent original and filtered meshes side by side
-open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
-mfrow3d(1, 2)
-
-shade3d(mesh, color = "lightgray")
-title3d("Original mesh", level = 10)
-
-next3d()
-shade3d(result$render$mesh, color = result$render$col)
-title3d("Filtered mesh", level = 10)
-
-}
-\seealso{
-\code{\link[=splitTrianglesInd]{splitTrianglesInd()}}, \code{\link[rgl:shade3d]{rgl::shade3d()}}
 }

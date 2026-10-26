@@ -73,7 +73,7 @@ geometric components in 3D data.
 - [`splitTrianglesInd()`](https://modes-cemi.github.io/dimControl/reference/splitTrianglesInd.md)
   : Split a mesh into connected triangle groups
 - [`filterMeshComponents()`](https://modes-cemi.github.io/dimControl/reference/filterMeshComponents.md)
-  : Filter mesh components by minimum size
+  : Filter connected triangle components by minimum size
 
 ## Mesh Reconstruction and Processing
 

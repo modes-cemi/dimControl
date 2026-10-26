@@ -5,15 +5,15 @@
 #'
 #' @param cloud Numeric matrix or data frame with three columns containing the X,
 #' Y, and Z coordinates of the point cloud.
-#' @param rBin Numeric vector of length three defining the approximate binning
+#' @param resBin Numeric vector of length three defining the approximate binning
 #' resolution in the X, Y, and Z directions. Default is `c(4, 4, 2)`.
-#' @param cad `mesh3d` object used as a reference for the spatial coverage of
-#' the reconstructed surface. Default is `NULL`, in which case the dimensions of
-#' the point cloud are used.
+#' @param refDim Optional numeric vector of length three specifying the reference
+#' dimensions in the X, Y, and Z directions. If `NULL`, the dimensions are estimated
+#' from the point cloud. Default is `NULL`.
 #' @param addBorder Logical. If `TRUE`, adds a zero-valued layer around the X and
 #' Z limits before surface extraction. Default is `FALSE`.
 #' @param lowTol Numeric value used to determine the tolerance for removing
-#' low-density nodes. If `NULL`, it is selected automatically according to `rBin`.
+#' low-density nodes. If `NULL`, it is selected automatically according to `resBin`.
 #' Default is `NULL`.
 #' @param trunc Numeric value used to truncate high-density node weights. Default
 #' is `3.5`.
@@ -35,28 +35,34 @@
 #' and Z directions to facilitate surface closure.
 #'
 #' If several disconnected surfaces are generated, they are ordered by number of
-#' triangles and progressively merged. Components are added until the dimensions
-#' of the reconstructed surface reach at least `coverageTol` times the reference
-#' dimensions. If `cad = NULL`, the point-cloud dimensions are used as the
-#' reference; otherwise, the dimensions of `cad` are used.
+#' triangles and progressively merged. Components are added until the bounding box
+#' of the reconstructed surface reaches at least `coverageTol` times the reference
+#' dimensions in all three directions.
 #'
-#' The resulting surface is converted to a triangular `mesh3d` object using
-#' [rgl::tmesh3d()].
+#' The reference dimensions can be provided directly through `refDim`. If `refDim = NULL`,
+#' they are estimated from the coordinate ranges of the point cloud. Spatial coverage
+#' refers to the bounding-box dimensions, not to the percentage of reconstructed
+#' surface area.
 #'
-#' @seealso [npsp::binning()], [npsp::coordvalues()], [misc3d::contour3d()],
-#' [rgl::tmesh3d()]
+#' The resulting surface is converted to a triangular `mesh3d` object using [rgl::tmesh3d()].
+#'
+#' @seealso [npsp::binning()], [npsp::coordvalues()], [misc3d::contour3d()], [rgl::tmesh3d()]
 #'
 #' @examples
 #' # Load the theoretical CAD model
 #' data("cad", package = "dimControl")
 #'
-#' # Simulate object points without floor points
+#' # Simulate object points without surrounding environment points
 #' object <- simulateCloud(mesh = cad, n = 1e5, rgen = rtnorm, mean = 0, sd = 0.2,
 #'                         a = -0.5, b = 0.5)
 #'
-#' # Reconstruct the mesh from the object point cloud
-#' mesh <- createMesh(cloud = object, rBin = c(12, 12, 6), addBorder = TRUE,
+#' # Reconstruct the mesh using dimensions estimated from the point cloud
+#' mesh <- createMesh(cloud = object, resBin = c(12, 12, 6), addBorder = TRUE,
 #'                    lowTol = 0.01, trunc = 1.5, level = 0.99)
+#'
+#' # Alternatively, provide the reference dimensions directly
+#' # mesh <- createMesh(cloud = object, resBin = c(12, 12, 6), refDim = c(900, 500, 100),
+#' #                    addBorder = TRUE, lowTol = 0.01, trunc = 1.5, level = 0.99)
 #'
 #' # Represent point cloud and reconstructed mesh side by side
 #' # open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
@@ -71,8 +77,8 @@
 #'
 #' @export
 createMesh <- function(cloud,
-                       rBin = c(4, 4, 2),
-                       cad = NULL,
+                       resBin = c(4, 4, 2),
+                       refDim = NULL,
                        addBorder = FALSE,
                        lowTol = NULL,
                        trunc = 3.5,
@@ -91,8 +97,8 @@ createMesh <- function(cloud,
   if (anyNA(cloud))
     stop("Argument 'cloud' contains NA values")
 
-  if (length(rBin) != 3 || any(rBin <= 0))
-    stop("Argument 'rBin' must be a positive numeric vector of length 3")
+  if (length(resBin) != 3 || any(resBin <= 0))
+    stop("Argument 'resBin' must be a positive numeric vector of length 3")
 
   if (!is.logical(addBorder) || length(addBorder) != 1)
     stop("Argument 'addBorder' must be TRUE or FALSE")
@@ -104,7 +110,7 @@ createMesh <- function(cloud,
   dimLen <- apply(cloud, 2, function(x) diff(range(x)))
 
   # Number of bins in each spatial direction
-  nBin <- trunc(dimLen / rBin)
+  nBin <- trunc(dimLen / resBin)
   nBin <- pmax(nBin, 2)
 
   if (!requireNamespace("npsp", quietly = TRUE)) stop("package 'npsp' is required")
@@ -140,17 +146,17 @@ createMesh <- function(cloud,
   # Automatic tolerance factor
   if (is.null(lowTol)) {
 
-    if (all(rBin == c(4, 4, 4))) {
+    if (all(resBin == c(4, 4, 4))) {
       lowTol <- 0.1
     } else if (
-      all(rBin == c(2, 2, 2)) ||
-      all(rBin == c(4, 4, 2))
+      all(resBin == c(2, 2, 2)) ||
+      all(resBin == c(4, 4, 2))
     ) {
       lowTol <- 0.05
     } else {
       lowTol <- 0.05
       warning(
-        "No specific rule for 'rBin'. Using lowTol = 0.05"
+        "No specific rule for 'resBin'. Using lowTol = 0.05"
       )
     }
   }
@@ -197,15 +203,12 @@ createMesh <- function(cloud,
     order(sapply(contours, function(x) nrow(x$v1)), decreasing = TRUE)]
 
   # Dimensions used as reference for mesh coverage
-  if (is.null(cad)) {
+  if (is.null(refDim)) {
     refDim <- dimLen
   } else {
-    if (!inherits(cad, "mesh3d"))
-      stop("Argument 'cad' must be an object of class 'mesh3d'")
-
-    cadVertices <- t(cad$vb[1:3, , drop = FALSE])
-    cadBbox <- apply(cadVertices, 2, range)
-    refDim <- cadBbox[2, ] - cadBbox[1, ]
+    if (!is.numeric(refDim) || length(refDim) != 3 ||
+        anyNA(refDim) || any(!is.finite(refDim)) || any(refDim <= 0))
+      stop("Argument 'refDim' must contain three positive dimensions: X, Y and Z")
   }
 
   # Merge disconnected components until the required coverage is reached

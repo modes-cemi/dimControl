@@ -57,21 +57,17 @@
 #'
 #' # Identify connected reinforcement components
 #' compRef <- splitTrianglesInd(meshRef)
-#' components <- filterMeshComponents(mesh = meshRef, comps = compRef, minSize = 50)
+#'
+#' # Retain components with at least 50 triangles
+#' compRef <- compRef[lengths(compRef) >= 50]
 #'
 #' # Create an independent mesh for each reinforcement
-#' componentIds <- unique(components$compId)
-#' nRef <- length(componentIds)
-#' ref <- vector("list", nRef)
-#'
-#' for (i in seq_len(nRef)) {
-#'   triIdx <- components$triIdx[components$compId == componentIds[i]]
-#'
-#'   ref[[i]] <- meshRef
-#'   ref[[i]]$it <- meshRef$it[, triIdx, drop = FALSE]
-#'   ref[[i]]$tags <- NULL
-#'   ref[[i]] <- cleanMesh3d(ref[[i]])
-#' }
+#' ref <- lapply(compRef, function(ind) {
+#'   refMesh <- meshRef
+#'   refMesh$it <- meshRef$it[, ind, drop = FALSE]
+#'   refMesh$tags <- NULL
+#'   cleanMesh3d(refMesh)
+#' })
 #'
 #' # Determine the bulb orientation of each reinforcement
 #' # TRUE = left, FALSE = right

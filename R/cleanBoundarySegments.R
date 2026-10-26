@@ -1,17 +1,13 @@
 #' Clean and reconnect boundary segments of a 3D mesh
 #'
-#' Cleans boundary segments extracted from a `mesh3d` object by optionally removing
-#' segments associated with specified intersection vertices, removing redundant connections,
-#' long segments, and small connected groups, and reconnecting disconnected boundary
-#' endpoints.
+#' Cleans boundary segments extracted from a `mesh3d` object by removing redundant
+#' connections, unusually long segments, and small connected groups, and reconnecting
+#' disconnected boundary endpoints.
 #'
 #' @param iBorder Integer 2 x n matrix containing the boundary segment indices, where
 #' each column defines a segment by the indices of its two vertices.
 #' @param baseMesh `mesh3d` object containing the mesh geometry associated with the
 #' boundary segments.
-#' @param intersection Integer vector or list of integer vectors containing vertex
-#' indices associated with intersections to be removed from the boundary. Segments
-#' whose two endpoints belong to these vertices are removed. Default is `NULL`.
 #' @param lengthProb Numeric value between 0 and 1 defining the quantile used to remove
 #' unusually long boundary segments. Default is `0.98`.
 #' @param minGroupSize Integer. Minimum number of segments required for a connected
@@ -21,22 +17,15 @@
 #' Integer 2 x n matrix containing the cleaned and reconnected boundary segments.
 #'
 #' @details
-#' Boundary segments are processed in several steps. If `intersection` is provided,
-#' segments whose two endpoints belong to the specified intersection vertices are
-#' removed first. This can be used, for example, to remove boundary segments associated
-#' with intersections between different mesh components.
-#'
-#' Vertices incident to more than two boundary segments are then simplified by retaining
-#' only two connections. Segments whose length exceeds the quantile specified by `lengthProb`
-#' are removed, followed by connected groups containing fewer than `minGroupSize` segments.
+#' Vertices incident to more than two boundary segments are simplified by retaining
+#' only two connections. Segments whose length exceeds the quantile specified by
+#' `lengthProb` are then removed, followed by connected groups containing fewer
+#' than `minGroupSize` segments.
 #'
 #' Finally, vertices incident to a single remaining boundary segment are identified
 #' as disconnected endpoints. These endpoints are paired according to their nearest
-#' neighbor in the XY plane, and the corresponding connecting segments are added to
-#' the boundary.
-#'
-#' The indices supplied through `iBorder` and `intersection` must refer to the vertex
-#' indexing of `baseMesh`.
+#' neighbour in the XY plane, and the corresponding connecting segments are added
+#' to the boundary.
 #'
 #' @seealso [getBoundarySegments()]
 #'
@@ -99,25 +88,29 @@
 #' @export
 cleanBoundarySegments <- function(iBorder,
                                   baseMesh,
-                                  intersection = NULL,
                                   lengthProb = 0.98,
                                   minGroupSize = 10) {
 
-  # Remove segments associated with specified intersections
-  if (!is.null(intersection)) {
-
-    # Combine all intersection vertex indices
-    intersectionVertices <- unique(unlist(intersection))
-
-    # Count how many endpoints of each segment belong to an intersection
-    nIntersection <- (iBorder[1, ] %in% intersectionVertices) +
-                     (iBorder[2, ] %in% intersectionVertices)
-
-    # Remove segments whose two endpoints belong to an intersection
-    removeSegments <- nIntersection == 2
-
-    iBorder <- iBorder[ , !removeSegments, drop = FALSE]
+  # Validate inputs
+  if (!is.matrix(iBorder) || nrow(iBorder) != 2 || !is.numeric(iBorder)) {
+    stop("'iBorder' must be a numeric 2-row matrix")
   }
+
+  if (!inherits(baseMesh, "mesh3d")) {
+    stop("'baseMesh' must be a mesh3d object")
+  }
+
+  if (!is.numeric(lengthProb) || length(lengthProb) != 1 || is.na(lengthProb) ||
+      !is.finite(lengthProb) || lengthProb < 0 || lengthProb > 1) {
+    stop("'lengthProb' must be between 0 and 1")
+  }
+
+  if (!is.numeric(minGroupSize) || length(minGroupSize) != 1 ||
+      is.na(minGroupSize) || !is.finite(minGroupSize) || minGroupSize < 1) {
+    stop("'minGroupSize' must be a positive number")
+  }
+
+  if (ncol(iBorder) == 0) return(iBorder)
 
   # Remove extra connections from vertices with degree greater than 2
   count <- table(as.vector(iBorder))
@@ -125,34 +118,35 @@ cleanBoundarySegments <- function(iBorder,
 
   for (i in problematic) {
     idxSegs <- which(iBorder[1, ] == i | iBorder[2, ] == i)
-
     nRemove <- length(idxSegs) - 2
 
     if (nRemove > 0) {
-      iBorder <- iBorder[ , -utils::tail(idxSegs, nRemove), drop = FALSE]
+      iBorder <- iBorder[, -utils::tail(idxSegs, nRemove), drop = FALSE]
     }
   }
 
-  # Remove long boundary segments
-  coords1 <- t(baseMesh$vb[1:2, iBorder[1, ], drop = FALSE])
+  if (ncol(iBorder) == 0) return(iBorder)
 
+  # Remove unusually long boundary segments
+  coords1 <- t(baseMesh$vb[1:2, iBorder[1, ], drop = FALSE])
   coords2 <- t(baseMesh$vb[1:2, iBorder[2, ], drop = FALSE])
 
   lengths <- sqrt(rowSums((coords2 - coords1)^2))
-
   threshold <- stats::quantile(lengths, probs = lengthProb)
 
-  iBorder <- iBorder[ , lengths <= threshold, drop = FALSE]
+  iBorder <- iBorder[, lengths <= threshold, drop = FALSE]
 
-  # Remove small connected groups of segments
+  if (ncol(iBorder) == 0) return(iBorder)
+
+  # Identify connected groups of boundary segments
   n <- ncol(iBorder)
-  group <- rep(0L, n)
+  group <- integer(n)
   groupNum <- 0L
 
   for (i in seq_len(n)) {
     if (group[i] > 0) next
 
-    groupNum <- groupNum + 1L
+    groupNum <- groupNum + 1
     queue <- i
     group[i] <- groupNum
 
@@ -160,25 +154,27 @@ cleanBoundarySegments <- function(iBorder,
       current <- queue[1]
       queue <- queue[-1]
 
-      neighbors <- which(iBorder[1, ] %in% iBorder[, current] |
-                         iBorder[2, ] %in% iBorder[, current])
+      neighbors <- which(
+        iBorder[1, ] %in% iBorder[, current] |
+          iBorder[2, ] %in% iBorder[, current]
+      )
 
       newNeighbors <- neighbors[group[neighbors] == 0]
-
       group[newNeighbors] <- groupNum
       queue <- c(queue, newNeighbors)
     }
   }
 
+  # Remove small connected groups
   validGroups <- which(table(group) >= minGroupSize)
-
   validSegments <- which(group %in% validGroups)
 
-  iBorder <- iBorder[ , validSegments, drop = FALSE]
+  iBorder <- iBorder[, validSegments, drop = FALSE]
 
-  # Reconnect disconnected boundary endpoints
+  if (ncol(iBorder) == 0) return(iBorder)
+
+  # Identify disconnected boundary endpoints
   count <- table(as.vector(iBorder))
-
   endPoints <- as.integer(names(count[count == 1]))
 
   newPairs <- list()
@@ -188,28 +184,26 @@ cleanBoundarySegments <- function(iBorder,
     if (v %in% connectedEndPoints) next
 
     others <- setdiff(endPoints, c(v, connectedEndPoints))
-
     if (length(others) == 0) next
 
     coordV <- t(baseMesh$vb[1:2, v, drop = FALSE])
-
     coordsOthers <- t(baseMesh$vb[1:2, others, drop = FALSE])
 
-    if (!requireNamespace("FNN", quietly = TRUE)) stop("package 'FNN' is required")
+    if (!requireNamespace("FNN", quietly = TRUE)) {
+      stop("package 'FNN' is required")
+    }
 
     nn <- FNN::get.knnx(coordsOthers, coordV, k = 1)$nn.index[1]
 
     neighbor <- others[nn]
 
     newPairs <- append(newPairs, list(c(v, neighbor)))
-
     connectedEndPoints <- c(connectedEndPoints, v, neighbor)
   }
 
-  # Add the new boundary connections
+  # Add new boundary connections
   if (length(newPairs) > 0) {
     newPairs <- do.call(rbind, newPairs)
-
     iBorder <- cbind(iBorder, t(newPairs))
   }
 
