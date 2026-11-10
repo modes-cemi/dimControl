@@ -3,7 +3,8 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   dimControl: dimControl.html
-last_built: 2026-10-26T13:50Z
+  dimControl2: dimControl2.html
+last_built: 2026-11-10T07:39Z
 urls:
   reference: https://modes-cemi.github.io/dimControl/reference
   article: https://modes-cemi.github.io/dimControl/articles

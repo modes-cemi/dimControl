@@ -2,9 +2,15 @@
 % Please edit documentation in R/cleanBoundarySegments.R
 \name{cleanBoundarySegments}
 \alias{cleanBoundarySegments}
-\title{Clean and reconnect boundary segments of a 3D mesh}
+\title{Clean, reconnect and optionally order boundary segments of a 3D mesh}
 \usage{
-cleanBoundarySegments(iBorder, baseMesh, lengthProb = 0.98, minGroupSize = 10)
+cleanBoundarySegments(
+  iBorder,
+  baseMesh,
+  excludeVert = NULL,
+  minGroupSize = 10,
+  order = FALSE
+)
 }
 \arguments{
 \item{iBorder}{Integer 2 x n matrix containing the boundary segment indices, where
@@ -13,30 +19,45 @@ each column defines a segment by the indices of its two vertices.}
 \item{baseMesh}{\code{mesh3d} object containing the mesh geometry associated with the
 boundary segments.}
 
-\item{lengthProb}{Numeric value between 0 and 1 defining the quantile used to remove
-unusually long boundary segments. Default is \code{0.98}.}
+\item{excludeVert}{Integer vector or list of integer vectors containing vertex
+indices associated with segments to be excluded. Segments whose two endpoints
+belong to these vertices are removed. Default is \code{NULL}.}
 
 \item{minGroupSize}{Integer. Minimum number of segments required for a connected
 group to be retained. Default is \code{10}.}
+
+\item{order}{Logical. Whether to order the cleaned boundary segments according
+to their connectivity. Default is \code{FALSE}.}
 }
 \value{
-Integer 2 x n matrix containing the cleaned and reconnected boundary segments.
+Integer 2 x n matrix containing the cleaned and reconnected boundary segments,
+optionally ordered when \code{order = TRUE}.
 }
 \description{
-Cleans boundary segments extracted from a \code{mesh3d} object by removing redundant
-connections, unusually long segments, and small connected groups, and reconnecting
-disconnected boundary endpoints.
+Cleans boundary segments extracted from a \code{mesh3d} object by optionally removing
+segments associated with specified vertices, removing redundant connections, long
+segments and small connected groups, and reconnecting disconnected boundary endpoints.
+The resulting segments can also be ordered.
 }
 \details{
-Vertices incident to more than two boundary segments are simplified by retaining
-only two connections. Segments whose length exceeds the quantile specified by
-\code{lengthProb} are then removed, followed by connected groups containing fewer
+Boundary segments are processed in several steps. If \code{excludeVert} is provided,
+segments whose two endpoints belong to the specified vertices are removed first.
+This can be used, for example, to exclude segments associated with intersections
+between different mesh components.
+
+Vertices incident to more than two boundary segments are then simplified by retaining
+only two connections. Segments whose length exceeds the 98th percentile of segment
+lengths in the XY plane are removed, followed by connected groups containing fewer
 than \code{minGroupSize} segments.
 
 Finally, vertices incident to a single remaining boundary segment are identified
 as disconnected endpoints. These endpoints are paired according to their nearest
-neighbour in the XY plane, and the corresponding connecting segments are added
-to the boundary.
+neighbor in the XY plane using \code{FNN::get.knnx()}, and the corresponding connecting
+segments are added to the boundary.
+
+If \code{order = TRUE}, the resulting segments are ordered using \code{sortSegments()} to
+form a continuous sequence based on their connectivity. This requires the cleaned
+boundary to form a single connected chain or closed loop.
 }
 \examples{
 # Create a rectangular mesh with a triangular hole
@@ -70,17 +91,22 @@ triangles <- matrix(
 )
 
 # Create the mesh
-baseMesh <- tmesh3d(vertices = t(vertices), indices = t(triangles),
-                    homogeneous = FALSE)
+baseMesh <- tmesh3d(
+  vertices = t(vertices),
+  indices = t(triangles),
+  homogeneous = FALSE
+)
 
 # Extract boundary segment indices
 iBorder <- getBoundarySegments(baseMesh)
 
-# Clean the boundary segments
-cleanBorder <- cleanBoundarySegments(iBorder, baseMesh, minGroupSize = 4)
+# Clean, reconnect and order the boundary segments
+cleanBorder <- cleanBoundarySegments(
+  iBorder, baseMesh, minGroupSize = 4, order = TRUE
+)
 
 # Represent the original mesh and boundaries
-open3d() # Alternatively, use `legendplot::new3d()` to clear the current device or open a new one
+open3d()
 mfrow3d(1, 3)
 
 shade3d(baseMesh, color = "lightgray")
@@ -92,9 +118,9 @@ title3d("Original boundary", line = 8, level = 2)
 
 next3d()
 shade3d(mesh3d(vertices = baseMesh$vb, segments = cleanBorder))
-title3d("Cleaned boundary", line = 8, level = 2)
+title3d("Cleaned and ordered boundary", line = 8, level = 2)
 
 }
 \seealso{
-\code{\link[=getBoundarySegments]{getBoundarySegments()}}
+\code{\link[=getBoundarySegments]{getBoundarySegments()}}, \code{\link[=sortSegments]{sortSegments()}}
 }

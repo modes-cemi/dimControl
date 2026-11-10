@@ -23,7 +23,7 @@ Functions for reconstructing and processing triangular meshes.
 - [`getBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/getBoundarySegments.md)
   : Extract the boundary of a 3D mesh
 - [`cleanBoundarySegments()`](https://modes-cemi.github.io/dimControl/reference/cleanBoundarySegments.md)
-  : Clean and reconnect boundary segments of a 3D mesh
+  : Clean, reconnect and optionally order boundary segments of a 3D mesh
 - [`sortSegments()`](https://modes-cemi.github.io/dimControl/reference/sortSegments.md)
   : Reorder connected edge segments
 - [`detectCorners()`](https://modes-cemi.github.io/dimControl/reference/detectCorners.md)
